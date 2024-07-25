@@ -17,18 +17,19 @@ import { useNavigate } from 'react-router-dom';
 import SearchResults from './SearchResults.jsx';
 import ViewItemPage from './ViewPage/ViewItemPage.jsx';
 import elasticlunr from 'elasticlunrjs';
-import { getLatestStoredInfo, getListOfNeeds, LoadIndex } from './StudioFunctions.jsx';
+import { buildRelationships, getListOfNeeds, LoadIndex } from './StudioFunctions.jsx';
 import EditItemPage from './EditPage/EditItemPage.jsx';
 import { BuildNewItem } from './StudioFunctions.jsx';
 import GraphPage from './Graph/GraphPage.jsx';
 import AddSetPage from './AddSetPage/AddSetPage.jsx';
 
-// console.log('LOADING STUDIO')
+console.log('LOADING STUDIO')
 
 export default function Studio() {
     const location = useLocation()
     const [ user, setUser ] = useState("")
     const [ db, setDb ] = useState(null)
+    const [ relDb, setRelDb ] = useState({})
     const [ needsList, setNeedsList ] = useState(null)
     
     const [ index, setIndex ] = useState(null)
@@ -81,19 +82,31 @@ export default function Studio() {
 
         // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
             latestItems.forEach((item, i) => {
+                if (!item.needParents) {
+                    latestItems[i].needParents = [ item.needMajId ]
+                }
+
                 if ( item.minId.includes("NaN") ) {
                     latestItems[i].minId = item.minId.replaceAll("NaN", "0")
                     latestItems[i].verNum = String(item.verNum).replaceAll("NaN", "0")
                     console.log("WAS NaN", item.title.en)
                 }
-                if (item.needsMinId) delete latestItems[i].needsMinId
+                if (item.needMinId) delete latestItems[i].needMinId
             })
         // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
 
             setDb(latestItems)
             setNeedsList(getListOfNeeds(latestItems))
+
+            const newRels = buildRelationships(latestItems)
+
+            console.log("new Rels", newRels)
+
+            setRelDb(newRels)
         })
     },[])
+
+    console.log('relDb', relDb)
 
     useEffect(() => {
         if (db !== null)
@@ -312,9 +325,6 @@ export default function Studio() {
     function getLinkedItems(majId){
         return db.filter(item => (item.needMajId === majId && item?.title !== undefined ))
             .sort(function(a, b) {
-
-                console.log(a, b)
-
                 let textA = a.title.en.toUpperCase();
                 let textB = b.title.en.toUpperCase();
                 return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
@@ -387,6 +397,7 @@ export default function Studio() {
             
             <Box className='studioContainer' >
                 {/* <Box alignContent='center'> */}
+
                     <Box alignSelf='center' backgroundColor='rgba(255, 255, 255, 0.9)' 
                         padding='8px' borderRadius='10px' width="360px" marginTop='30px' marginBottom='30px'>
                         <TextField size='small' className='formField' width='300px'

@@ -34,7 +34,7 @@ export default function ElementsArea(props) {
                                 paddingTop:'1px', border:"1px solid black", textAlign:'center' }}>{ i+1 } 
                         </Box>
                             <Box className='cardElements' style={{ width:'calc(100% - 80px)' }}>
-                             <RM>{ element[lang] }</RM>
+                             <ReactMarkdown>{ element[lang] }</ReactMarkdown>
                                 {/* { md.render(element[lang]) }<br/><br/> */}
                                 </Box>
                         </Box>

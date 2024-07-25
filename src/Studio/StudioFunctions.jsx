@@ -371,3 +371,24 @@ export function sortArrByTitle(arr, lang){
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     })
 }
+
+export function buildRelationships( itemsDb ){
+
+    console.log('building relationships')
+
+    const rels = { p: {}, c: {} }
+    itemsDb.forEach((item) => {
+        item.needParents.forEach(( parentMajId ) => {
+            // add to parents
+            if (!rels.p[ parentMajId ]) rels.p[ parentMajId ] = []
+            else if (!rels.p[ parentMajId ].includes( item.majId )) 
+                rels.p[ parentMajId ].push( item.majId )
+
+            // add to children
+            if (!rels.c[ item.majId ]) rels.c[ item.majId ] = []
+            else if (!rels.c[ item.majId ].includes( parentMajId )) 
+                rels.c[ item.majId ].push( parentMajId )
+        })
+    })
+    return rels
+}
