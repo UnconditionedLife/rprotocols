@@ -162,10 +162,13 @@ export default function EditItemPage(props) {
             // return "Changed: " + newLog
         }
     }
+    
 
     function handleParentChange(majId, title){
         
         console.log('NEEDS CHANGE', "("+majId+")", title)
+
+        logChanges("parentNeed", title, false)
         
         setFormState((prevState) => ({
             ...prevState,

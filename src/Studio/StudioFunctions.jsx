@@ -373,20 +373,19 @@ export function sortArrByTitle(arr, lang){
 }
 
 export function buildRelationships( itemsDb ){
-
-    console.log('building relationships')
-
     const rels = { p: {}, c: {} }
     itemsDb.forEach((item) => {
-        item.needParents.forEach(( parentMajId ) => {
+        item.parentNeeds.forEach(( parentMajId ) => {
             // add to parents
-            if (!rels.p[ parentMajId ]) rels.p[ parentMajId ] = []
-            else if (!rels.p[ parentMajId ].includes( item.majId )) 
+            if (!( parentMajId in rels.p )) rels.p[ parentMajId ] = []
+            
+            if (!rels.p[ parentMajId ].includes( item.majId )) 
                 rels.p[ parentMajId ].push( item.majId )
 
             // add to children
-            if (!rels.c[ item.majId ]) rels.c[ item.majId ] = []
-            else if (!rels.c[ item.majId ].includes( parentMajId )) 
+            if (!( item.majId in rels.c )) rels.c[ item.majId ] = []
+                
+            if (!rels.c[ item.majId ].includes( parentMajId )) 
                 rels.c[ item.majId ].push( parentMajId )
         })
     })

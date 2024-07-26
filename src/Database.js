@@ -1,4 +1,4 @@
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import { mergeArrays, updateLocalStorage } from "./GlobalFunctions"
 import { getAllNeeds } from "./NeedsDatabase"
 import { getLatestStoredInfo } from "./Studio/StudioFunctions"
@@ -174,7 +174,7 @@ export function getDbAsync() {
         let allItems = latestLocal.items
         if (items.length > 0) allItems = updateLocalStorage(items)
         
-        // console.log("ALL ITEMS", allItems)
+        console.log("ALL ITEMS", allItems, dayjs().valueOf())
              
         return allItems
     })

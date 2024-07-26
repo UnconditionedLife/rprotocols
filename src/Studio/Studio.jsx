@@ -9,10 +9,9 @@ import CategoryIcon from '@mui/icons-material/Category';            // Domain
 import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';  // Purpose
 import SignpostIcon from '@mui/icons-material/Signpost';            // Protocol
 import { CloseRounded } from '@mui/icons-material';
-import { dbSaveItemAsync, getDbAsync } from '../Database.js';
+import { getDbAsync } from '../Database.js';
 import rProtocolStudio from '../assets/rProtocolStudio.svg';
-import { getNewProtocols } from '../Database-NewProtocols.js';
-import { getUserName, getUserObject, deepCopy, getLatestDate } from '../GlobalFunctions.jsx';
+import { getUserObject, deepCopy } from '../GlobalFunctions.jsx';
 import { useNavigate } from 'react-router-dom';
 import SearchResults from './SearchResults.jsx';
 import ViewItemPage from './ViewPage/ViewItemPage.jsx';
@@ -79,12 +78,13 @@ export default function Studio() {
     // LOAD DATABASE
     useEffect(() => {
         getDbAsync().then((latestItems)=> {
-
         // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
             latestItems.forEach((item, i) => {
-                if (!item.needParents) {
-                    latestItems[i].needParents = [ item.needMajId ]
-                }
+                if (!item.parentNeeds) 
+                    latestItems[i].parentNeeds = []
+
+                if (item.needMajId !== "")
+                        latestItems[i].parentNeeds.push( item.needMajId )
 
                 if ( item.minId.includes("NaN") ) {
                     latestItems[i].minId = item.minId.replaceAll("NaN", "0")
@@ -100,13 +100,13 @@ export default function Studio() {
 
             const newRels = buildRelationships(latestItems)
 
-            console.log("new Rels", newRels)
+            // console.log("new Rels", newRels, "db", latestItems)
 
             setRelDb(newRels)
         })
     },[])
 
-    console.log('relDb', relDb)
+    // console.log('relDb', relDb)
 
     useEffect(() => {
         if (db !== null)

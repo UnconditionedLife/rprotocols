@@ -18,6 +18,11 @@ export default function NeedSelector(props) {
 
       }, [lang, needsList, formState ]);
 
+    const selectedValues = useMemo(
+        () => sortedNeeds.find((sortedNeed) => sortedNeed.majId === formState.needMajId),
+        [ sortedNeeds, formState.needMajId ],
+    );
+
     // const selectedValue = useMemo(() => { 
     //     // console.log("formState.needMajId", formState.needMajId, formState)
     //     return sortedNeeds.find((sortedNeed) => sortedNeed.majId === formState.needMajId)
@@ -27,16 +32,14 @@ export default function NeedSelector(props) {
 
 // console.log("selectedValue", selectedValue)
 
+
     return (
         <Autocomplete id="need-selector" key={ sortedNeeds.majId } sx={{ width:'100%' }}
             options={ sortedNeeds } autoHighlight clearOnEscape
-            value={ sortedNeeds.find((sortedNeed) => sortedNeed.majId === formState.needMajId) }
+            value={ selectedValues }
             isOptionEqualToValue={(option, value) => option.majId === value.majId}
             getOptionLabel={(option) => { return option.title || '' }}
             onChange={(event, newValue) => {
-
-                console.log('newValue', newValue)
-                
                 handleParentChange(newValue.majId, needsList.find(need => need.majId === newValue.majId).title)
             }}
             renderOption={(props, option) => ( <li {...props} key={option.majId}>{ option.title }</li>
