@@ -188,6 +188,19 @@ button:focus-visible {
     margin-top: 18px;
 }
 
+.itemNeedsBox {
+    display: block;
+    background-color: #1C8E45;
+    margin: 2px;
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 1.0em;
+    font-weight: 600;
+    border-radius: 4px;
+    color: white;
+}
+
 .itemTagsBox {
     display: block;
     background-color: #f1f2f3;
