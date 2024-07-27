@@ -194,11 +194,12 @@ button:focus-visible {
     margin: 2px;
     padding: 4px;
     padding-left: 8px;
-    padding-right: 8px;
+    padding-right: 6px;
     font-size: 1.0em;
     font-weight: 600;
     border-radius: 4px;
     color: white;
+    cursor: pointer;
 }
 
 .itemTagsBox {

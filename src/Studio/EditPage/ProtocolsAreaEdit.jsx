@@ -26,17 +26,6 @@ export default function ProtocolsAreaEdit(props) {
         return sortArrByTitle(protocolList, lang)
     }, [ lang, db, formState ]);
 
-    // const selectedValue = useMemo(() => { 
-    //     // return sortedItems.find((sortedNeed) => sortedNeed.majId === item.needMajId)
-    //     return sortedProtocols.find((proto) => proto.majId === null )
-    // }, [ sortedProtocols ]); //, item.needMajId
-
-    // const selectedValue = useMemo(() => { 
-    //     // console.log("formState.needMajId", formState.needMajId, formState)
-    //     return sortedNeeds.find((sortedNeed) => sortedNeed.majId === formState.needMajId)
-    // }, [ sortedNeeds, formState ]);
-
-
 // console.log("sortedProtocols", sortedProtocols)
 
     if (!sortedProtocols) return null

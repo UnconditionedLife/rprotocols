@@ -73,9 +73,11 @@ export default function AddSetPage(props) {
                     title: {},
                     description: {},
                     tags: {},
-                    needMajId: setInfo.needMajId,
-                    needTitle: setInfo.needTitle
+                    parentNeeds: [],
+                    needMajId: "",
+                    needTitle: ""
                 }
+                minItem.parentNeeds.push(setInfo.needMajId)
                 minItem.title[ lang ] = tempSetArr[0]
                 minItem.description[ lang ] = tempSetArr[1]
                 minItem.tags[ lang ] = tempSetArr[2]
@@ -91,9 +93,8 @@ export default function AddSetPage(props) {
         })
         const basicItemsArr = []
         minItemsArr.forEach((minItem) => {
-            const basicItem = BuildNewItem(minItem.type, minItem.needMajId, 
-                minItem.needTitle, minItem.title, minItem.description, 
-                minItem.tags)  // type, needMajId, needTitle, title, description, tags
+            const basicItem = BuildNewItem(minItem.type, minItem.parentNeeds, 
+                    minItem.title, minItem.description, minItem.tags)  // type, parentNeeds, title, description, tags
                 basicItem.history.push(BuildNewHistory('1.0'))
                 basicItem.history[0].description[ lang ] = "Initial Version - set uploaded"
                 basicItemsArr.push(basicItem)

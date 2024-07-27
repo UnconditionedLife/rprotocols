@@ -10,9 +10,10 @@ import NeedIcon from '/NeedIcon.svg';
 import GuideIcon from '/GuideIcon.svg';
 import TagBar from './TagBar';
 import CommunityBar from './CommunityBar';
+import NeedsBar from './EditPage/NeedsBar';
 
 export default function HeaderArea(props) {
-    const { item, lang, handleLanguage, displayState, handleGoto } = props
+    const { item, lang, handleLanguage, displayState, handleGoto, parentNeeds } = props
     const [ iconColor, setIconColor ] = useState('')
 
 // console.log("HEADER ITEM", item)
@@ -35,20 +36,12 @@ export default function HeaderArea(props) {
                 { item.type === 'Guide' && <img src={ GuideIcon } height='28px' alt="Guide Icon" /> }
             </Box>
 
-            { (displayState === 'edit' || displayState === 'add' || displayState === 'add-set' || item.needMajId === '' ) && 
-                <span className={`cardClas no-select`} style={{ marginTop:'15px', textTransform: 'uppercase', 
-                    color:getItemColor('Need'), fontWeight:600 }} >
-                    { item.needTitle?.[lang] }
-                </span>
+            { (displayState === 'edit' || displayState === 'add' || displayState === 'add-set' || item.parentNeeds.length === 0 ) && 
+                <NeedsBar parentNeeds={ parentNeeds } lang={ lang } action="display" handleGoto={ handleGoto }/>
             }
 
-            { displayState === 'view' && item.needMajId !== '' &&
-                <Box className={ `cardClas no-select`} style={{ marginTop:'4px', color: 'white', cursor: 'pointer',
-                    maxWidth: '280px', alignSelf: 'center', padding:'8px', borderRadius:'8px', lineHeight:'12px',
-                    fontWeight: '600', textTransform: 'uppercase', backgroundColor: getItemColor('Need') }}
-                    onClick={ () => { handleGoto('/studio/' + item.type.toLowerCase() + '/' + urlizeString(item.needTitle[ lang ]) + "/" + item.needMajId) } } >
-                        { item.needTitle?.[lang] }
-                </Box>
+            { displayState === 'view' && item.parentNeeds.length !== 0 &&
+                <NeedsBar parentNeeds={ parentNeeds } lang={ lang } action="link"  handleGoto={ handleGoto }/>
             }
 
             { displayState !== 'add-set' && 

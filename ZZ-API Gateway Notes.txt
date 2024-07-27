@@ -1,0 +1,28 @@
+POST TEMPLATE
+
+#set($inputRoot = $input.path('$'))
+{
+    "TableName": "Collabs-ProtocolsTable", "Collabs-LatestProtocolsTable", (((((( PICK TABLE NAME  ))))))
+    "Item": {
+        "iId": {"S": "$inputRoot.iId"},
+        "majId": {"S": "$inputRoot.majId"},
+        "majDate": {"S": "$inputRoot.majDate"},
+        "minId": {"S": "$inputRoot.minId"},
+        "minDate": {"S": "$inputRoot.minDate"},
+        "verNum": {"S": "$inputRoot.verNum"},
+        "type": {"S": "$inputRoot.type"},
+        "subtype": {"S": "$inputRoot.subtype"},
+                "parentNeeds": {
+            "L": [
+                #foreach($need in $inputRoot.parentNeeds)
+                    {"S": "$need"}#if($foreach.hasNext),#end
+                #end
+            ]
+        },
+        "needTitle": { "M": { #foreach($lang in $inputRoot.needTitle.entrySet())"$lang.key": {"S": "$lang.value"}#if($foreach.hasNext),#end#end}},
+        "needMinId": {"S": "$inputRoot.needMinId"},
+        "deleted": {"BOOL": "$inputRoot.deleted"},
+        "data": {"M": $input.json('$.data')},
+        "year" : {"S": "$inputRoot.year"}
+    }
+}

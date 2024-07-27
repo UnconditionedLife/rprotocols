@@ -86,13 +86,12 @@ import { dbSaveItemAsync } from "../Database";
         return errorFields
     }
 
-    export function BuildNewItem( type, needMajId, needTitle, title, description, tags ){
+    export function BuildNewItem( type, parentNeeds, title, description, tags ){
         const emptyLang = { en: "", es: "", pt: "" }
         const newIdObj = buildNowIds(type)
 
 console.log('newIdObj', newIdObj)
-console.log('needMajId', needMajId)
-console.log('needTitle', needTitle)
+console.log('parentNeeds', parentNeeds)
 
         const basicItem = {
             iId: newIdObj.iId,
@@ -101,8 +100,9 @@ console.log('needTitle', needTitle)
             minId: newIdObj.minId,
             type: wordCase(type),
             subtype: '',
-            needMajId: needMajId,
-            needTitle: needTitle,
+            parentNeeds: parentNeeds,
+            needMajId: "",
+            needTitle: "",
             verNum: newIdObj.verNum,
             minDate: newIdObj.date,
             majDate: newIdObj.date,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Card, CardActions, Button } from '@mui/material'
 import Accordion from '../../Accordion';
-import { getUserObject, getUserName } from '../../GlobalFunctions';
+import { getUserObject, getUserName, deepCopy } from '../../GlobalFunctions';
 import ProtocolForm from '../EditPage/EditItemPage';
 import EditIcon from '@mui/icons-material/EditNote';
 import ForkIcon from '@mui/icons-material/ForkRight';
@@ -25,7 +25,7 @@ import RegionsArea from './RegionsArea';
 
 export default function ViewItemPage(props) {
     const { item, getLinkedItems, handleGoto, displayState, handleBuildNewItem,
-        db, handleSetAddSet } = props
+        db, relDb, handleSetAddSet, needsList } = props
     // const [ introShow, setIntroShow ] = useState( 'none' )
     // const [ elemShow, setElemShow ] = useState( 'none' )
     // const [ protoShow, setProtoShow ] = useState( 'none' )
@@ -36,18 +36,26 @@ export default function ViewItemPage(props) {
     const [ showAll, setShowAll ] = useState( true )
     const [ linkedItems, setLinkedItems ] = useState([])
     const [ addPopup, setAddPopup ] = useState(false)
+    const [ parentNeeds, setParentNeeds ] = useState( [] )
     
     // console.log("inside Item View :)", item)
 
     useEffect(() =>{
         
         // setAddPopup(showAddPopup)
+
+        // Create "setParentNeeds" as list of { title & majId }
+        // from the list of majId in parentNeeds
+        const parentIdSet = new Set( item.parentNeeds )
+        const filteredParents = needsList.filter(obj => parentIdSet.has(obj.majId));
+        setParentNeeds(filteredParents)
         
-    }, [])
+    }, [ needsList, item ])
 
     useEffect(() => {
         setLinkedItems(getLinkedItems(item.majId))
     }, [ item.majId, getLinkedItems ])
+
 
     function handleLanguage(newLang){
         // console.log("CHANGE LANG:", newLang)
@@ -66,6 +74,29 @@ export default function ViewItemPage(props) {
         }
     }
 
+    function handleViewAddLink(newParent){
+        // THIS IS ABOUT ADDING A LINK FROM THE CHILD TO THIS ITEM
+        // WILL NEED TO EDIT AND SAVE THE CHILD
+        const newList = deepCopy(parentNeeds)
+        newList.unshift(newParent)
+        handleParentChange(newList)
+    }
+
+    function handleParentChange( newParents ){
+        
+        console.log('NEEDS CHANGE', newParents)
+        const parentIdsList = []
+        newParents.forEach(parent => {
+            parentIdsList.push( parent.majId )
+        })
+ 
+        // WILL NEED TO EDIT THE CHILD
+        // setFormState((prevState) => ({
+        //     ...prevState,
+        //     parentNeeds: parentIdsList
+        // }));
+    }
+
     function formatElements(text, part) {
         if (text.includes(":")) {
             const array = text.split(":", 2)
@@ -82,7 +113,9 @@ export default function ViewItemPage(props) {
 
     function addNewItem(type){
         // console.log("IN ADD NEW ITEM")
-        handleBuildNewItem( type, item.majId )
+        const parents = []
+        parents.push(item.majId)
+        handleBuildNewItem( type, parents )
         setAddPopup(false)
         handleGoto('/studio/add/')
     }
@@ -112,12 +145,14 @@ export default function ViewItemPage(props) {
     return (
         <Box marginTop='30px'>
             <AddItemPopup item={ item } addPopup={ addPopup } setAddPopup={ setAddPopup } 
-                addNewItem={ addNewItem } addNewSet={ addNewSet } db={ db } lang={ lang }/>
+                addNewItem={ addNewItem } addNewSet={ addNewSet } db={ db } lang={ lang }
+                handleViewAddLink={ handleViewAddLink } />
         
             <Card key={item.id} className="itemCard" >
 
                 <HeaderArea item={ item } lang={ lang } handleLanguage={ handleLanguage } 
-                    handleGoto={ handleGoto } displayState={ displayState } />
+                    handleGoto={ handleGoto } displayState={ displayState } 
+                    parentNeeds={ parentNeeds } />
 
                 <Box className='itemCardShowLink' onClick={ () => { setShowAll(!showAll) }}>
                     { showAllText }

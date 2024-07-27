@@ -1,4 +1,3 @@
-import { dbSaveItemAsync } from "./Database";
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -169,9 +168,13 @@ export function dynamoDbFormat(i){
 
         type: i.type,
         subtype: i.subType,
-        needTitle: i.needTitle,
-        needMajId: i.needMajId,
+
+        needTitle: "",
+        needMajId: "",
+        parentNeeds: i.parentNeeds,
+
         deleted: i.deleted,
+
         data: {
             title: i.title,
             description: i.description,

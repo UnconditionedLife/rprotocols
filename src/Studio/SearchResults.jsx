@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { Box, Card, CardMedia } from "@mui/material";
-import { motion } from "framer-motion";
+import { Box } from "@mui/material";
 import ButtonView from "./ButtonView";
 
 export default function SearchResults(props) {

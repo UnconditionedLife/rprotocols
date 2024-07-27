@@ -9,12 +9,12 @@ export default function GraphPage(props) {
 
     // flatten db
     const needsArray = db.map(i => {
-        if ( i.needMajId !== undefined ) {
+        if ( i.parentNeeds.length !== 0 ) {
             return {
                 id: i.majId,
                 type: i.type,
                 name: i.title.en,
-                parentId: i.needMajId,
+                parents: i.parentNeeds,
                 children: []
     }}
     }).filter( (i) => i !== undefined)

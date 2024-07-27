@@ -1,3 +1,11 @@
+HOST:
+
+https://rprotocols.netlify.app
+
+https://rprotocols.org
+
+
+
 DYNAMODB TABLES
 
 Amazon Resource Name (ARN)
@@ -65,8 +73,6 @@ POST TEMPLATE
     }
 }
 
-        "needTitle": {"M": "$inputRoot.needTitle"},
-        "needMinId": {"S": "$inputRoot.needMinId"},
 
 
 

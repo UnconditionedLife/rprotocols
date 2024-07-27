@@ -22,10 +22,12 @@ export default function LinkedItemsArea(props) {
 
     // console.log('CHILDREN', linkedItems)
 
+    const key = linkedItems.length !== 0 ? linkedItems[0] : linkedItems
+
     return (
         <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
             <Accordion title={ 'Links (' + linkedItems.length + ')' } show={ contentShow } handleArea={ handleShow } />
-                <Box display={ contentShow } marginLeft='20px' pt={ 1 } width='calc(100% - 40px)' 
+                <Box key={ key } display={ contentShow } marginLeft='20px' pt={ 1 } width='calc(100% - 40px)' 
                     textAlign='center' flexDirection='column'>
                     <Box display='flex' marginTop='-16px' width='100%' justifyContent='center' >
                         {/* <Button size="small" variant="contained" style={{ margin:'4px' }}

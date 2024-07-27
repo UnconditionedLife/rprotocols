@@ -184,7 +184,6 @@ export default function Studio() {
                         theItem.needMajId = theItem.needMinId
                         delete theItem.needMinId
                     }
-                    // console.log("ADDED needMajId")
                 } 
                 
 
@@ -321,9 +320,10 @@ export default function Studio() {
 
     // console.log("USER IN STUDIO", user)
 
-    // this function is here because it requires DB
-    function getLinkedItems(majId){
-        return db.filter(item => (item.needMajId === majId && item?.title !== undefined ))
+    // this function is here because it requires DB & relDb
+    function getLinkedItems(majId){        
+        const parentIdSet = new Set(relDb.p[ majId ])
+        return db.filter(obj => parentIdSet.has(obj.majId))
             .sort(function(a, b) {
                 let textA = a.title.en.toUpperCase();
                 let textB = b.title.en.toUpperCase();
@@ -339,13 +339,13 @@ export default function Studio() {
     }
 
     // ****** CREATE AND SET A NEW ITEM *****
-    function handleBuildNewItem( type, needMajId ){
+    function handleBuildNewItem( type, parentNeeds ){
 
         console.log("IN CREATE NEW ITEM")
-        console.log("TYPE:", type, "needMajId:", needMajId)
+        console.log("TYPE:", type, "ParentNeeds:", parentNeeds)
 
         // if (type === 'Need') {
-            const newItem = BuildNewItem( type, needMajId, getNeedTitle(needMajId) )
+            const newItem = BuildNewItem( type, parentNeeds )
             handleNewItemChange(newItem)
         // }   
     }
@@ -428,7 +428,7 @@ export default function Studio() {
                             <ViewItemPage item={ item } getLinkedItems={ getLinkedItems } 
                                 handleBuildNewItem={ handleBuildNewItem } displayState={ displayState } 
                                 handleGoto={ handleGoto } handleSetAddSet={ handleSetAddSet }
-                                db={ db }  />
+                                db={ db } relDb={ relDb } needsList={ needsList }  />
                         </Box>
                     }
 
