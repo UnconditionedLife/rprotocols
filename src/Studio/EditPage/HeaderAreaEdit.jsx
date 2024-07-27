@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Box, TextField } from '@mui/material'
 import Accordion from '../../Accordion';
 import NeedSelector from './NeedSelector';
+import NeedsBar from './NeedsBar';
 
 export default function HeaderAreaEdit(props) {
-    const { formState, errors, lang, handleFieldChange, handleParentChange, show, needsList } = props
+    const { parentNeeds, formState, errors, lang, handleFieldChange, 
+        handleEditAddParent, handleEditRemoveParent, show, needsList } = props
     const [ contentShow, setContentShow ] = useState( 'none' )
 
     useEffect(() => {
@@ -20,8 +22,12 @@ export default function HeaderAreaEdit(props) {
             <Accordion title='Header' show={ contentShow } handleArea={ handleShow } />
             <Box display={ contentShow } marginLeft='16px' pt={ 1 } width='calc(100% - 16px)' textAlign='left' flexDirection='column'>                    
                 
-                <Box className='formFieldContainer'>
-                    <NeedSelector formState={ formState } needsList={ needsList } handleParentChange={ handleParentChange } lang={ lang } />
+                <Box className='formFieldContainer' marginBottom="16px">
+                    <NeedsBar parentNeeds={ parentNeeds } 
+                        handleEditRemoveParent={ handleEditRemoveParent } lang={ lang } action="edit" />
+
+                    <NeedSelector formState={ formState } needsList={ needsList } 
+                        handleEditAddParent={ handleEditAddParent } parentNeeds={ parentNeeds } lang={ lang } />
                 </Box>
 
                 <Box className='formFieldContainer'>

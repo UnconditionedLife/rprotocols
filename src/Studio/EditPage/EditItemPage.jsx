@@ -30,6 +30,7 @@ export default function EditItemPage(props) {
     const [ errors, setErrors ] = useState({})
     const [ showAll, setShowAll ] = useState( true )
     const [ changeLog, setChangeLog ] = useState("Changed: ")
+    const [ parentNeeds, setParentNeeds ] = useState( [] )
 
     // console.log('item vs. newItem', item, newItem)
 
@@ -52,15 +53,8 @@ export default function EditItemPage(props) {
     // }, [ location.pathname ])
 
     useEffect(() => {
-
-        console.log( 'TOP OF EDIT PAGE', newItem, item)
-
+        // GET CORRECT NEW ITEM AND ASSIGN IT TO FORMSTATE
         const refItem = newItem || item
-
-        console.log( 'TOP OF EDIT PAGE REF ITEM', refItem)
-        // console.log('editFunction:', editFunction)
-        // console.log('tempEditFunction:', tempEditFunction)
-
         setOriginalState( deepCopy(refItem) );        
         const stateItem =  deepCopy(refItem)
 
@@ -75,9 +69,6 @@ export default function EditItemPage(props) {
             setProtocols(AddIdToArray(refItem.protocols, "proto"))
         }
 
-        // console.log('HISTORY', refItem.history)
-        // console.log("stateItem", stateItem)
-
         // UPDATE VERSION NUMBER
         const newVerNum = (newItem) ? '1.0' : IncrementMinorVersion(stateItem?.verNum)
         stateItem.verNum = newVerNum
@@ -88,22 +79,36 @@ export default function EditItemPage(props) {
         stateItem.history.unshift(newHistory)
         setHistoryRecord( newHistory )
 
-        // EXTRACT HISTORY OBJECT LATEST
-        // setHistoryRecord(AddIdToArray(stateItem.history, "hist")[0])
-
-        // UPDATE VERSION ID
+        // UPDATE MIN ID
         stateItem.minId = stateItem.iId + '.' + newVerNum
 
-        // UPDATE NEED TITLE IN CASE IT'S CHANGED
-        if (!newItem) {
-            stateItem.needTitle = getNeedTitle(stateItem.needMajId)
-        }
+        // TEMP add parentNeeds
+        if (!stateItem.parentNeeds) stateItem.parentNeeds= []
 
+        // Create "setParentNeeds" as list of { title & majId }
+        // from the list of majId in parentNeeds
+        const parentIdSet = new Set( stateItem.parentNeeds )
+        const filteredParents = needsList.filter(obj => parentIdSet.has(obj.majId));
+        setParentNeeds(filteredParents)
+        
         setFormState( stateItem )
 
-        console.log('EDIT FORM STATEITEM', stateItem )
+console.log('EDIT FORM STATEITEM', stateItem )
         
-    }, [ item, newItem, getNeedTitle ])
+    }, [ item, newItem, getNeedTitle, needsList ])
+
+
+    useEffect(() => {
+        // UPDATE NEEDS LIST
+        if ( formState?.parentNeeds ) {
+            // Create "setParentNeeds" as list of { title & majId }
+            // from the list of majId in parentNeeds
+            const parentIdSet = new Set( formState.parentNeeds )
+            const filteredParents = needsList.filter(obj => parentIdSet.has(obj.majId));
+            setParentNeeds(filteredParents)
+        }
+    }, [ formState, needsList ])
+
 
     // RESET ERRORS
     function clearErrors(name) {
@@ -163,31 +168,36 @@ export default function EditItemPage(props) {
         }
     }
     
+    function handleParentList(newArr){
 
-    function handleParentChange(majId, title){
-        
-        console.log('NEEDS CHANGE', "("+majId+")", title)
+console.log("newList @ Set FormState", newArr)
 
-        logChanges("parentNeed", title, false)
-        
+        logChanges("parentNeed", null, false)
         setFormState((prevState) => ({
             ...prevState,
-            needMajId: majId,
-            needTitle: title
+            parentNeeds: newArr
         }));
     }
 
-    function handleProtocolChange(majId, title, index){
-        console.log("change to:", majId, title, index)
+    function handleEditAddParent(newParent){
+        const newList = deepCopy(parentNeeds)
+        newList.unshift(newParent)
+        handleEditUpdateParents(newList)
     }
 
+    function handleEditRemoveParent(index){
+        const newList = deepCopy(parentNeeds)
+        newList.splice(index, 1)
+        handleEditUpdateParents(newList)
+    }
 
-    // const addElement = () => {
-    //     const newElements = [...elements, { [lang]: "" }]
-    //     const index = newElements.length - 1
-    //     newElements[index].id = "elem-" + (index + 1)
-    //     setElements(newElements)
-    // };
+    function handleEditUpdateParents( newParents ){
+        // console.log('NEEDS CHANGE', newParents)
+        const parentIdsList = []
+        newParents.forEach(parent => parentIdsList.push( parent.majId ))
+        logChanges("Parent Needs", "", false)
+        setFormState((prevState) => ({ ...prevState, parentNeeds: parentIdsList }));
+    }
 
     // type is 'elem' or 'proto'
     function addArrayItem(array, type) {
@@ -207,31 +217,6 @@ export default function EditItemPage(props) {
         if (type === 'elem') setElements(newArray)
         if (type === 'proto') setProtocols(newArray) 
     }
-
-    //     const removeElement = (index) => {
-//         const newElements = elements.toSpliced(index, 1)
-
-// // console.log("DEL-ELEM", newElements, index)
-
-//         setElements(newElements)
-//         // setFormState((prevState) => ({
-//         //     ...prevState,
-//         //     elements: newElements
-//         // }));
-//     }
-
-    const addLink = () => {
-        const newLinks = [...links, { description: { [lang]: "" }, url: "" } ]
-        const index = newLinks.length - 1
-        newLinks[index].id = "elem-"+index
-        setElements(newLinks)
-    };
-
-    // const updateElements = (index, value) => {
-    //     const newElements = [...elements]
-    //     newElements[index][lang] = value
-    //     setElements(newElements)
-    // };
 
     const updateArrayItems = (array, type, index, value, field) => {
         const newArray = [...array]
@@ -254,18 +239,6 @@ export default function EditItemPage(props) {
             setProtocols(newArray) 
         }
     };
-
-//     const removeElement = (index) => {
-//         const newElements = elements.toSpliced(index, 1)
-
-// // console.log("DEL-ELEM", newElements, index)
-
-//         setElements(newElements)
-//         // setFormState((prevState) => ({
-//         //     ...prevState,
-//         //     elements: newElements
-//         // }));
-//     }
 
     const updateHistory =(e) => {
         const { name, value } = e.target;
@@ -364,6 +337,7 @@ console.log("IN UPDATE HISTORY")
     }
 
     console.log('formstate', formState)
+    console.log('parentNeeds', parentNeeds)
 
     const textFlag = (displayState === 'add') ?  'NEW ' + formState.type.toUpperCase() : 'EDITING ' + formState.type.toUpperCase()
 
@@ -376,14 +350,17 @@ console.log("IN UPDATE HISTORY")
             <HeaderArea item={ formState } lang={ lang } handleLanguage={ handleLanguage } displayState={ displayState }/>
 
             {/* **** SHOW THE EDITING RED FLAG **** */}
-            <Box style={{ fontSize:'1.5em', width:'100%', fontWeight:700, color:'white', marginTop:'20px', backgroundColor:'#CC3300' }}>{ textFlag }</Box>
+            <Box style={{ fontSize:'1.5em', width:'100%', fontWeight:700, color:'white', marginTop:'20px', 
+                backgroundColor:'#CC3300' }}>{ textFlag }</Box>
 
             <Box className='itemCardShowLink' style={{ marginBottom:'-14px' }} onClick={ () => { setShowAll(!showAll) }}>
                     { showAllText }
             </Box>
 
-            <HeaderAreaEdit formState={ formState } errors={ errors } handleFieldChange={ handleFieldChange } 
-                handleParentChange={ handleParentChange } lang={ lang } show={ showAll } needsList={ needsList } />
+            <HeaderAreaEdit formState={ formState } parentNeeds={ parentNeeds } errors={ errors } 
+                handleFieldChange={ handleFieldChange } handleEditRemoveParent={ handleEditRemoveParent }
+                handleParentList={ handleParentList } lang={ lang } handleEditAddParent={ handleEditAddParent }
+                show={ showAll } needsList={ needsList } />
 
             { formState.type !== "Need" &&
                 <RegionsAreaEdit regions={ regions } errors={ errors } updateArrayItems={ updateArrayItems } 
