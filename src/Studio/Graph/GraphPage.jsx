@@ -1,33 +1,40 @@
-import { Box } from "@mui/material"
 import * as d3 from "d3"
 import { getItemColor, urlizeString } from "../../GlobalFunctions"
 
 export default function GraphPage(props) {
-    const { db } = props
+    const { db, relDb } = props
 
     if (!db) return null
 
     // flatten db
-    const needsArray = db.map(i => {
+    const allItemsArray = db.map(i => {
         if ( i.parentNeeds.length !== 0 ) {
             return {
                 id: i.majId,
                 type: i.type,
                 name: i.title.en,
                 parents: i.parentNeeds,
-                children: []
+                children: relDb.c[i.majId]
     }}
     }).filter( (i) => i !== undefined)
-        .filter((i) => (db.find((d) => d.id === i.source || db.find((d) => d.id === i.target ))  ))
+        // .filter((i) => (db.find((d) => d.id === i.source || db.find((d) => d.id === i.target ))  ))
+        .filter((i) => i.parents.length > 0 )
+
+    
 
     const rootId = "N.20240716T165825706-1513.1"
+    const rootChildren = relDb.c //[rootId]
+
+    console.log("rootChildren", rootChildren)
+
+
     const rootItem = findItem(rootId)
-    needsArray.unshift({ 
+    allItemsArray.unshift({ 
         id: rootItem.majId,
         type: rootItem.type,
         name: rootItem.title.en,
-        parentId: null,
-        children: []
+        parents: [],
+        children: rootChildren
     })
 
     function findItem(majId){
@@ -35,25 +42,31 @@ export default function GraphPage(props) {
     }
 
     let tree = { name: 'PROTOCOLS', 
-        children: []
+        children: allItemsArray
     };
     let lookup = {};
 
     // Initialize lookup
-    needsArray.forEach(item => {
+    allItemsArray.forEach(item => {
         lookup[item.id] = { ...item };
     });
 
     const rootParent = null
 
     // Build the tree
-    needsArray.forEach(item => {
-        if (item.parentId === rootParent) {
+    allItemsArray.forEach(item => {
+        if (item.parents[0] === "ROOT") {
             tree.children.push(lookup[item.id]);
         } else {
-            if (lookup[item.parentId]) {
-                lookup[item.parentId].children.push(lookup[item.id]);
-            }
+            const parents = lookup[item.id].parents
+            parents.forEach( parent => {
+                if (lookup[parent]) {
+
+console.log( 'parents', parents )
+                
+                    lookup[ parent ].children.push(lookup[item.id]);
+                }
+            })
         }
     });
 
@@ -61,7 +74,8 @@ export default function GraphPage(props) {
 
 
 // console.log('flatDb', needsArray)
-// console.log('tree', tree)
+console.log('lookup', lookup)
+console.log('tree', tree)
 
 const data = tree
     

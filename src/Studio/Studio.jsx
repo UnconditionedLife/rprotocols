@@ -475,12 +475,12 @@ export default function Studio() {
                         </Box>
                     }
 
-                    { (db) &&
+                    {/* { (db) &&
                         <Box id="graph" key={ db[0].minId } width='1180px' height='1050px' backgroundColor='white' alignSelf='center'
                             marginTop='75px' overflow='hidden'>
-                            <GraphPage db={ db }/>
+                            <GraphPage db={ db } relDb={ relDb }/>
                         </Box>
-                    }
+                    } */}
 
 
 
