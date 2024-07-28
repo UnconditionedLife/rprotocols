@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from "dayjs"
 import { mergeArrays, updateLocalStorage } from "./GlobalFunctions"
 import { getAllNeeds } from "./NeedsDatabase"
-import { getLatestStoredInfo } from "./Studio/StudioFunctions"
+import { getLatestStoredInfo, restoreObject } from "./Studio/StudioFunctions"
 
 const dbUrl = "https://d61l6zqpvl.execute-api.us-west-2.amazonaws.com/prod"
 
@@ -75,20 +75,6 @@ function stringToMap(string) {
     newString = newString.replaceAll(', ', ', "')
     return newString
 }
-
-// TODO THESE NEED TO BE RUN BEFORE AND AFTER THE DATA ARRIVES
-function sanitizeInput(input) {
-    return input.replace(/\\/g, '__BACKSLASH__')
-        .replace(/\n/g, '__NEWLINE__')
-        .replace(/"/g, '__QUOTE__');
-}
-
-function restoreInput(input) {
-    return input.replace(/__BACKSLASH__/g, '\\')
-        .replace(/__NEWLINE__/g, '\n')
-        .replace(/__QUOTE__/g, '"');
-}
-// TODO THESE NEED TO BE RUN BEFORE AND AFTER THE DATA ARRIVES
 
 
 async function dbPostDataAsync(subUrl, data, logErrors = true) {
@@ -172,9 +158,18 @@ export function getDbAsync() {
 
     return dbGetLatestProtocolsAsync(latestLocal.year, latestLocal.sinceDate ).then((items) => {
         let allItems = latestLocal.items
-        if (items.length > 0) allItems = updateLocalStorage(items)
+
+        //RESTORE SPECIAL CHARACTERS
+        const restoredItems = []
+        items.forEach( item => {
+            restoredItems.push(restoreObject(item))
+        })
+
+        // MERGE DB AND LOCAL STORAGE
+        if (items.length > 0) 
+            allItems = updateLocalStorage(restoredItems)
         
-        console.log("ALL ITEMS", allItems, dayjs().valueOf())
+        // console.log("ALL ITEMS", allItems, dayjs().valueOf())
              
         return allItems
     })

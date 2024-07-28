@@ -113,16 +113,7 @@ console.log('parentNeeds', parentNeeds)
             title: title || emptyLang,
             description: description || emptyLang,
             tags: tags || emptyLang,
-            history: [
-                // {
-                //     date: newIdObj.date,
-                //     author: getUserName(),
-                //     contactInfo: getUserEmail(),
-                //     description: "First version!",
-                //     verNum: verNum,
-                //     minId: newIdObj.minId
-                // }
-            ],
+            history: [],
             comComments: [],
             comFollowNum: 0
         }
@@ -167,9 +158,9 @@ function buildNowIds(type){
     if (type === 'Protocol') typeToken = 'P' 
     if (type === 'Guide') typeToken = 'G'
     idObj.iId = `${typeToken}.${idDate}-${uniqueNum}`
-    idObj.majId = idObj.iId + ".1"
-    idObj.minId = idObj.iId + ".1.0"
-    idObj.verNum = "1.0"
+    idObj.majId = idObj.iId + ".0"
+    idObj.minId = idObj.iId + ".0.0"
+    idObj.verNum = "0.0"
     return idObj
 }
 
@@ -178,10 +169,7 @@ export function IncrementMinorVersion(oldVersion){
 }
 
 export function DecrementMinorVersion(lastVer){
-    // console.log("last Version", lastVer)
-    const previousVer = lastVer.split('.')[0] + "." + String((Number(lastVer.split('.')[1]) - 1))
-    // console.log("previous Version", previousVer)
-    return previousVer
+    return lastVer.split('.')[0] + "." + String((Number(lastVer.split('.')[1]) - 1))
 }
 
 export function BuildNewHistory( newVersion ){
@@ -252,32 +240,24 @@ export function BuildNewHistory( newVersion ){
 
         // update edit date prior to saving
         const dateObj = nowDates()
-
-console.log("dateObj", dateObj)
-
         usableItem.minDate = dateObj.date
         usableItem.year = dateObj.year
         usableItem.history[0].date = dateObj.date
-        
-        // format for API/DynamoDB Database
-        let dbReadyItem = dynamoDbFormat(usableItem)
-        
-        // console.log("UpdatedItem", dbReadyItem)
 
+        // REMOVE ALL SPECIAL CHARACTERS AND REPLACE WITH LABELS
+        const sanitizedItem = sanitizeObject(usableItem)
+
+        // format for API/DynamoDB Database
+        let dbReadyItem = dynamoDbFormat(sanitizedItem)
+        
         // Preprocess DynamoDB formatting the fields store in "data" attribute
         const pData =  preprocessData(dbReadyItem.data)
-        
-        // console.log("Preprocess Data", pData)
-    
         dbReadyItem.data = pData
-
-        // console.log("SENT TO SAVE:", dbReadyItem)
 
         return await dbSaveItemAsync(dbReadyItem).then((r) => {
             let error = ""
             if (typeof(r) === 'object' && r !== null) {
                 if (Object.keys(r).length < 1 ) {
-                    // console.log("Saved", r)
                     updateLocalStorage( [ usableItem ] )
                     return 'success'
                 } else {
@@ -395,4 +375,97 @@ export function buildRelationships( itemsDb ){
         })
     })
     return rels
+}
+
+function sanitizeObject(obj) {
+
+    if (typeof obj === 'string') {
+        return sanitizeString(obj);
+    }
+    
+    if (Array.isArray(obj)) {
+    return obj.map(sanitizeObject);
+    }
+    
+    if (obj !== null && typeof obj === 'object') {
+        const sanitizedObj = {};
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                sanitizedObj[key] = sanitizeObject(obj[key]);
+            }
+        }
+        return sanitizedObj;
+      }
+    
+      return obj; // Return the value as is if it's not a string, array, or object
+}
+
+export function restoreObject(obj) {
+    if (typeof obj === 'string') {
+      return restoreString(obj);
+    }
+  
+    if (Array.isArray(obj)) {
+      return obj.map(restoreObject);
+    }
+  
+    if (obj !== null && typeof obj === 'object') {
+      const restoredObj = {};
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          restoredObj[key] = restoreObject(obj[key]);
+        }
+      }
+      return restoredObj;
+    }
+  
+    return obj; // Return the value as is if it's not a string, array, or object
+  }
+
+function sanitizeString(input) {
+    if (input == null) return input
+
+    const replacements = {
+        '\\\\': '__DBL_BACKSLASH__',
+        '\\': '__SGL_BACKSLASH__',
+        '"': '__DBL_QUOTE__',
+        '\b': '__BACKSPACE__',
+        '\f': '__FORM_FEED__',
+        '\n': '__NEWLINE__',
+        '\r': '__CARRIAGE_RETURN__',
+        '\t': '__TAB__',
+        '&': '__AMPERSAND__',
+        '<': '__LESS_THAN__',
+        '>': '__GREATER_THAN__',
+        "'": '__SINGLE_QUOTE__'
+      };
+    
+      return input.replace(/([\\"]|[\b\f\n\r\t&<>'\\])/g, function (match) {
+        return replacements[match]
+      });
+}
+
+export function restoreString(input) {
+    if (input == null) return input; // Handle null and undefined
+
+  const replacements = {
+    '__DBL_BACKSLASH__': '\\\\',
+    '__SGL_BACKSLASH__': '\\',
+    '__DBL_QUOTE__': '"',
+    '__BACKSPACE__': '\b',
+    '__FORM_FEED__': '\f',
+    '__NEWLINE__': '\n',
+    '__CARRIAGE_RETURN__': '\r',
+    '__TAB__': '\t',
+    '__AMPERSAND__': '&',
+    '__LESS_THAN__': '<',
+    '__GREATER_THAN__': '>',
+    '__SINGLE_QUOTE__': "'"
+  };
+
+  const pattern = new RegExp(Object.keys(replacements).join('|'), 'g');
+
+  return input.replace(pattern, function (match) {
+    return replacements[match];
+  });
 }
