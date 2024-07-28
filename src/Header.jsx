@@ -124,8 +124,8 @@ export default function Header(props) {
         <Box className='header'>
             <Box pl='20px' display='flex' flexDirection='row' >
                 <a href='/'><img src="/RadicalPerson.svg" height="30px" style={{ margin:'10px'}}></img></a>
-                <Box style={{ fontSize:'1em', fontWeight:600, color:'white', marginTop:'8px'}}>BETA 
-                    &nbsp;<span style={{ fontSize:'1em', fontWeight:300, color:'white', marginTop:'8px'}}>({ appVerNum })</span></Box>
+                <Box style={{ fontSize:'1em', fontWeight:600, color:'white', marginTop:'8px'}}>
+                    BETA <span style={{ fontSize:'1em', fontWeight:400, color:'white', marginTop:'8px'}}>({ appVerNum })</span></Box>
             </Box>
             <Box display='flex' onClick={handleClick} style={{ justifySelf: 'flex-end', cursor:'pointer' }} mt='12px' mr='20px' height='47px' alignContent='center'>
                 <Box style={{ fontSize:"0.9em" }} color={'white'} mr={1.5} mt='5px' >{ userName }</Box>
