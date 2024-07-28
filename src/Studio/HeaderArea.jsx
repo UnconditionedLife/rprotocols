@@ -14,13 +14,13 @@ import NeedsBar from './EditPage/NeedsBar';
 
 export default function HeaderArea(props) {
     const { item, lang, handleLanguage, displayState, handleGoto, parentNeeds } = props
-    const [ iconColor, setIconColor ] = useState('')
+    const [ itemColor, setItemColor ] = useState('')
 
 // console.log("HEADER ITEM", item)
 // console.log("displayState", displayState)
     
     useEffect(() => {
-        setIconColor(getItemColor(item.type))
+        setItemColor(getItemColor(item.type))
     }, [ item ])
 
     if (!item) return null
@@ -30,7 +30,7 @@ export default function HeaderArea(props) {
         
             <CommunityBar item={ item } displayState={ displayState} />
 
-            <Box className='itemIconContainer' backgroundColor={ iconColor }>
+            <Box className='itemIconContainer' backgroundColor={ itemColor }>
                 { item.type === 'Need' && <img src={ NeedIcon } height='36px' alt="Need Icon" /> }
                 { item.type === 'Protocol' && <img src={ ProtocolIcon } height='36px' alt="Protocol Icon" /> }
                 { item.type === 'Guide' && <img src={ GuideIcon } height='28px' alt="Guide Icon" /> }
@@ -43,14 +43,18 @@ export default function HeaderArea(props) {
             { displayState === 'view' && item.parentNeeds.length !== 0 &&
                 <NeedsBar parentNeeds={ parentNeeds } lang={ lang } action="link"  handleGoto={ handleGoto }/>
             }
-
+            
             { displayState !== 'add-set' && 
-                <h5 style={{ marginTop:'8px', color: getItemColor(item.type) }}>
-                    { item.title?.[lang] }
-                </h5>
+                <Box>
+                    <hr width='60%' color={ itemColor } />
+                    <h5 style={{ fontSize:'1.4em', fontWeight:800, marginTop:'8px', color: itemColor }}>
+                        { item.title?.[lang] }
+                    </h5>
+                    <hr width='60%' color={ itemColor } />
+                </Box>
             }
             
-            <h5 className='cardClas' style={{ marginTop:'4px', fontSize:'1.0em', fontWeight: 500, color: getItemColor(item.type)}} >{ item.type.toUpperCase() }</h5>
+            <h5 className='cardClas' style={{ marginTop:'4px', fontSize:'1.0em', fontWeight: 500, color: itemColor }} >{ item.type.toUpperCase() }</h5>
             
             { displayState !== 'add-set' && 
                 <span className='cardVersion' style={{ fontSize:'1.0em', fontWeight:600 }}>

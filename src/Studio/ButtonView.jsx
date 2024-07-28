@@ -18,7 +18,7 @@ export default function ButtonView(props) {
     // console.log("URL", '/studio/' + item.type.toLowerCase() + '/' + urlizeString(item.title[ lang ]) + "/" + item.minId)
 
     return (
-        <Box className='buttonCardContainer' onClick={ () => { handleGoto('/studio/' + item.type.toLowerCase() + '/' + urlizeString(item.title[ lang ]) + "/" + item.minId) }}>
+        <Box key={ item.minDate } className='buttonCardContainer' onClick={ () => { handleGoto('/studio/' + item.type.toLowerCase() + '/' + urlizeString(item.title[ lang ]) + "/" + item.minId) }}>
             <Box className='buttonCardHeader' style={{ backgroundColor: color}}>
                 <span className='buttonCardHeaderText' >{ item.type.toUpperCase() }</span>
             </Box>

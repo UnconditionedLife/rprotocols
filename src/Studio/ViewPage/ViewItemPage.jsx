@@ -44,17 +44,14 @@ export default function ViewItemPage(props) {
         // Create "setParentNeeds" as list of { title & majId }
         // from the list of majId in parentNeeds
         const parentIdSet = new Set( item.parentNeeds )
-
-// console.log('needsList', needsList)
-
         const filteredParents = needsList.filter(obj => parentIdSet.has(obj.majId))
         setParentNeeds(filteredParents)
     }, [ needsList, item ])
 
-    
+
     useEffect(() => {
-        setLinkedItems(getLinkedItems(item.majId))
-    }, [ item.majId, getLinkedItems ])
+        setLinkedItems(getLinkedItems(item.majId, item.minDate))
+    }, [ item.majId, item.minDate, getLinkedItems ])
 
 
     function handleLanguage(newLang){
@@ -136,7 +133,7 @@ export default function ViewItemPage(props) {
 
     // console.log('**USER**', getUserName())
     
-    console.log('**item**', item)
+    // console.log('**item**', item)
 
     if (!item) return null
 

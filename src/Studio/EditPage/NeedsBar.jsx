@@ -5,7 +5,6 @@ import { urlizeString } from '../../GlobalFunctions';
 export default function NeedsBar(props) {
     const { parentNeeds, lang, handleEditRemoveParent, action, handleGoto, error, helperText } = props
 
-    console.log('Array.isArray(parentNeeds)', Array.isArray(parentNeeds), parentNeeds)
     if (!Array.isArray(parentNeeds)) return null
 
     return (
