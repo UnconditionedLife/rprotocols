@@ -48,6 +48,7 @@ export default function Studio() {
     const [ searchResults, setSearchResults ] = useState([])
     const [ displayState, setDisplayState ] = useState(null)
     const [ alertMessage, setAlertMessage ] = useState( '')
+    const [ aboutToEdit, setAboutToEdit ] = useState( false )
 
     const navigate = useNavigate()
 
@@ -68,8 +69,10 @@ export default function Studio() {
 
         // console.log('newState', newState)
 
+        if (newState === 'edit' && displayState !== 'edit') setAboutToEdit( true )
+
         setDisplayState(newState)
-    }, [ location.pathname ])
+    }, [ location.pathname, displayState ])
 
     // console.log("displayState", displayState)
 
@@ -77,13 +80,14 @@ export default function Studio() {
 
     // LOAD DATABASE
     useEffect(() => {
+        console.log("GOING FOR DATA")
         getDbAsync().then((latestItems)=> {
         // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
             latestItems.forEach((item, i) => {
-                if (!item.parentNeeds) 
+                if (item.parentNeeds === undefined)
                     latestItems[i].parentNeeds = []
 
-                if (item.needMajId !== "")
+                if (item.needMajId !== "" && item.parentNeeds.length === 0)
                         latestItems[i].parentNeeds.push( item.needMajId )
 
                 if ( item.minId.includes("NaN") ) {
@@ -102,9 +106,10 @@ export default function Studio() {
 
             // console.log("new Rels", newRels, "db", latestItems)
 
+            setAboutToEdit( false )
             setRelDb(newRels)
         })
-    },[])
+    },[ aboutToEdit ])
 
     // console.log('relDb', relDb)
 

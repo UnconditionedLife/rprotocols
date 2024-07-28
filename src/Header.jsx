@@ -4,6 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
 import netlifyIdentity from 'netlify-identity-widget'
 import { handleUser, getUserName } from './GlobalFunctions';
+import { APP_VERSION } from './config';
 
 
 export default function Header(props) {
@@ -17,6 +18,7 @@ export default function Header(props) {
     const [ widgetOpen, setWidgetOpen ] = useState( 'signup' )
 
     const theSite = import.meta.env.VITE_SITE;
+    const appVerNum = APP_VERSION
 
     // const user = globalVars.user
     // const handleUser = handleUser
@@ -122,7 +124,7 @@ export default function Header(props) {
         <Box className='header'>
             <Box pl='20px' display='flex' flexDirection='row' >
                     <a href='/'><img src="/RadicalPerson.svg" height="30px" style={{ margin:'10px'}}></img></a>
-                    <Box style={{ fontSize:'.8em', color:'white', marginTop:'8px'}}>BETA</Box>
+                    <Box style={{ fontSize:'.8em', color:'white', marginTop:'8px'}}>BETA({ appVerNum })</Box>
             </Box>
             <Box display='flex' onClick={handleClick} style={{ justifySelf: 'flex-end', cursor:'pointer' }} mt='12px' mr='20px' height='47px' alignContent='center'>
                 <Box style={{ fontSize:"0.9em" }} color={'white'} mr={1.5} mt='5px' >{ userName }</Box>
