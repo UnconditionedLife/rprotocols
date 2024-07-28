@@ -11,7 +11,7 @@ export default function NeedSelector(props) {
             majId: need.majId,
             title: need.title[ lang ]
         })).filter((i) => formState.majId !== i.majId)
-        reducedList.push( { majId: "1", title: "  Add a Parent Need" } )
+        reducedList.push( { majId: "EMPTY", title: " Add New Parent Need" } ) // DEFAULT EMPTY ITEM
         return reducedList.sort(function(a, b) {
             let textA = a.title.toUpperCase();
             let textB = b.title.toUpperCase();
@@ -21,12 +21,12 @@ export default function NeedSelector(props) {
 
     if (!sortedNeeds) return null
 
-    const newParent = { majId: "1", title: " Add a Parent Need" }
+    const defaultItem = { majId: "EMPTY", title: " Add New Parent Need" }
 
     return (
         <Autocomplete id="need-selector" key={ sortedNeeds.majId } sx={{ width:'100%' }}
             options={ sortedNeeds } autoHighlight clearOnEscape
-            value={ newParent }
+            value={ defaultItem }
             isOptionEqualToValue={(option, value) => option.majId === value.majId}
             getOptionLabel={(option) => { return option.title || '' }}
             onChange={(event, newValue) => {

@@ -334,9 +334,11 @@ console.log("dateObj", dateObj)
 export function getListOfNeeds(items){
     // build a list of need names to us to select the need parent
     const needOnly = items.filter(item => item.type === 'Need')
-    return needOnly.map(item => {
+    const needsList = needOnly.map(item => {
         return { majId: item.majId, title: item.title }
     });
+    needsList.push( { majId: "ROOT", title: { en: "{ ROOT NEED }", es: "{ ROOT NEED }", pt: "{ ROOT NEED }" }} )
+    return needsList
 }
 
 export function getLatestStoredInfo(){

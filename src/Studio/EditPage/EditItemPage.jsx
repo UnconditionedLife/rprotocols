@@ -180,6 +180,9 @@ console.log("newList @ Set FormState", newArr)
     }
 
     function handleEditAddParent(newParent){
+
+console.log('newParent', newParent)
+
         const newList = deepCopy(parentNeeds)
         newList.unshift(newParent)
         handleEditUpdateParents(newList)

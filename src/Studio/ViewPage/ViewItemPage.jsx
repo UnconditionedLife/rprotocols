@@ -41,17 +41,17 @@ export default function ViewItemPage(props) {
     // console.log("inside Item View :)", item)
 
     useEffect(() =>{
-        
-        // setAddPopup(showAddPopup)
-
         // Create "setParentNeeds" as list of { title & majId }
         // from the list of majId in parentNeeds
         const parentIdSet = new Set( item.parentNeeds )
-        const filteredParents = needsList.filter(obj => parentIdSet.has(obj.majId));
+
+// console.log('needsList', needsList)
+
+        const filteredParents = needsList.filter(obj => parentIdSet.has(obj.majId))
         setParentNeeds(filteredParents)
-        
     }, [ needsList, item ])
 
+    
     useEffect(() => {
         setLinkedItems(getLinkedItems(item.majId))
     }, [ item.majId, getLinkedItems ])

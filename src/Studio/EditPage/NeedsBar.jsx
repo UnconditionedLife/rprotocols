@@ -36,14 +36,14 @@ export default function NeedsBar(props) {
                     }
                     </Box>
             ))}
-
-            <Box display='flex' flexDirection='column' alignItems='center'>
-                <Box className='itemNeedsBox' textAlign='center'><span >NO PARENT NEEDS</span></Box>
-                { error &&
-                    <Box color='red'>{ helperText }</Box> 
-                }
-            </Box>
-
+            { parentNeeds.length === 0 && 
+                <Box display='flex' flexDirection='column' alignItems='center'>
+                    <Box className='itemNeedsBox' textAlign='center'><span >NO PARENT NEEDS</span></Box>
+                    { error &&
+                        <Box color='red'>{ helperText }</Box> 
+                    }
+                </Box>
+            }
         </Box>
     )
 }
