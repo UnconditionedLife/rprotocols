@@ -24,7 +24,8 @@ export default function HeaderAreaEdit(props) {
                 
                 <Box className='formFieldContainer' marginBottom="16px">
                     <NeedsBar parentNeeds={ parentNeeds } 
-                        handleEditRemoveParent={ handleEditRemoveParent } lang={ lang } action="edit" />
+                        handleEditRemoveParent={ handleEditRemoveParent } lang={ lang } action="edit"
+                        error={ errors?.parentNeeds?.error } helperText = { errors?.parentNeeds?.helperText } />
 
                     <NeedSelector formState={ formState } needsList={ needsList } 
                         handleEditAddParent={ handleEditAddParent } parentNeeds={ parentNeeds } lang={ lang } />

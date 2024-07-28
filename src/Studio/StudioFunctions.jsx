@@ -30,6 +30,7 @@ import { dbSaveItemAsync } from "../Database";
         const { formState, elements, protocols, historyRecord, lang } = objArr
         
         const requiredFields= [ 'title', 'description', 'tags', 'history:description' ]
+        const requiredArrays= [ 'parentNeeds' ]
 
         // if ( formState.type === 'Need' )
         //     requiredFields.push( 'title', 'description', 'tags', 'historyDescription')
@@ -64,24 +65,26 @@ import { dbSaveItemAsync } from "../Database";
             if (group === 'formState') {
                 // console.log(formState[field][lang], formState[field][lang].trim.length < 1 )
                 if ( formState?.[field]?.[lang]) {
-                    if ( formState?.[field]?.[lang].trim().length < 1 ) {
-                        errorFields[field] = { error: '', helperText: '' }
-                        errorFields[field].error = true
-                        errorFields[field].helperText = 'Field is Require.'
-                    }
+                    if ( formState?.[field]?.[lang].trim().length < 1 )
+                        errorFields[field] = { error: true, helperText: 'Field is Require.' }
                 }
             }
             if (group === 'history') {
-                if ( historyRecord[field]?.[lang] === undefined || historyRecord[field]?.[lang].trim().length < 1 ) {
-                    errorFields['history' + wordCase(field)] = { error: '', helperText: '' }
-                    errorFields['history' + wordCase(field)].error = true
-                    errorFields['history' + wordCase(field)].helperText = 'Field is Require.'
-                }
+                if ( historyRecord[field]?.[lang] === undefined || historyRecord[field]?.[lang].trim().length < 1 )
+                    errorFields['history' + wordCase(field)] = { error: true, helperText: 'Field is Require.' }
             }
-
-            // console.log('errorsFields', errorFields)
-
         })
+
+        // CHECK REQUIRED ARRAYS
+        requiredArrays.forEach((a) => {
+            const labels = { parentNeeds: "Parent Need" }
+
+            if (formState[a].length === 0)
+                errorFields[a] = { error: true, helperText: 'At least one ' + labels[a] + ' is Required.' }
+        })
+        
+        // console.log('errorsFields', errorFields)
+
 
         return errorFields
     }

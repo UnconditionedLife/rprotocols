@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Cancel';
 import { urlizeString } from '../../GlobalFunctions';
 
 export default function NeedsBar(props) {
-    const { parentNeeds, lang, handleEditRemoveParent, action, handleGoto } = props
+    const { parentNeeds, lang, handleEditRemoveParent, action, handleGoto, error, helperText } = props
 
     console.log('Array.isArray(parentNeeds)', Array.isArray(parentNeeds), parentNeeds)
     if (!Array.isArray(parentNeeds)) return null
@@ -37,9 +37,12 @@ export default function NeedsBar(props) {
                     </Box>
             ))}
 
-            { parentNeeds.length === 0  &&
-                <Box className='itemNeedsBox'><span>NO PARENT NEED</span></Box>
-            }
+            <Box display='flex' flexDirection='column' alignItems='center'>
+                <Box className='itemNeedsBox' textAlign='center'><span >NO PARENT NEEDS</span></Box>
+                { error &&
+                    <Box color='red'>{ helperText }</Box> 
+                }
+            </Box>
 
         </Box>
     )
