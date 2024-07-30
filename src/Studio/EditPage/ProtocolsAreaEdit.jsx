@@ -41,7 +41,8 @@ export default function ProtocolsAreaEdit(props) {
                             
                             { protocols.map((protocol, index) => (
                                 <Reorder.Item key={ "proto" + index } value={protocol} as='div'>
-                                    <Box key={ protocol.majId } className='formElementRow' backgroundColor='white' style={{ display:'flex', alignItems:'stretch'}}>
+                                    <Box key={ protocol.majId } className='formElementRow' backgroundColor='white' 
+                                        style={{ display:'flex', alignItems:'stretch', paddingBottom:'6px'}}>
                                         <Box style={{ display:'flex', alignItems:'center'}}>
                                             <ReorderIcon fontSize='medium' style={{ color:'lightgray', margin:"4px", cursor: "ns-resize"}} />
                                         </Box>
@@ -57,7 +58,7 @@ export default function ProtocolsAreaEdit(props) {
                                             renderOption={(props, option) => ( <li {...props} key={option.majId} style={{ textAlign:'left' }}>{ option.title[lang] }</li>
                                             )}
                                             renderInput={(params) => (
-                                            <TextField {...params} label="Link Existing Item" size='small' 
+                                            <TextField {...params} label={ "Link Protocol #" + (index+1) } size='small' 
                                             // InputProps={{ disableUnderline: true, style: { fontSize:'1.2em', fontWeight: "300", color:'#034007', backgroundColor:'#f8f8f8' }}}
                                             />
                                 

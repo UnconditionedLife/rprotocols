@@ -30,8 +30,8 @@ export default function ElementsArea(props) {
                         <Box key={ i } style={{  display:'flex', flexDirection:'row' }}>
                             {/* <div className='cardElements' style={{ width:'8px', color:'grey' }}>{ i+1 } </div> */}
                             <Box className='cardElements' 
-                            style={{ width:'15px', height:'15px', marginTop:'-2px', fontWeight:600, borderRadius:'50%', 
-                                paddingTop:'1px', border:"1px solid black", textAlign:'center' }}>{ i+1 } 
+                            style={{ width:'18px', height:'18px', fontWeight:600, borderRadius:'50%', 
+                                border:"1px solid black", textAlign:'center' }}>{ i+1 } 
                         </Box>
                             <Box className='cardElements' style={{ width:'calc(100% - 80px)' }}>
                              <ReactMarkdown>{ element[lang] }</ReactMarkdown>

@@ -16,7 +16,7 @@ export default function ProtocolsArea(props) {
         setContentShow( contentShow === 'none' ? 'flex' : 'none' )
     }
 
-// console.log("Protocols", protocols)
+console.log("Protocols", protocols)
 
     return (
         <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
@@ -28,8 +28,8 @@ export default function ProtocolsArea(props) {
                             style={{ width:'15px', height:'15px', marginTop:'-2px', fontWeight:600, borderRadius:'50%', 
                                 border:"1px solid black", textAlign:'center' }}>{ i+1 } 
                         </Box>
-                        <Box className='cardElements' style={{ fontWeight:400 }}
-                            onClick={ () => { handleGoto('/studio/protocol/' + urlizeString(protocol.title[ lang ]) + protocol.minId ) }}>
+                        <Box className='cardElements' style={{ fontWeight:400, cursor:'pointer' }}
+                            onClick={ () => { handleGoto('/studio/protocol/' + urlizeString(protocol.title[ lang ]) + "/" + protocol.majId ) }}>
                             <ReactMarkdown>{ "## " + protocol?.title?.[lang] || "" }</ReactMarkdown><br/>
                         </Box>
                     </Box>

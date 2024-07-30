@@ -181,7 +181,7 @@ console.log("newList @ Set FormState", newArr)
 
     function handleEditAddParent(newParent){
 
-console.log('newParent', newParent)
+// console.log('newParent', newParent)
 
         const newList = deepCopy(parentNeeds)
         newList.unshift(newParent)
@@ -235,9 +235,9 @@ console.log('newParent', newParent)
         if (type === 'elem') setElements(newArray)
         if (type === 'proto') {
 
-            console.log("newValue", value)
+            // console.log("newValue", value)
             newArray[index] = value
-            console.log("newArray", newArray)
+            // console.log("newArray", newArray)
 
             setProtocols(newArray) 
         }
@@ -247,7 +247,7 @@ console.log('newParent', newParent)
         const { name, value } = e.target;
         clearErrors(name)
 
-console.log("IN UPDATE HISTORY")
+// console.log("IN UPDATE HISTORY")
 
         const newHistoryRecord = deepCopy(historyRecord)
         const newHistoryArray = deepCopy(formState.history)
@@ -266,12 +266,12 @@ console.log("IN UPDATE HISTORY")
         const newErrors = validateFields( objArr )
         setErrors(newErrors)
 
-        console.log("newErrors", newErrors)
+        // console.log("newErrors", newErrors)
 
         if (Object.keys(newErrors).length < 1) {
             const newRecord = marshalRecord(formState, elements, protocols, regions)
 
-            console.log("formState@save", formState)
+            // console.log("formState@save", formState)
 
             saveItemToDb( newRecord ).then((r) => {
                 if (r === 'success') {
@@ -293,7 +293,7 @@ console.log("IN UPDATE HISTORY")
         const perviousVerNum = DecrementMinorVersion(verNum)
         const minIdArr = minId.split('.')
         const previousMinId = minIdArr[0] + '.' + minIdArr[1] + '.' + perviousVerNum
-        console.log("previousMinId", previousMinId )
+        // console.log("previousMinId", previousMinId )
         return previousMinId
     }
 
@@ -341,6 +341,7 @@ console.log("IN UPDATE HISTORY")
 
     console.log('formstate', formState)
     console.log('parentNeeds', parentNeeds)
+    // console.log('DB @ EDIT PAGE', db)
 
     const textFlag = (displayState === 'add') ?  'NEW ' + formState.type.toUpperCase() : 'EDITING ' + formState.type.toUpperCase()
 
@@ -382,7 +383,7 @@ console.log("IN UPDATE HISTORY")
                     removeArrayItem={ removeArrayItem } lang={ lang } show={ showAll } />
             }
 
-            { formState.type === "Guide" &&
+            { formState.type === "Guide" && db !== undefined &&
                 <ProtocolsAreaEdit protocols={ protocols } setProtocols={ setProtocols }
                     errors={ errors } updateArrayItems={ updateArrayItems } addArrayItem={ addArrayItem }
                     removeArrayItem={ removeArrayItem } lang={ lang } show={ showAll } db={ db } formState={ formState } />

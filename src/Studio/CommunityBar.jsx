@@ -23,9 +23,9 @@ export default function CommunityBar(props) {
             textAlign='center' justifyContent='space-between' flexWrap='wrap'>
             
             { displayState !== 'add-set' &&
-                <Box marginTop='1px' marginBottom='-3px' marginLeft='20px'>
+                <Box marginTop='1px' marginBottom='-3px' marginLeft='10px'>
                     <span className='cardClas' style={{ color: 'white', fontWeight:600}} >
-                        Last updated { displayDateFromNow( item.minDate )}
+                        Updated { displayDateFromNow( item.minDate )}
                     </span></Box>
             }
             

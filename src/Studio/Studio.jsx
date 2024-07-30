@@ -82,6 +82,7 @@ export default function Studio() {
     useEffect(() => {
         console.log("GOING FOR DATA")
         getDbAsync().then((latestItems)=> {
+
         // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
             latestItems.forEach((item, i) => {
                 if (item.parentNeeds === undefined)
@@ -372,6 +373,8 @@ export default function Studio() {
 // console.log("item", item)
 // console.log("ADD setInfo", setInfo)
 
+// console.log("DB @ STUDIO", db)
+
 
     // RETURN 
     // if ( ( displayState === "view" ) && item === null ) return null
@@ -404,8 +407,8 @@ export default function Studio() {
                 {/* <Box alignContent='center'> */}
 
                     <Box alignSelf='center' backgroundColor='rgba(255, 255, 255, 0.9)' 
-                        padding='8px' borderRadius='10px' width="360px" marginTop='30px' marginBottom='30px'>
-                        <TextField size='small' className='formField' width='300px'
+                        padding='8px' borderRadius='10px' width="94%" maxWidth='340px' marginTop='30px' marginBottom='30px'>
+                        <TextField size='small' className='formField' width='90%' maxWidth='300px'
                             name={ "search" } value={ searchTerm } autoComplete='off'
                             placeholder="Search needs, protocols, and guides..."
                             InputProps={{startAdornment: (
@@ -462,7 +465,7 @@ export default function Studio() {
                                 getNeedTitle={ getNeedTitle } handleGoto={ handleGoto } 
                                 displayState={ displayState } needsList={ needsList }
                                 addRemoveItemInMemory={ addRemoveItemInMemory }
-                                handleNewItemChange={ handleNewItemChange }/>
+                                handleNewItemChange={ handleNewItemChange } db={ db }/>
                         </Box>
                     }
 

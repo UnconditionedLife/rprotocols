@@ -340,6 +340,9 @@ export function getLatestStoredInfo(){
 }
 
 export function buildItemsForSelect(db, subjectItem, selectType) {
+
+    console.log("IN BUILD SELECT", db, subjectItem, selectType)
+
     const reducedList = db.filter((i) => i.type === selectType && subjectItem.majId !== i.majId)
         .map(item => ({
             majId: item.majId,

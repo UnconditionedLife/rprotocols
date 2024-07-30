@@ -95,7 +95,7 @@ export default function AddSetPage(props) {
         minItemsArr.forEach((minItem) => {
             const basicItem = BuildNewItem(minItem.type, minItem.parentNeeds, 
                     minItem.title, minItem.description, minItem.tags)  // type, parentNeeds, title, description, tags
-                basicItem.history.push(BuildNewHistory('1.0'))
+                basicItem.history.push(BuildNewHistory('0.1'))
                 basicItem.history[0].description[ lang ] = "Initial Version - set uploaded"
                 basicItemsArr.push(basicItem)
         })
