@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.6](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.5...v0.1.6) (2024-07-31)
+
+
+### Bug Fixes
+
+* css and markdown improvements ([14fbe10](https://github.com/UnconditionedLife/rprotocols/commit/14fbe1019f22974755f83cefed76bfc79f5eb3da))
+
 ## [0.1.5](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.4...v0.1.5) (2024-07-30)
 
 
