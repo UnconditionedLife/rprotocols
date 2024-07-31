@@ -6,7 +6,7 @@ export default function Accordion(props) {
     const { version, title, show, handleArea } = props
 
     return (
-        <Box width='calc(100% - 20px)' padding='8px'>
+        <Box width='100%'>
             <hr style={{ border: '1px solid #d8ecf3', marginBottom: '-3px', marginTop: '2px' }} />
             <Box width="100%" display='flex' flexDirection='row' justifyContent='space-between' style={{ cursor: 'pointer' }} onClick={() => { handleArea({ version, show }) }}>
                 <Box pl={ .5 } mt={ 0.7 }><span className='cardSectionLabel'>{ title }</span></Box>

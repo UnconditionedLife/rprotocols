@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material'
 import Accordion from '../../Accordion';
-import HistoryFieldView from '../HistoryFieldView';
+import HistoryFieldView from './HistoryFieldView';
 import { BuildHistoryField } from '../StudioFunctions';
 
 export default function HistoryAreaView(props) {
@@ -40,10 +40,9 @@ export default function HistoryAreaView(props) {
     if ( fields === undefined ) return null
 
     return (
-        <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
+        <Box className='iCardAreaContainer'>
             <Accordion version='hist' title='History' show={ contentShow } handleArea={ handleShow } />
-            <Box display={ contentShow } marginLeft='20px' pt={ 1 } width='calc(100% - 44px)' 
-                textAlign='left' flexDirection='column'>
+            <Box display={ contentShow } className='iCardAreaContentBox-col'>
                 <Box className='historyGridContainer'>
                     { fields.map((field, i) => (
                         <HistoryFieldView key={ 'hist-' + i } field={ field } />

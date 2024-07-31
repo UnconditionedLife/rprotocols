@@ -20,9 +20,9 @@ export default function IntroAreaEdit(props) {
             <Box display={ contentShow } marginLeft='16px' pt={ 1 } width='calc(100% + 16px)' textAlign='left'>                    
                 <Box className='formFieldContainer'>
                     <TextField multiline size='small' className='formField' variant="standard"
-                        label="Introduction" name={ "intro" } value={ formState.intro?.[lang] || "" }
+                        label="" name={ "intro" } value={ formState.intro?.[lang] || "" }
                         error={ errors?.intro?.error } helperText = { errors?.intro?.helperText }
-                        InputProps={{ disableUnderline: true }}
+                        InputProps={{ disableUnderline: true,  sx: { fontSize: "28px" } }}
                         onChange={ handleFieldChange }>
                     </TextField>
                 </Box>

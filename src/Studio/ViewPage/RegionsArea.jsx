@@ -20,7 +20,7 @@ export default function RegionsArea(props) {
 
 
     return (
-        <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
+        <Box className='iCardAreaContainer' >
             <Accordion version='reg' title='Regions' show={ contentShow } handleArea={ handleShow } />
             <Box display={ contentShow } marginLeft='20px' pt={ 1 } width='calc(100% - 50px)' textAlign='left' style={{ flexDirection:'row', justifyContent:'center'}}>
                 { regions.map((entry, i) => (

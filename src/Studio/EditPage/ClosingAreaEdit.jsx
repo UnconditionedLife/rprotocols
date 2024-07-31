@@ -20,7 +20,7 @@ export default function ClosingAreaEdit(props) {
             <Box display={ contentShow } marginLeft='16px' pt={ 1 } width='calc(100% + 16px)' textAlign='left'>                    
                 <Box className='formFieldContainer'>
                     <TextField multiline size='small' className='formField' variant="standard"
-                        label="Closing" name={ "closing" } value={ formState.closing?.[lang] || "" }
+                        label="" name={ "closing" } value={ formState.closing?.[lang] || "" }
                         error={ errors?.closing?.error } helperText = { errors?.closing?.helperText }
                         InputProps={{ disableUnderline: true }}
                         onChange={ handleFieldChange }>

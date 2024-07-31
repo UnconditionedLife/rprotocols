@@ -19,6 +19,7 @@ export default function Header(props) {
 
     const theSite = import.meta.env.VITE_SITE;
     const appVerNum = APP_VERSION
+    
 
     // const user = globalVars.user
     // const handleUser = handleUser

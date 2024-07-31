@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, TextField } from '@mui/material'
 import Accordion from '../../Accordion';
-import HistoryRowView from '../HistoryFieldView';
+import HistoryRowView from '../ViewPage/HistoryFieldView';
 import { BuildHistoryField } from '../StudioFunctions';
 // import HistoryRow from '../HistoryRow';
 

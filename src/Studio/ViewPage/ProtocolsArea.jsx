@@ -19,16 +19,13 @@ export default function ProtocolsArea(props) {
 console.log("Protocols", protocols)
 
     return (
-        <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
+        <Box className='iCardAreaContainer' >
             <Accordion title='Protocols' show={ contentShow } handleArea={ handleShow } />
-            <Box display={ contentShow } marginLeft='20px' pt={ 1 } width='100%' textAlign='left' style={{ flexDirection:'column'}}>
+            <Box display={ contentShow } className='iCardAreaContentBox-col' >
                 { protocols.map((protocol, i) => (
-                    <Box key={ i } style={{  display:'flex', flexDirection:'row' }}>
-                        <Box className='cardElements' 
-                            style={{ width:'15px', height:'15px', marginTop:'-2px', fontWeight:600, borderRadius:'50%', 
-                                border:"1px solid black", textAlign:'center' }}>{ i+1 } 
-                        </Box>
-                        <Box className='cardElements' style={{ fontWeight:400, cursor:'pointer' }}
+                    <Box key={ i } className='iCardAreaListItemRow' >
+                        <Box className='iCardAreaListItemNumber' >{ i+1 }</Box>
+                        <Box className='iCardAreaListItemText'
                             onClick={ () => { handleGoto('/studio/protocol/' + urlizeString(protocol.title[ lang ]) + "/" + protocol.majId ) }}>
                             <ReactMarkdown>{ "## " + protocol?.title?.[lang] || "" }</ReactMarkdown><br/>
                         </Box>

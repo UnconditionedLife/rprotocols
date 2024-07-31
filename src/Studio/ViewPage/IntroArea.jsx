@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material'
 import Accordion from '../../Accordion';
+import ReactMarkdown from 'react-markdown';
 
 export default function IntroArea(props) {
     const { intro, lang, show } = props
@@ -15,11 +16,11 @@ export default function IntroArea(props) {
     }
 
     return (
-        <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
+        <Box className='iCardAreaContainer'>
             <Accordion title='Intro' show={ contentShow } handleArea={ handleShow } />
-                <Box display={ contentShow } marginLeft='20px' pt={ 1 } width='calc(100% - 40px)' textAlign='left'>                    
-                    { intro[ lang ] }
-                </Box>
+            <Box display={ contentShow } className='iCardAreaContentBox-col' >                    
+                <ReactMarkdown>{ intro[ lang ] }</ReactMarkdown>
+            </Box>
         </Box>
     )
 }

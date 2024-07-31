@@ -35,7 +35,7 @@ export default function ElementsAreaEdit(props) {
                                         </Box>
                                         <TextField multiline size='small' className='formElementField' variant="standard"
                                             key={ index } 
-                                            label= { parseInt(index) + parseInt(1) } 
+                                            label= { "Element #" + (index + 1) } 
                                             value={ element[lang] }
                                             InputProps={{ disableUnderline: true }}
                                             // error={ errors?.tags?.error } helperText = { errors?.tags?.helperText }

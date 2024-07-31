@@ -61,7 +61,7 @@ h4 {
 }
 
 h5 {
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin-bottom: 2px;
     color: #377AB8;
 }
@@ -458,12 +458,94 @@ button:focus-visible {
     cursor: pointer;
 }
 
+.iCardAreaContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.iCardAreaContentBox-col {
+    display: flex;
+    width: calc(100% - 28px);
+    margin-left: 14px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    flex-direction: column;
+}
+
+.iCardAreaListItemRow {
+    display: flex;
+    flex-direction: row; 
+    margin-top: 6px;
+}
+
+.iCardAreaListItemNumber {
+    width: 15px;
+    height: 15px;
+    margin-top: 0px;
+    font-size: smaller;
+    line-height: 15px;
+    font-weight: 500;
+    border-radius: 50%; 
+    border: 1px solid black;
+    text-align: center;
+    color: #000;
+}
+
+.iCardAreaListItemText {
+    width: calc(100% - 80px);
+    margin-left: 8px;
+    font-size: 1em;
+    line-height: 1.5em;
+    font-weight: 300;
+    text-align: left;
+    color: #000;
+}
+
+.iCardAreaListItemText, .iCardAreaContentBox-col {
+    p {
+        display: inline !important;
+        color: #000;
+        font-size: 1em;
+        font-weight: 300;
+        margin-top: 0px;
+    }
+    ul {
+        padding-left: 0px;
+        margin-left: 28px;
+    }
+    li {
+        list-style: circle;
+        padding-left: 0px;
+    }
+    h1 {
+        font-size: 1.5em;
+        font-weight: 700;
+        margin-top: 0px;
+        color: #000;
+    }
+    h2 {
+        font-size: 1.3em;
+        font-weight: 600;
+        margin-top: 0px;
+        color: #000;
+    }
+    h3 {
+        font-size: 1.1em;
+        font-weight: 500;
+        margin-top: 0px;
+        color: #000;
+    }
+}
 
 .itemCard{
     margin: 8px;
     padding: 14px;
-    padding-top: 20px; 
-    width: 1000px;
+    padding-top: 20px;
+    width: 95%;
+    max-width: 1000px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -518,6 +600,8 @@ button:focus-visible {
     color: grey;
     /* margin-bottom: -2px; */
 }
+
+mommunity
 
 /* .cardDomain {
     font-size: 0.65em;
@@ -584,7 +668,7 @@ button:focus-visible {
 }
 
 .cardSectionLabel {
-    font-size: 1.0em;
+    font-size: 0.9em;
     margin-top: 5px;
     font-weight: 500;
     color: #67AAE8;
@@ -654,11 +738,12 @@ button:focus-visible {
 
 .formField {
     min-width: 280px;
-    width: calc(100%);
+    width: 100%;
     margin-left: 8px;
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-weight: 400;
     border: none;
+    background-color: #f6f6f6;
 }
 
 .formField:focus-within {
@@ -680,18 +765,13 @@ button:focus-visible {
 .formElementField {
     min-width: 280px;
     width: 95%;
-    margin: 8px;
-    margin-top: 4px;
+    /* margin: 8px; */
+    margin-top: 0px;
     font-size: 1.2em;
     font-weight: 400;
     border: none;
-    ul {
-        padding-left: 0px;
-    }
-    li {
-        list-style: circle;
-        padding-left: 0px;
-    }
+    padding:0px;
+    background-color: #f6f6f6;
 }
 
 .formElementField:focus-within {
@@ -739,15 +819,12 @@ ol {
 .cardElements {
     color: #000;
     margin-left: 8px;
-    font-size: 1.0em;
+    font-size: 1em;
     line-height: 1.5em;
     font-weight: 300;
     text-align: left;
-    ul {
-        padding-left: 0px;
-    }
     li {
-        list-style: circle;
+        list-style: none;
         padding-left: 0px;
     }
 }
@@ -921,6 +998,16 @@ padding: 5px;
     height: .7em;
 }
 
+.communityUpdatedText {
+    font-size: 0.8em;
+    line-height: 0.6em;
+    font-weight: 600;
+    color: white;
+    margin-top: 5px;
+    margin-bottom: -3px;
+    margin-left: 10px;
+}
+
 .statusBadgeContainer {
     display: flex;
     height: 14px;
@@ -997,6 +1084,7 @@ padding: 5px;
     /* min-height: 345px; */
     min-width: 345px;
     justify-content: center;
+    align-items: center;
     padding: 8px;
     vertical-align: start;
     background-color: rgba(5, 5, 5, 0.5);
@@ -1213,7 +1301,7 @@ padding: 5px;
 
 @media screen and (max-width: 1200px) {
    body {
-       font-size: 16px; 
+       /* font-size: 16px;  */
    }
    h1 {
        /* font-size:24px; */
@@ -1222,9 +1310,7 @@ padding: 5px;
 }
 
 @media screen and (min-width: 768px) {
-    body {
-        font-size: 12px; 
-    }
+
     h1 {
         /* font-size:24px; */
     }

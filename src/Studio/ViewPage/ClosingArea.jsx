@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material'
 import Accordion from '../../Accordion';
+import ReactMarkdown from 'react-markdown';
 
 export default function ClosingArea(props) {
     const { closing, lang, show } = props
@@ -15,11 +16,11 @@ export default function ClosingArea(props) {
     }
 
     return (
-        <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
+        <Box className='iCardAreaContainer' >
             <Accordion title='Closing' show={ contentShow } handleArea={ handleShow } />
-                <Box display={ contentShow } marginLeft='20px' pt={ 1 } width='calc(100% - 40px)' textAlign='left'>                    
-                    { closing[ lang ] }
-                </Box>
+            <Box display={ contentShow } className='iCardAreaContentBox-col' >
+                <ReactMarkdown>{ closing[ lang ] }</ReactMarkdown>
+            </Box>
         </Box>
     )
 }

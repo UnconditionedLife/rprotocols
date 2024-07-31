@@ -192,7 +192,7 @@ export function BuildNewHistory( newVersion ){
     export function BuildHistoryField(history, lang){
         const tempArray = []
         history.forEach((entry) => {
-            tempArray.push("Ver. " + entry.verNum)
+            tempArray.push("v." + entry.verNum)
             tempArray.push(displayDate(entry.date))
             tempArray.push(entry.author)
             tempArray.push(entry.description[ lang ] || '{ empty description }' )

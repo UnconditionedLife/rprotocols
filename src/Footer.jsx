@@ -23,7 +23,7 @@ export default function Footer() {
                 <img src="/RadicalPerson.svg" height="30px" style={{ margin:'10px'}}></img>
             </Box>
             <Box display='flex' flexWrap='wrap' flexDirection='row' marginTop='.8em'>
-                <span className='footerText'>©2024 Radical World Collabrative</span>
+                <span className='footerText'>©2024 Radical World Collaborative</span>
                 {/* <a href='/protocols#usage'><span className='footerText'>Usage Protocols</span></a> */}
                 <a href='/privacy_protocols'><span className='footerText' >Privacy Protocols</span></a>
                 <a href='/about'><span className='footerText'>About Us</span></a>
