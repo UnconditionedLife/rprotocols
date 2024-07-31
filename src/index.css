@@ -381,6 +381,7 @@ button:focus-visible {
     font-weight: 400;
     line-height: 1.2;
     width: 260px;
+    color: black;
 }
 
 .howTheyWork{

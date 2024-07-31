@@ -212,26 +212,26 @@ export default function StudioExplore(props) {
                         <Box m={1} display={'flex'} flexDirection={'row'} flexWrap='wrap' >
                         <Box m={1} p={2} minHeight={"90px"} maxWidth='280px'>
                                 <CategoryIcon fontSize='large' color='primary'/>
-                                <p className='cardTitle'>Domain</p>
-                                <span>Domains represent significant aspects of our society, identifying the areas we are dealing with and answering the crucial question:<br/><strong>'Where do we find ourselves?'</strong></span>
+                                <p className='cardTitle'>Need</p>
+                                <span className='benefitText'>Needs define the rationale behind the protocol, addressing a specific aspect of the Domain and answering the critical question:<br/><strong>'Why are we addressing this issue?'</strong></span>
                             </Box>
                             <Box m={1} p={2} minHeight={"90px"} maxWidth='280px'>
                                 <MyLocationIcon fontSize='large' color='primary'/>
-                                <p className='cardTitle'>Context</p>
-                                <span>Contexts represent unique of our world, defining the settings where interactions and decisions occur, and answering the fundamental question:<br/><strong>'What are we dealing with?'</strong></span>
+                                <p className='cardTitle'>Protocol</p>
+                                <span className='benefitText'>Contexts represent unique of our world, defining the settings where interactions and decisions occur, and answering the fundamental question:<br/><strong>'What are we dealing with?'</strong></span>
                             </Box>
                         </Box>
                         <Box m={1} display={'flex'} flexDirection={'row'} flexWrap='wrap'>
                             <Box m={1} p={2} minHeight={"90px"} maxWidth='280px'>
                                 <PsychologyAltIcon fontSize='large' color='primary'/>
-                                <p className='cardTitle'>Need</p>
-                                <span>Needs define the rationale behind the protocol, addressing a specific aspect of the Domain and answering the critical question:<br/><strong>'Why are we addressing this issue?'</strong></span>
+                                <p className='cardTitle'>Guide</p>
+                                <span className='benefitText'>Needs define the rationale behind the protocol, addressing a specific aspect of the Domain and answering the critical question:<br/><strong>'Why are we addressing this issue?'</strong></span>
                             </Box>
-                            <Box m={1} p={2} minHeight={"90px"} maxWidth='280px'>
+                            {/* <Box m={1} p={2} minHeight={"90px"} maxWidth='280px'>
                                 <SignpostIcon fontSize='large' color='primary'/>
                                 <p className='cardTitle'>Protocol</p>
-                                <span>Protocol is a detailed set of guidelines that provides a specific solution to a Need, effectively addressing the practical question:<br/><strong>'How do we accomplish this?'</strong></span>
-                            </Box>
+                                <span className='benefitText'>Protocol is a detailed set of guidelines that provides a specific solution to a Need, effectively addressing the practical question:<br/><strong>'How do we accomplish this?'</strong></span>
+                            </Box> */}
                         </Box>
                     </Box>
                 </Box>
