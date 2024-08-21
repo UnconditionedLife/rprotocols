@@ -1,39 +1,123 @@
-import { useState } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { Box, Card, Button, TextField, MenuItem, Typography } from '@mui/material'
-import Header from '../Header';
-import Footer from '../Footer';
-import { Outlet } from 'react-router-dom';
-import FeaturedSection from '../FeaturedSection';
+
 import ContactForm from '../ContactForm';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Quote from '../Library/Quote';
+import { urlizeString } from '../GlobalFunctions';
+import ReactMarkdown from 'react-markdown';
+import { nowDates } from '../GlobalFunctions';
 
-export default function PrivacyPage(props) {
-    const { handleSwitchPublicPage } = props
+export default function PrivacyPage({ lang, db, handleGoto }) {
+    const [protocol, setProtocol] = useState(null);
 
-    const screenW = window.screen.width
-    const videoW = ( screenW > 700) ? 700 : 375
-    const ratio = 0.5625
-    const videoH = videoW * ratio
+    // const screenW = window.screen.width
+    // const videoW = ( screenW > 700) ? 700 : 375
+    // const ratio = 0.5625
+    // const videoH = videoW * ratio
+
+
+    const privacyPolicyMajId = "P.20240816T151315000-4430.0"
+    useEffect(() => {
+        const fullProtocol = getAllProtocols( privacyPolicyMajId )
+        setProtocol(fullProtocol)
+    }, [])
+
+
+    function getProtocolFromDb( majId ) {
+        return db.find((i) => i.majId === majId)
+    }
+
+    function getAllProtocols( majId ){
+        let protocol = getProtocolFromDb( majId )
+        console.log("First fetch protocol", protocol)
+
+        // Check if the protocol has sub-protocols
+        if (protocol && protocol.protocols && protocol.protocols.length > 0) {
+            for (let i = 0; i < protocol.protocols.length; i++) {
+                // Fetch and replace the sub-protocol majId with the actual protocol object
+                protocol.protocols[i] = getAllProtocols(protocol.protocols[i].majId);
+            }
+        }
+        return protocol
+    }
+
+    console.log("protocol", protocol)
+
+    const ProtocolItem = ({ protocol, prefix }) => {
+        return (
+            <Box style={{ marginLeft:'clamp(4px, 1.8vw, 20px)', borderLeft: '1px solid #777', paddingLeft: '10px' }}>
+                <h4 style={{ fontSize:"1.8rem" }}>{ prefix } &nbsp;{ protocol.title[ lang ] }</h4>
+                <p style={{ fontSize:"0.9rem" }}>
+                    { `(v.${protocol.verNum}) ` } 
+                    <OpenInNewIcon fontSize="small" style={{ cursor:"pointer" }}
+                        onClick={ () => { handleGoto( `/${ lang }/studio/protocol/${ urlizeString(protocol.title[ lang ])}/${protocol.majId}` ) }}
+                    />
+                </p>
+                <p>{ protocol.intro[ lang ] }</p>
+
+                {protocol.elements && protocol.elements.length > 0 && (
+                    <Box>
+                        {/* <h4>Sub-Protocols:</h4> */}
+                        {protocol.elements.map((subElement, index) => (
+                            <ElementItem key={ index} element={subElement} prefix={ `${prefix}.${index + 1}` } />
+                        ))}
+                    </Box>
+                )}
+    
+                {protocol.protocols && protocol.protocols.length > 0 && (
+                    <Box>
+                        {/* <h4>Sub-Protocols:</h4> */}
+                        {protocol.protocols.map((subProtocol, index) => (
+                            <ProtocolItem key={ subProtocol.majId + "-" + index} protocol={subProtocol} prefix={ `${prefix}.${index + 1}` } />
+                        ))}
+                    </Box>
+                )}
+
+                <p>{ protocol.closing[ lang ] }</p>
+            </Box>
+        )
+    }
+
+    const ElementItem = ({ element, prefix }) => {
+        return (
+            <Box style={{ marginLeft:'clamp(4px, 1.8vw, 20px)', borderLeft: '1px solid #777', paddingLeft: '10px' }}>
+                <ReactMarkdown style={{ color:"white !important", whiteSpace:'pre-wrap'}}>{ prefix + " &nbsp;" + element[ lang ] }</ReactMarkdown>
+                
+                
+            </Box>
+        )
+    }
+
+    if (protocol === null ) return null
     
     return (
-        <Box className='plantBackground'>    
-            <h1 className='headline'>Our Privacy Protocols</h1>
+        <Box display="flex" flexDirection="column" width="100%">
+            <h1 className='headline'>Privacy Protocols</h1>
             <span className='headline' style={{ marginTop:'-1.5em'}}><img className='headlineLogo'src="/rCollabsLogo-blackBg.svg" alt='rCollaboratives Logo'></img></span>
 
-            <Box className="quoteContainer">
-                <span className='quote'>&quot;Mutual respect is so important because as soon as it disappears in relations between you and the next person, there's trouble.&quot;<br/><strong>Dizzy Gillespie​</strong></span>
+            <Quote quote="Mutual respect is so important because as soon as it disappears in relations between you and the next person, there's trouble." author="Dizzy Gillespie" />
+
+            <Box style={{ marginTop:"-100px", alignSelf:"center", maxWidth:"700px", textAlign:"left" }}>
+                
+                <ProtocolItem protocol={ protocol } prefix="1"/>
+                <Box width='100%' textAlign='center' marginTop="20px" >
+                    PROTOCOL ID: ({privacyPolicyMajId})<br/>
+                    Output: { nowDates().ui } UTC<br/>
+                    <img height="40px" style={{marginTop:"10px"}} src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png"/>
+                </Box>
+                
             </Box>
-            
+
+            <Quote quote="We must learn to live together as brothers|or perish together as fools." author="Martin Luther King Jr." />
+
+{/* 
             <Box style={{ display:'flex', flexDirection: 'column', justifyContent:'center', alignContent: 'center', marginTop:'0' }}>
                 
-                <Box className='sessionDescription'>
-                    <p className='subheadline' style={{ marginTop:'-35px', marginBottom:'12px' }}>Introduction</p>
-                    <p>We are committed to protecting and respecting your privacy. This Privacy Protocols page outlines how we collect, use, share, and protect your personal information when you use our services.</p>
-                </Box>
-                <div style={{ width:'500px', textAlign:'left', alignSelf: 'center', color:'white' }}>
-                    <h1>Privacy Protocols (ver. 1.0) <OpenInNewIcon/> </h1>
+                <Box style={{ maxWidth:'600px', textAlign:'left', alignSelf: 'center', color:'white' }}>
+                    <h2>Privacy Protocols (ver. 1.0) <OpenInNewIcon/> </h2>
 
-                    <h2>1. Introduction Protocol (ver. 1.0) <OpenInNewIcon/></h2>
+                    <h3>1. Introduction Protocol <OpenInNewIcon/> &nbsp; (v.1.0)</h3>
                     <p>We are committed to protecting and respecting your privacy. Our approach to privacy is centered around minimizing the information we collect and ensuring that it is only used for the purposes it was provided. We are transparent about our practices and aim to empower our users to control their personal data. This protocol outlines how we collect, use, share, and protect your personal information when you use our services.</p>
 
                     <h2>2. Information Collection Protocols </h2>
@@ -119,9 +203,9 @@ export default function PrivacyPage(props) {
                     
                     <h2>9. Contact Information Protocol (ver. 1.0) <OpenInNewIcon/></h2>
                     <p>For any questions or concerns about our privacy practices, you can reach out to us at privacy@radical.world. We are here to help and ensure your privacy is respected.</p>
-                </div>
+                </Box>
             </Box>
-            <br/>
+            {/* <br/>
             <br/>
             <br/>
             <br/>
@@ -131,7 +215,7 @@ export default function PrivacyPage(props) {
                 <Box className="form">
                     <ContactForm/>
                 </Box>
-            </Box>
+            </Box> */}
         </Box>
     )
 }

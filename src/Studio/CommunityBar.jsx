@@ -5,7 +5,7 @@ import StatusBadge from '../Library/StatusBadge';
 import useSize from '../Library/useSize';
 
 export default function CommunityBar(props) {
-    const { item, displayState } = props
+    const { item, action } = props
     const [ boxColor, setBoxColor ] = useState('')
     const windowSize = useSize();
 
@@ -16,15 +16,11 @@ export default function CommunityBar(props) {
     const statusBadgeColor = boxColor
     const isNarrow = windowSize[0] < 500 ? true : false
 
-console.log('isNarrow', isNarrow)
-
-
     if (!item) return null
     const cLabels = {
         follow: isNarrow ? "" : "Follow",
         adopt: isNarrow ? "" : "Adopt",
-        fork: isNarrow ? "" : "Fork",
-
+        fork: isNarrow ? "" : "Fork"
     }
 
     return (
@@ -33,7 +29,7 @@ console.log('isNarrow', isNarrow)
             paddingTop='2px' paddingBottom='0px' paddingRight='12px' 
             textAlign='center' justifyContent='space-between' flexWrap='wrap'>
             
-            { displayState !== 'add-set' &&
+            { action !== 'add-set' &&
                 <Box className='communityUpdatedText'
                 // marginTop='1px' marginBottom='-3px' marginLeft='10px'
                 >
@@ -44,7 +40,7 @@ console.log('isNarrow', isNarrow)
             }
             
             <Box display='flex' flexDirection='row'>
-                { displayState !== 'add-set' &&
+                { action !== 'add-set' &&
                     <StatusBadge icon='Follow' label={ cLabels.follow } color={ statusBadgeColor } size='large'
                         count={  0 } />
                 }
@@ -52,11 +48,11 @@ console.log('isNarrow', isNarrow)
                 {/* <StatusBadge icon='Support' label='Support' color={ statusBadgeColor } size='large' 
                     count={ item?.community?.supporters } /> */}
             
-                { (item.type !== 'Need' && displayState !== 'add-set') &&
+                { (item.type !== 'Need' && action !== 'add-set') &&
                     <StatusBadge icon='Adopt' label={ cLabels.adopt } color={ statusBadgeColor } size='large'
                         count={ item?.community?.adopters } />
                 }
-                { (item.type !== 'Need' && displayState !== 'add-set') &&
+                { (item.type !== 'Need' && action !== 'add-set') &&
                     <StatusBadge icon='Fork' label={ cLabels.fork } color={ statusBadgeColor } size='large'
                         count={ item?.community?.forks } />
                 }

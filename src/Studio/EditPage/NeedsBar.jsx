@@ -29,7 +29,7 @@ export default function NeedsBar(props) {
 
                     { action === 'link' &&
                         <Box display="flex" key={ i } className='itemNeedsBox' style={{ alignItems:'center' }}
-                        onClick={ () => { handleGoto('/studio/need/' + urlizeString( need.title[ lang ] ) + "/" + need.majId) } } >
+                        onClick={ () => { handleGoto(`/${lang}/studio/need/${urlizeString( need.title[ lang ] )}/${need.majId}`)} } >
                             <span>{ need.title[ lang ] }</span>
                         </Box>
                     }

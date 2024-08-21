@@ -17,7 +17,7 @@ export default function IntroArea(props) {
 
     return (
         <Box className='iCardAreaContainer'>
-            <Accordion title='Intro' show={ contentShow } handleArea={ handleShow } />
+            <Accordion title='Purpose' show={ contentShow } handleArea={ handleShow } />
             <Box display={ contentShow } className='iCardAreaContentBox-col' >                    
                 <ReactMarkdown>{ intro[ lang ] }</ReactMarkdown>
             </Box>

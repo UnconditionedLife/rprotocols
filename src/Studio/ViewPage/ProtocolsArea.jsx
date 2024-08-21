@@ -5,7 +5,7 @@ import { urlizeString } from '../../GlobalFunctions';
 import ReactMarkdown from 'react-markdown';
 
 export default function ProtocolsArea(props) {
-    const { protocols, lang, show, handleGoto } = props
+    const { protocols, lang, show, handleGoto, db } = props
     const [ contentShow, setContentShow ] = useState( 'none' )
 
     useEffect(() => {
@@ -16,18 +16,29 @@ export default function ProtocolsArea(props) {
         setContentShow( contentShow === 'none' ? 'flex' : 'none' )
     }
 
-console.log("Protocols", protocols)
+    const displayProtocols = []
+    protocols.forEach((p) => {
+        const item = db.find((i) => i.majId === p.majId) 
+        if (item) {
+            displayProtocols.push(item) 
+        } else {
+            const temp = { ...p }
+            temp.verNum = ""
+            temp.description = { en: "", es: "", pt: "" }
+            displayProtocols.push(temp)
+        }
+    })
 
     return (
         <Box className='iCardAreaContainer' >
-            <Accordion title='Protocols' show={ contentShow } handleArea={ handleShow } />
+            <Accordion title='Sub-Protocols' show={ contentShow } handleArea={ handleShow } />
             <Box display={ contentShow } className='iCardAreaContentBox-col' >
-                { protocols.map((protocol, i) => (
+                { displayProtocols.map((p, i) => (
                     <Box key={ i } className='iCardAreaListItemRow' >
                         <Box className='iCardAreaListItemNumber' >{ i+1 }</Box>
                         <Box className='iCardAreaListItemText'
-                            onClick={ () => { handleGoto('/studio/protocol/' + urlizeString(protocol.title[ lang ]) + "/" + protocol.majId ) }}>
-                            <ReactMarkdown>{ "## " + protocol?.title?.[lang] || "" }</ReactMarkdown><br/>
+                            onClick={ () => { handleGoto(`/${lang}/studio/protocol/${urlizeString(p.title[ lang ])}/${p.majId}` ) }}>
+                            <ReactMarkdown>{ `## ${p?.title?.[lang]} - v.${ p.verNum } \n${ p.description[lang] }`  }</ReactMarkdown><br/>
                         </Box>
                     </Box>
                 ))}

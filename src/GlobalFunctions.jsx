@@ -18,6 +18,7 @@ export function nowDates() {
         utc: nowUTC,
         id: nowUTC.format('YYYYMMDDTHHmmssSSS'),
         date: nowUTC.format(), //'YYYY-MM-DDTHH:mm:ssZ'
+        ui: nowUTC.format('lll'),
         year: nowUTC.year()
     }
     return dateObj
@@ -72,7 +73,7 @@ export function getUserEmail() {
 export function getItemColor(itemType) {
     if (itemType === 'Need') return '#1C8E45'// '#7DC1F7'
     if (itemType === 'Protocol') return '#227FAF'//'#2C7EBD'
-    if (itemType === 'Guide') return '#736C9E'//'#1E4B75'
+    // if (itemType === 'Guide') return '#736C9E'//'#1E4B75'
 }
 
 // export function flattenItem(unflat) {
@@ -190,20 +191,17 @@ export function dynamoDbFormat(i){
         dbFormat.data.comAdoptNum = i.comAdoptNum
         dbFormat.data.comSupportNum = i.comSupportNum
         dbFormat.data.comForkNum = i.comForkNum
-
-        dbFormat.data.definitions = i.definitions || []
-        dbFormat.data.variables = i.variables || []
-
+    }
+    if ( i.type === 'Protocol') {
         dbFormat.data.intro = i.intro
+        dbFormat.data.elements = i.elements || []
+        dbFormat.data.protocols = i.protocols || []
         dbFormat.data.closing = i.closing
         dbFormat.data.attribComment = i.attribComment
         dbFormat.data.attribLink = i.attribLink
-    }
-    if ( i.type === 'Protocol') {
-        dbFormat.data.elements = i.elements || []
-    }
-    if ( i.type === 'Guide') {
-        dbFormat.data.protocols = i.protocols || []
+
+        dbFormat.data.definitions = i.definitions || []
+        dbFormat.data.variables = i.variables || []
     }
     return dbFormat
 }

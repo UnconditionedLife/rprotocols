@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Box, Menu, MenuItem } from '@mui/material'
+import { Box, InputAdornment, Menu, MenuItem, TextField } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
 import netlifyIdentity from 'netlify-identity-widget'
 import { handleUser, getUserName } from './GlobalFunctions';
 import { APP_VERSION } from './config';
+import { SearchRounded } from '@mui/icons-material';
 
 
 export default function Header(props) {
@@ -68,7 +69,7 @@ export default function Header(props) {
 
 
     useEffect(() => {
-        if (path) navigate(path, {replace: true })
+        if (path) navigate(path, {replace: false })
     }, [ path ])
 
     // open menu
@@ -120,14 +121,30 @@ export default function Header(props) {
     const loginLabel = (user) ? "Logout" : "Login"
 
     // console.log("USER NAME", userName)
+    const searchTerm = 'Life Needs'
 
     return (
         <Box className='header'>
-            <Box pl='20px' display='flex' flexDirection='row' >
-                <a href='/'><img src="/RadicalPerson.svg" height="30px" style={{ margin:'10px'}}></img></a>
-                <Box style={{ fontSize:'1em', fontWeight:600, color:'white', marginTop:'8px'}}>
-                    BETA <span style={{ fontSize:'1em', fontWeight:400, color:'white', marginTop:'8px'}}>({ appVerNum })</span></Box>
+            <Box display='flex' pl='20px' flexDirection='row' >
+                <a href='/'><img src="/rManIcon.svg" height="30px" style={{ margin:'10px'}}></img></a>
+                <Box display='flex' pl='10px' flexDirection='row' 
+                    style={{ fontSize:'1rem', fontWeight:600, color:'white', marginTop:'6px', marginLeft:'-10px'}}>
+                    BETA <Box style={{ fontSize:'0.7em', fontWeight:400, color:'white', marginTop:'2px', marginLeft:'5px' }}>({ appVerNum })</Box>
+                </Box>
             </Box>
+            {/* <Box alignSelf='center' width="94%" maxWidth='340px' marginTop='-4px' backgroundColor="black">
+                <TextField size='small' className='formField' width='90%' maxWidth='300px' 
+                    name={ "search" } value={ searchTerm } autoComplete='off'
+                    placeholder="Find needs and protocols..."
+                    InputProps={{ backgroundColor:'rgba(255, 255, 255, 0.9)', startAdornment: (
+                        <InputAdornment position="start">
+                            <SearchRounded />
+                        </InputAdornment>
+                    )}}
+                    // onChange={ (e) => { handleSearchTerm(e.target.value) } }
+                    // onFocus={ e => { handleSearchTerm(e.target.value) }}
+                    />
+            </Box> */}
             <Box display='flex' onClick={handleClick} style={{ justifySelf: 'flex-end', cursor:'pointer' }} mt='12px' mr='20px' height='47px' alignContent='center'>
                 <Box style={{ fontSize:"0.9em" }} color={'white'} mr={1.5} mt='5px' >{ userName }</Box>
                 <MenuIcon style={{ color:"white" }}/>
@@ -138,19 +155,16 @@ export default function Header(props) {
 
                     <MenuItem onClick={() => { handleClose('/') }}>Home</MenuItem>
                     { (siteProp == 'rProtocols') &&
-                       <MenuItem onClick={() => { handleClose('/studio') }}>Studio</MenuItem>
+                       <MenuItem onClick={() => { handleClose('/en/studio') }}>Studio</MenuItem>
                     }
-                    { (siteProp == 'rProtocols') &&
-                       <MenuItem onClick={() => { handleClose('/coop2') }}>COOP² Specs</MenuItem>
-                    }
-                    { (siteProp == 'rCollabs') &&
-                       <MenuItem onClick={() => { handleClose('/sessions') }}>Join Sessions</MenuItem>
-                    }
+                    {/* { (siteProp == 'rProtocols') &&
+                       <MenuItem onClick={() => { handleClose('/en/coop2') }}>COOP² Specs</MenuItem>
+                    } */}
                     { (siteProp == 'rCollabs') &&
                         <MenuItem onClick={() => { handleClose('rprotocols.org') }}>rProtocols.org</MenuItem>
                     }
                     {/* <MenuItem onClick={() => { handleClose('/rcollabs') }}>rCollabs</MenuItem> */}
-                    <MenuItem onClick={() => { handleClose('/about') }} value>About</MenuItem>
+                    <MenuItem onClick={() => { handleClose('/en/about-us') }} value>About Us</MenuItem>
                     <hr/>
                     { (siteProp == 'rProtocols') &&
                         <MenuItem onClick={() => { handleClose('/' + loginLabel ) }} value>{ loginLabel }</MenuItem>

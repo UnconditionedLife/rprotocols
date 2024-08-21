@@ -15,16 +15,15 @@ export default function ButtonView(props) {
 
     const statusBadgeColor = '#bababa'
 
-    // console.log("URL", '/studio/' + item.type.toLowerCase() + '/' + urlizeString(item.title[ lang ]) + "/" + item.minId)
-
     return (
-        <Box key={ item.minDate } className='buttonCardContainer' onClick={ () => { handleGoto('/studio/' + item.type.toLowerCase() + '/' + urlizeString(item.title[ lang ]) + "/" + item.minId) }}>
+        <Box key={ item.minDate } className='buttonCardContainer' 
+            onClick={ () => { handleGoto(`/${lang}/studio/${item.type.toLowerCase()}/${urlizeString(item.title[ lang ])}/${item.minId}`) }}>
             <Box className='buttonCardHeader' style={{ backgroundColor: color}}>
                 <span className='buttonCardHeaderText' >{ item.type.toUpperCase() }</span>
             </Box>
             <Box className='buttonCardBody' >
-                <h5 style={{ fontSize:'0.8em', lineHeight: '1.1em', fontWeight:'500' }}>{ item.title.en }</h5>
-                <span style={{ fontSize:'0.7em', lineHeight: '0em', fontWeight:'300' }}> { item.description.en }</span>
+                <h5 style={{ fontSize:'0.8rem', lineHeight:'1.0rem', fontWeight:'500' }}>{ item.title.en }</h5>
+                <span style={{ color:"black", fontSize:'0.7rem', lineHeight:'1.0rem', fontWeight:'300' }}> { item.description.en }</span>
             </Box>
             <Box className='buttonCardFooter'>
                 <Box className='buttonCardFooterBox'>

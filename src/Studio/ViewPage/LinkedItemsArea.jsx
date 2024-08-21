@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material'
 import LinkIcon from '@mui/icons-material/Share';
 import AddIcon from '@mui/icons-material/AddCircleOutline';
 import Accordion from '../../Accordion';
-import SearchResults from '../SearchResults';
+import LinkedItemsList from './LinkedItemsList';
 
 export default function LinkedItemsArea(props) {
     const { linkedItems, lang, show, handleGoto, setAddPopup } = props
@@ -22,12 +22,12 @@ export default function LinkedItemsArea(props) {
 
     // console.log('CHILDREN', linkedItems)
 
-    const key = linkedItems.length !== 0 ? linkedItems[0] : linkedItems
+    // const key = linkedItems.length !== 0 ? linkedItems[0] : linkedItems
 
     return (
         <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
-            <Accordion title={ 'Links (' + linkedItems.length + ')' } show={ contentShow } handleArea={ handleShow } />
-                <Box key={ key } display={ contentShow } marginLeft='20px' pt={ 1 } width='calc(100% - 40px)' 
+            <Accordion title={ 'Protocols & Sub-Needs (' + linkedItems.length + ')' } show={ contentShow } handleArea={ handleShow } />
+                <Box display={ contentShow } marginLeft='20px' pt={ 1 } width='calc(100% - 40px)' 
                     textAlign='center' flexDirection='column'>
                     <Box display='flex' marginTop='-16px' width='100%' justifyContent='center' >
                         {/* <Button size="small" variant="contained" style={{ margin:'4px' }}
@@ -39,7 +39,7 @@ export default function LinkedItemsArea(props) {
                                 startIcon={ <AddIcon />}
                                 endIcon={ <LinkIcon /> }>Add / Link Items</Button>
                     </Box>
-                    <SearchResults searchResults={ linkedItems }  handleGoto={ handleGoto } />
+                    <LinkedItemsList links={ linkedItems } lang={ lang }  handleGoto={ handleGoto } />
                 </Box>
         </Box>
     )

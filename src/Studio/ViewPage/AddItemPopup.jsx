@@ -35,42 +35,42 @@ export default function AddItemPopup(props) {
 
     return (
         <Dialog open={ addPopup }>
-            <DialogTitle>{ 'Add/Link Items to:' }</DialogTitle>
+            <DialogTitle>{ '' }</DialogTitle>
             <Box display='flex' flexDirection='column' width='340px' alignContent='center' 
                 alignItems='center' paddingBottom='30px'>
                 
-                <Box marginBottom='10px' fontSize='1.2em'><b>{ item.title[ lang ] }</b></Box>
+                <Box marginBottom='10px' fontSize='1.2em' maxWidth='90%'><b>{ item.title[ lang ] }</b></Box>
                 <Box display='flex' flexDirection='row'>
                     <Button size="small" variant="contained" style={{ margin:'4px', width:'145px', 
                         backgroundColor:getItemColor('Need') }} endIcon={ <AddIcon /> }
-                        onClick={ () => { addNewItem('Need') }}>Need</Button>
+                        onClick={ () => { addNewItem('Need') }}>Sub-Need</Button>
 
-                    <Button size="small" variant="outlined" style={{ margin:'4px', width:'145px',
+                    <Button size="small" variant="contained" style={{ margin:'4px', width:'145px', 
+                        backgroundColor:getItemColor('Protocol') }} endIcon={ <AddIcon /> }
+                        onClick={ () => { addNewItem('Protocol') }}>Protocol</Button>
+                </Box>
+
+                {/* <Box display='flex' flexDirection='row'> */}
+                    {/* <Button size="small" variant="outlined" style={{ margin:'4px', width:'145px',
                         color:getItemColor('Need'), borderColor: getItemColor('Need') }} endIcon={ <AddIcon /> }
                         onClick={ () => { addNewSet( 
                             {
                                 type: 'Need',
                                 needMajId: item.majId
                             }
-                        )}}>Need Set</Button>
-                </Box>
-
-                <Box display='flex' flexDirection='row'>
-                    <Button size="small" variant="contained" style={{ margin:'4px', width:'145px', 
-                        backgroundColor:getItemColor('Protocol') }} endIcon={ <AddIcon /> }
-                        onClick={ () => { addNewItem('Protocol') }}>Protocol</Button>
+                        )}}>Sub-Needs List</Button> */}
                          
-                    <Button size="small" variant="outlined" style={{ margin:'4px', width:'145px',
+                    {/* <Button size="small" variant="outlined" style={{ margin:'4px', width:'145px',
                         color:getItemColor('Protocol'), borderColor: getItemColor('Protocol') }} endIcon={ <AddIcon /> }
                         onClick={ () => { addNewSet( 
                             {
                                 type: 'Protocol',
                                 needMajId: item.majId 
                             }
-                        )}}>Protocol Set</Button>
-                </Box>
+                        )}}>Protocols List</Button> */}
+                {/* </Box> */}
 
-                <Box display='flex' flexDirection='row'>
+                {/* <Box display='flex' flexDirection='row'>
                     <Button  size="small" variant="contained" style={{ margin:'4px', width:'145px', 
                         backgroundColor:getItemColor('Guide') }} endIcon={ <AddIcon /> }
                         onClick={ () => { addNewItem('Guide') }}>Guide</Button>
@@ -83,7 +83,7 @@ export default function AddItemPopup(props) {
                                 needMajId: item.majId 
                             }
                         )}}>Guide Set</Button>    
-                </Box>
+                </Box> */}
 
                 {/* <Box marginTop="16px" >
                     <Autocomplete id="item-selector" key={ sortedItems.majId } sx={{ width:'300px' }}

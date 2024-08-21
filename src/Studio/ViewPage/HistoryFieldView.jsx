@@ -10,9 +10,9 @@ if ( field === undefined ) return null
     return (
         <Box className='historyGridItem'>
             { field.includes('v.') ? (
-                <b>{ field }</b> 
+                <span style={{ fontFamily: 'monospace' }}>{ field }</span>
             ) : (
-                <span>{ field }</span> 
+                <span>{ field }</span>
             )}
         </Box>
     )

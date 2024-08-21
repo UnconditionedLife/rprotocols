@@ -7,7 +7,9 @@ import { deepCopy, urlizeString } from '../../GlobalFunctions.jsx';
 import HeaderArea from '../HeaderArea.jsx';
 import { BuildNewHistory, AddIdToArray, IncrementMinorVersion, 
     validateFields, saveItemToDb, marshalRecord, 
-    DecrementMinorVersion} from '../StudioFunctions.jsx';
+    DecrementMinorVersion,
+    isValidIDs,
+    alignItemIds} from '../StudioFunctions.jsx';
 import IntroAreaEdit from './IntroAreaEdit.jsx';
 import HeaderAreaEdit from './HeaderAreaEdit.jsx';
 import ClosingAreaEdit from './ClosingAreaEdit.jsx';
@@ -19,7 +21,7 @@ import ProtocolsAreaEdit from './ProtocolsAreaEdit.jsx';
 
 
 export default function EditItemPage(props) {
-    const { item, newItem, lang, getNeedTitle, handleGoto, displayState, 
+    const { item, newItem, lang, getNeedTitle, handleGoto, action, 
         addRemoveItemInMemory, needsList, handleNewItemChange, db } = props;
     const [ originalState, setOriginalState ] = useState({});
     const [ formState, setFormState ] = useState(null)
@@ -52,6 +54,8 @@ export default function EditItemPage(props) {
     //     }
     // }, [ location.pathname ])
 
+    // console.log("action", action)
+
     useEffect(() => {
         // GET CORRECT NEW ITEM AND ASSIGN IT TO FORMSTATE
         const refItem = newItem || item
@@ -70,12 +74,12 @@ export default function EditItemPage(props) {
         }
 
         // UPDATE VERSION NUMBER
-        const newVerNum = (newItem) ? '1.0' : IncrementMinorVersion(stateItem?.verNum)
+        const newVerNum = (newItem) ? '0.0' : IncrementMinorVersion(stateItem?.verNum)
         stateItem.verNum = newVerNum
 
         // CREATE NEW HISTORY RECORD
         const newHistory = BuildNewHistory( newVerNum )
-        if (newVerNum === '1.0') newHistory.description.en = "Initial version"
+        if (newVerNum === '0.0') newHistory.description.en = "Initial version"
         stateItem.history.unshift(newHistory)
         setHistoryRecord( newHistory )
 
@@ -84,6 +88,11 @@ export default function EditItemPage(props) {
 
         // TEMP add parentNeeds
         if (!stateItem.parentNeeds) stateItem.parentNeeds= []
+
+        if (isValidIDs(stateItem) === false) {
+            const alignedItem = alignItemIds(stateItem)
+            console.error("ID FAIL", stateItem, alignedItem)
+        } 
 
         // Create "setParentNeeds" as list of { title & majId }
         // from the list of majId in parentNeeds
@@ -153,12 +162,14 @@ console.log('EDIT FORM STATEITEM', stateItem )
 
     };
 
-    function logChanges(name, value, nested){
+    function logChanges(name, value, nested, index){
         let change = false
-        if (!nested) {
+        if (nested === false) {
             if (originalState[name] !== value) change = true
-        } else {
+        } else if (nested === true) {
             if (originalState[name][lang] !== value) change = true
+        } else if (nested === "array") {
+            if (originalState[name][index] !== value) change = true
         }
         if (change && !changeLog.includes(name)) {
             const newLog = changeLog + name + ", "
@@ -178,6 +189,7 @@ console.log("newList @ Set FormState", newArr)
             parentNeeds: newArr
         }));
     }
+
 
     function handleEditAddParent(newParent){
 
@@ -232,13 +244,20 @@ console.log("newList @ Set FormState", newArr)
                 newArray[index].location = (value === 'continent') ? 'global' : ""
             setRegions(newArray)
         }
-        if (type === 'elem') setElements(newArray)
+        if (type === 'elem') {
+            // log changes for the history description
+            logChanges( "elements", value, "array", index)
+            setElements(newArray)
+        }
         if (type === 'proto') {
 
-            // console.log("newValue", value)
+            console.log("newValue", value)
+            
             newArray[index] = value
-            // console.log("newArray", newArray)
+            
+            console.log("newArray", newArray)
 
+            logChanges( "protocols", value, "array", index)
             setProtocols(newArray) 
         }
     };
@@ -281,7 +300,7 @@ console.log("newList @ Set FormState", newArr)
 
                     handleNewItemChange(null)
 
-                    handleGoto( '/studio/' + newRecord.type.toLowerCase() + "/" + urlizeString(newRecord.title[ lang ]) + "/" + newRecord.minId )
+                    handleGoto( `/${lang}/studio/${newRecord.type.toLowerCase()}/${urlizeString(newRecord.title[ lang ])}/${newRecord.minId}` )
                     // reloadProtocols()
                     // integrate item into db 
                 }
@@ -300,13 +319,7 @@ console.log("newList @ Set FormState", newArr)
     function cancelEdit() {
         handleNewItemChange(null)
         setFormState({ ...originalState });
-
-        const perviousMinId = getPreviousMinId(formState.verNum, formState.minId)
-
-        const urlTitle = ( formState.title[ lang ] !== "" ) 
-            ? formState.type.toLowerCase() + "/" + urlizeString(formState.title[ lang ]) + "/" + perviousMinId
-            : "need/" + urlizeString(formState.needTitle[ lang ]) + "/" + formState.needMajId
-        handleGoto( '/studio/' + urlTitle )
+        handleGoto( `/${lang}/studio/${item.type.toLowerCase()}/${urlizeString(item.title[ lang ])}/${item.minId}` )
     }
 
     // console.log("formState", formState)
@@ -339,23 +352,39 @@ console.log("newList @ Set FormState", newArr)
         // setLang(newLang)
     }
 
-    console.log('formstate', formState)
-    console.log('parentNeeds', parentNeeds)
+    // console.log('formstate', formState)
+    // console.log('parentNeeds', parentNeeds)
     // console.log('DB @ EDIT PAGE', db)
 
-    const textFlag = (displayState === 'add') ?  'NEW ' + formState.type.toUpperCase() : 'EDITING ' + formState.type.toUpperCase()
+    const textFlag = (action === 'add') ?  'NEW ' + formState.type.toUpperCase() : 'EDITING ' + formState.type.toUpperCase()
 
     const showAllText = (showAll) ? "Hide All" : "Show All"
+
+    const buttons = (
+        <Box margin={ 1 } mt={2}>
+            <Button variant="contained" size="small" disabled={ready} 
+                onClick={()=>{ handleSaveForm() }}>
+                Save
+            </Button>
+            &nbsp; &nbsp;
+            <Button variant="outlined" size="small"
+                onClick={()=>{ cancelEdit() }}>
+                Cancel
+            </Button>
+        </Box>
+    )
 
     return (
         <form key={ formState.versionId }>
         <Card key={formState.id} className="itemCard" >
 
-            <HeaderArea item={ formState } lang={ lang } handleLanguage={ handleLanguage } displayState={ displayState }/>
+            <HeaderArea item={ formState } lang={ lang } handleLanguage={ handleLanguage } action={ action }/>
 
             {/* **** SHOW THE EDITING RED FLAG **** */}
-            <Box style={{ fontSize:'1.5em', width:'100%', fontWeight:700, color:'white', marginTop:'20px', 
-                backgroundColor:'#CC3300' }}>{ textFlag }</Box>
+            <Box style={{ fontSize:'1.5em', width:'100%', height:'40px', fontWeight:700, color:'white', marginTop:'20px', 
+                backgroundColor:'#CC3300', clipPath: "polygon(0 0, 100% 0, 100% 10%, 50% 100%, 0 10% )" }}>{ textFlag }</Box>
+
+            { buttons }
 
             <Box className='itemCardShowLink' style={{ marginBottom:'-14px' }} onClick={ () => { setShowAll(!showAll) }}>
                     { showAllText }
@@ -383,7 +412,7 @@ console.log("newList @ Set FormState", newArr)
                     removeArrayItem={ removeArrayItem } lang={ lang } show={ showAll } />
             }
 
-            { formState.type === "Guide" && db !== undefined &&
+            { (formState.type === "Protocol") && db !== undefined &&
                 <ProtocolsAreaEdit protocols={ protocols } setProtocols={ setProtocols }
                     errors={ errors } updateArrayItems={ updateArrayItems } addArrayItem={ addArrayItem }
                     removeArrayItem={ removeArrayItem } lang={ lang } show={ showAll } db={ db } formState={ formState } />
@@ -405,17 +434,8 @@ console.log("newList @ Set FormState", newArr)
             {/* // *********** FORM FOOTER *********** */}
             <Box color='#CC3300'>* Required</Box>
 
-            <Box margin={ 1 } mt={2}>
-                <Button variant="contained" size="small" disabled={ready} 
-                    onClick={()=>{ handleSaveForm() }}>
-                    Save
-                </Button>
-                &nbsp; &nbsp;
-                <Button variant="outlined" size="small"
-                    onClick={()=>{ cancelEdit() }}>
-                    Cancel
-                </Button>
-            </Box>
+            { buttons }
+
             </Card>
         </form>
     )

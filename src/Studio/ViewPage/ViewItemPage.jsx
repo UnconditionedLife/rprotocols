@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Box, Card, CardActions, Button } from '@mui/material'
 import Accordion from '../../Accordion';
 import { getUserObject, getUserName, deepCopy } from '../../GlobalFunctions';
@@ -21,10 +21,10 @@ import ProtocolsArea from './ProtocolsArea';
 
 import AddItemPopup from './AddItemPopup';
 import RegionsArea from './RegionsArea';
-
+import BreadcrumbTabs from '../BreadcrumbTabs';
 
 export default function ViewItemPage(props) {
-    const { item, getLinkedItems, handleGoto, displayState, handleBuildNewItem,
+    const { item, getLinkedItems, handleGoto, action, handleBuildNewItem,
         db, relDb, handleSetAddSet, needsList } = props
     // const [ introShow, setIntroShow ] = useState( 'none' )
     // const [ elemShow, setElemShow ] = useState( 'none' )
@@ -50,9 +50,9 @@ export default function ViewItemPage(props) {
 
 
     useEffect(() => {
+        console.log("IN LINKED ITEMS USEEFFECT")
         setLinkedItems(getLinkedItems(item.majId, item.minDate))
     }, [ item.majId, item.minDate, getLinkedItems ])
-
 
     function handleLanguage(newLang){
         // console.log("CHANGE LANG:", newLang)
@@ -114,13 +114,13 @@ export default function ViewItemPage(props) {
         parents.push(item.majId)
         handleBuildNewItem( type, parents )
         setAddPopup(false)
-        handleGoto('/studio/add/')
+        handleGoto(`/${lang}/studio/add/`)
     }
 
     function addNewSet(setObj){
         handleSetAddSet(setObj)
         setAddPopup(false)
-        handleGoto('/studio/add-set/')
+        handleGoto(`/${lang}/studio/add-set/`)
     }
 
     // function handleButtons(button){
@@ -135,21 +135,50 @@ export default function ViewItemPage(props) {
     
     // console.log('**item**', item)
 
+    const buttons = (
+        <Fragment>
+            <Button size="small" variant="outlined" style={{ margin:'4px' }}
+                onClick={() => { handleGoto( `/${lang}/studio/edit/${item.minId}` ) }} 
+                endIcon={ <EditIcon /> }>EDIT</Button>
+            
+            { item.type === 'Protocol' &&
+                <Button size="small" variant="outlined" style={{ margin:'4px' }} 
+                    onClick={() => { handleGoto( `/${lang}/studio/fork/${item.minId}` ) }}
+                    endIcon={ <ForkIcon /> }>NEW VERSION</Button>
+            }
+
+            <Button size="small" variant="outlined" style={{ margin:'4px' }}
+                onClick={() => { handleGoto( `/${lang}/studio` ) }} 
+                endIcon={ <CloseIcon /> }>CLOSE</Button>
+        </Fragment>
+    )
+
     if (!item) return null
+
+    // console.log("item", item)
 
     const showAllText = (showAll) ? "Hide All" : "Show All"
 
     return (
-        <Box marginTop='30px'>
+        <Box marginTop='30px' id='view-item' style={{ scrollBehavior:'smooth' }}>
             <AddItemPopup item={ item } addPopup={ addPopup } setAddPopup={ setAddPopup } 
                 addNewItem={ addNewItem } addNewSet={ addNewSet } db={ db } lang={ lang }
                 handleViewAddLink={ handleViewAddLink } />
+
+            <BreadcrumbTabs item={ item } relDb={ relDb } db={ db } handleGoto={ handleGoto } prePost="pre" lang={ lang } />
         
             <Card key={item.id} className="itemCard" >
 
                 <HeaderArea item={ item } lang={ lang } handleLanguage={ handleLanguage } 
-                    handleGoto={ handleGoto } displayState={ displayState } 
-                    parentNeeds={ parentNeeds } />
+                    handleGoto={ handleGoto } action={ action } 
+                    parentNeeds={ parentNeeds } relDb={ relDb } db={ db } />
+
+                { (!user) &&
+                    <span style={{ fontSize:'.65em', color:'red' }}>
+                        Login to Edit, Fork, or Adopt
+                    </span>
+                }
+                { (user) && <Box marginTop='20px'>{ buttons }</Box> }
 
                 <Box className='itemCardShowLink' onClick={ () => { setShowAll(!showAll) }}>
                     { showAllText }
@@ -167,9 +196,9 @@ export default function ViewItemPage(props) {
                     <ElementsArea elements={ item.elements } lang={ lang } show={ showAll } />
                 }
 
-                { (item.type === "Guide") &&
+                { (item.type === "Protocol") &&
                     <ProtocolsArea protocols={ item.protocols } lang={ lang } show={ showAll }
-                        handleGoto={ handleGoto } />
+                        handleGoto={ handleGoto } db={ db } />
                 }
 
                 { item?.type === 'Need' &&
@@ -187,48 +216,18 @@ export default function ViewItemPage(props) {
 
                 <HistoryAreaView item={ item } history={ item.history } lang={ lang } show={ showAll } />
                 
-                <CardActions>
+                <CardActions sx={{ marginBottom:'20px' }}>
                     { (!user) &&
-                        <span style={{ fontSize:'.65em', color:'red' }}>Login to Edit, Fork, and Adopt</span>
+                        <span style={{ fontSize:'.65em', color:'red' }}>Login to Edit, New Version, or Adopt</span>
                     }
                     { (user) &&
-                        <Box marginTop='20px'>
-                            { item.type !== 'Need' &&
-                                <Button size="small" variant="contained" style={{ margin:'4px' }} disabled
-                                    onClick={() => { handleGoto( '/studio/adopt/' + item.minId ) }}  
-                                    endIcon={ <AdoptIcon /> }>ADOPT</Button>
-                            }
-
-                            {/* <Button size="small" variant="contained" style={{ margin:'4px' }}
-                                    onClick={() => { setAddPopup(true ) }}
-                                    endIcon={ <AddIcon /> }>Link</Button> */}
-                                
-                            {/* <Button size="small" variant="outlined" style={{ margin:'4px' }}
-                                    onClick={() => { handleGoto( '/studio/' + item.id ) }}  
-                                    endIcon={ <GuideIcon /> }>GUIDE</Button> */}
-
-                            
-
-                            <Button size="small" variant="outlined" style={{ margin:'4px' }}
-                                onClick={() => { handleGoto( '/studio/edit/' + item.minId ) }} 
-                                endIcon={ <EditIcon /> }>EDIT</Button>
-                            { item.type !== 'Need' &&
-                                <Button size="small" variant="outlined" style={{ margin:'4px' }} 
-                                    onClick={() => { handleGoto( '/studio/fork/' + item.minId ) }}
-                                    endIcon={ <ForkIcon /> }>FORK</Button>
-                            }
-
-                            <Button size="small" variant="outlined" style={{ margin:'4px' }}
-                                onClick={() => { handleGoto( '/studio/search/' ) }} 
-                                endIcon={ <CloseIcon /> }>CLOSE</Button>
-
-                    
-                            
-                            
-                        </Box>
+                        <Box marginTop='20px'>{ buttons }</Box>
                     }
                 </CardActions>
             </Card>
+            
+            <BreadcrumbTabs item={ item } relDb={ relDb } db={ db } handleGoto={ handleGoto } prePost="post" lang={ lang }/>
+
         </Box>
     )
 }

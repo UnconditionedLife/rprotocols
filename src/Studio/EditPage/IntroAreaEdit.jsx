@@ -16,7 +16,7 @@ export default function IntroAreaEdit(props) {
 
     return (
         <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
-            <Accordion title='Introduction' show={ contentShow } handleArea={ handleShow } />
+            <Accordion title='Purpose' show={ contentShow } handleArea={ handleShow } />
             <Box display={ contentShow } marginLeft='16px' pt={ 1 } width='calc(100% + 16px)' textAlign='left'>                    
                 <Box className='formFieldContainer'>
                     <TextField multiline size='small' className='formField' variant="standard"

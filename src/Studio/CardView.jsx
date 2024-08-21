@@ -1,44 +1,28 @@
 import { Box, Card, CardMedia } from "@mui/material";
 import { motion } from "framer-motion";
+import { urlizeString } from "../GlobalFunctions";
 
 
 
 export default function CardView(props) {
-    const { item, handleGoto, studioSection } = props;
+    const { item, handleGoto, lang } = props;
     
-    return (
-        <motion.div
-            className="card"
-            onClick={ () => { handleGoto('/studio/' + studioSection + '/item.header.guideId') }}
-            initial={{ height:'0px', width:'0px' }}
-            whileInView={{ height:'340px', width: '240px' }}
-            transition={{
-                type:'spring',
-                stiffness: 400,
-                damping: 20,
-                repeat: 0,
-                // repeatType: 'mirror',
-                repeatDay: 0.2,
-            }}>
-            
+    // console.log("lang", lang)
 
-        {/* <Box className="card" onClick={ () => { handleGoto('/studio/' + studioSection + '/item.header.guideId') }}> */}
+    return (
+        <Box className="card" onClick={ () => { handleGoto( `/${lang}/studio/protocol/${urlizeString(item.title[lang])}/${item.majId}` ) }}>
             <Card sx={{ height:'100%' }}>
                 <CardMedia
                     sx={{ height: 140 }}
-                    image={ "/guide-images/" + item.header.guideId + ".webp" }
-                    // image={ "/guide-images/018g5743-39c2-7f01-h22d-b149a13ws84a0.webp" }
-                    title="green iguana"
+                    image={ `/guide-images/${item.iId}.jpg` }
+                    title="item.title[lang]"
                 />
                 <Box paddingX='6px'>
-                    <h5>{ item.content.title.en }</h5>
-                    <p className='cardVersion'>- { item.header.version } -</p>
-                    <span style={{ fontSize:'.9em', fontWeight:'300' }}> { item.header.description.en }</span>
+                    <h5>{ item.title[ lang ] }</h5>
+                    <p className='cardVersion'>- { item.verNum } -</p>
+                    <span style={{ fontSize:'.9em', fontWeight:'300' }}> { item.description[ lang ] }</span>
                 </Box>
-            
             </Card>
-            </motion.div>
-        
-        
+        </Box>
     )
 }

@@ -7,10 +7,10 @@ export default function Accordion(props) {
 
     return (
         <Box width='100%'>
-            <hr style={{ border: '1px solid #d8ecf3', marginBottom: '-3px', marginTop: '2px' }} />
+            <hr style={{ border: '1px solid #d8ecf3', marginBottom: '-6px', marginTop: '2px' }} />
             <Box width="100%" display='flex' flexDirection='row' justifyContent='space-between' style={{ cursor: 'pointer' }} onClick={() => { handleArea({ version, show }) }}>
                 <Box pl={ .5 } mt={ 0.7 }><span className='cardSectionLabel'>{ title }</span></Box>
-                <Box pr={ .5 } pt='3px' mb='-12px' style={{ fontWeight:'lighter' }}>
+                <Box pr={ .5 } pt='6px' mb='-12px' style={{ fontWeight:'lighter' }}>
                     { (show == 'none') &&
                         <KeyboardArrowDownIcon fontSize='small' style={{ color:"#9c9c9c" }} />
                     }

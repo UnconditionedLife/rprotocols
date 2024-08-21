@@ -18,7 +18,7 @@ import { dbSaveItemAsync } from "../Database";
             row.description = i.description[ lang ],
             row.author = i.history.map(h => h.author).join(", "),
             row.tags = i.tags[ lang ]
-            row.needTitle = i.needTitle[ lang ]
+            // row.needTitle = i.needTitle[ lang ]
 
             // console.log('indexItem', row)
 
@@ -35,15 +35,15 @@ import { dbSaveItemAsync } from "../Database";
         // if ( formState.type === 'Need' )
         //     requiredFields.push( 'title', 'description', 'tags', 'historyDescription')
 
-        if ( formState.type === 'Protocol' || formState.type === 'Guide' ) {
+        if ( formState.type === 'Protocol' ) { //|| formState.type === 'Guide'
             requiredFields.push( 'intro', 'closing')
         }
 
-        if ( formState.type === 'Protocol' )
-            requiredFields.push( )
+        // if ( formState.type === 'Protocol' )
+        //     requiredFields.push( )
 
-        if ( formState.type === 'Guide' )
-            requiredFields.push( )
+        // if ( formState.type === 'Guide' )
+        //     requiredFields.push( )
 
 
         // console.log("ERROR FORM FIELDS", requiredFields)
@@ -66,12 +66,12 @@ import { dbSaveItemAsync } from "../Database";
                 // console.log(formState[field][lang], formState[field][lang].trim.length < 1 )
                 if ( formState?.[field]?.[lang]) {
                     if ( formState?.[field]?.[lang].trim().length < 1 )
-                        errorFields[field] = { error: true, helperText: 'Field is Require.' }
+                        errorFields[field] = { error: true, helperText: 'Field is Required.' }
                 }
             }
             if (group === 'history') {
                 if ( historyRecord[field]?.[lang] === undefined || historyRecord[field]?.[lang].trim().length < 1 )
-                    errorFields['history' + wordCase(field)] = { error: true, helperText: 'Field is Require.' }
+                    errorFields['history' + wordCase(field)] = { error: true, helperText: 'Field is Required.' }
             }
         })
 
@@ -93,8 +93,8 @@ import { dbSaveItemAsync } from "../Database";
         const emptyLang = { en: "", es: "", pt: "" }
         const newIdObj = buildNowIds(type)
 
-console.log('newIdObj', newIdObj)
-console.log('parentNeeds', parentNeeds)
+// console.log('newIdObj', newIdObj)
+// console.log('parentNeeds', parentNeeds)
 
         const basicItem = {
             iId: newIdObj.iId,
@@ -117,7 +117,7 @@ console.log('parentNeeds', parentNeeds)
             comComments: [],
             comFollowNum: 0
         }
-        if (type === 'Protocol' || type === 'Guide') {
+        if (type === 'Protocol' ) { //|| type === 'Guide'
             basicItem.regions = [
                 {
                     level: 'continent',
@@ -136,8 +136,6 @@ console.log('parentNeeds', parentNeeds)
         }
         if (type === 'Protocol') {
             basicItem.elements = []
-        }
-        if (type === 'Guide') {
             basicItem.protocols = []
         }
         return basicItem
@@ -150,18 +148,41 @@ function buildNowIds(type){
     const idObj = {}
     const dateObj = nowDates()
     const idDate = dateObj.id        //dayjs(now).utc().format('YYYYMMDDTHHmmssSSS')
-    idObj.date =  dateObj.date         //dayjs(now).utc().format() //'YYYY-MM-DDTHH:mm:ssZ'
+    idObj.date =  dateObj.date       //dayjs(now).utc().format() //'YYYY-MM-DDTHH:mm:ssZ'
     idObj.year =  dateObj.year       //idObj.date.substring(0, 4)
     const uniqueNum = Math.floor(Math.random() * 10000);
     let typeToken
     if  (type === 'Need') typeToken = 'N'
     if (type === 'Protocol') typeToken = 'P' 
-    if (type === 'Guide') typeToken = 'G'
     idObj.iId = `${typeToken}.${idDate}-${uniqueNum}`
     idObj.majId = idObj.iId + ".0"
     idObj.minId = idObj.iId + ".0.0"
     idObj.verNum = "0.0"
     return idObj
+}
+
+export function isValidIDs(item){
+    const minIdArr = item.minId.split(".")
+    let matchIds = true
+    if (item.majId !== minIdArr[0] + '.' + minIdArr[1] + '.' + minIdArr[2] ) matchIds = false
+    if (item.verNum !== minIdArr[2] + '.' + minIdArr[3]) matchIds = false
+    if (item.history[0].verNum.split('.')[0] !== minIdArr[2] )  matchIds = false  
+    // console.log("MATCH-IDS", matchIds )
+    return matchIds
+}
+
+export function alignItemIds(item){
+    const minIdArr = item.minId.split(".")
+    const majIdArr = item.majId.split(".")
+    const major =  majIdArr[2]
+    const minor = minIdArr[3]
+    item.minId = minIdArr[0] + '.' + minIdArr[1] + '.' + major + '.' + minor
+    item.verNum = major + '.' + minor
+    item.history.forEach((hist, i) => {
+        const verNumArr = hist.verNum.split('.')
+        item.history[i].verNum = major + '.' + verNumArr[1]
+    })
+    return item
 }
 
 export function IncrementMinorVersion(oldVersion){
@@ -276,14 +297,10 @@ export function BuildNewHistory( newVersion ){
     }
 
     export function preprocessData(data) {
+        // convert the item data object into DynamoDB compliant object
+
         const pData = {};
-
-        // console.log('data', data)
-
         for (const key in data) {
-
-            // console.log('data key', key)
-
           if (typeof data[key] === 'string') {
             pData[key] = { S: data[key] };
           } else if (typeof data[key] === 'number') {
@@ -291,9 +308,6 @@ export function BuildNewHistory( newVersion ){
           } else if (typeof data[key] === 'boolean') {
             pData[key] = { BOOL: data[key] };
           } else if (Array.isArray(data[key])) {
-
-            // console.log('IN ARRAY', key)
-
             pData[key] = { L: data[key].map(item => {
                 if (typeof item === 'object' && item !== null) {
                     return { M: preprocessData( item ) }
@@ -302,24 +316,21 @@ export function BuildNewHistory( newVersion ){
                 }
             }) };
           } else if (typeof data[key] === 'object' && data[key] !== null) {
-
-            // console.log('IN OBJECT', key)
-
             pData[key] = { M: preprocessData(data[key]) };
           }
         }
         return pData;
     }
 
-export function getListOfNeeds(items){
-    // build a list of need names to us to select the need parent
-    const needOnly = items.filter(item => item.type === 'Need')
-    const needsList = needOnly.map(item => {
-        return { majId: item.majId, title: item.title }
-    });
-    needsList.push( { majId: "ROOT", title: { en: "{ ROOT NEED }", es: "{ ROOT NEED }", pt: "{ ROOT NEED }" }} )
-    return needsList
-}
+    export function getListOfNeeds(items){
+        // build a list of need names to us to select the need parent
+        const needOnly = items.filter(item => item.type === 'Need')
+        const needsList = needOnly.map(item => {
+            return { majId: item.majId, title: item.title }
+        });
+        needsList.push( { majId: "ROOT", title: { en: "{ ROOT NEED }", es: "{ ROOT NEED }", pt: "{ ROOT NEED }" }} )
+        return needsList
+    }
 
 export function getLatestStoredInfo(){
     // default values
@@ -341,7 +352,7 @@ export function getLatestStoredInfo(){
 
 export function buildItemsForSelect(db, subjectItem, selectType) {
 
-    console.log("IN BUILD SELECT", db, subjectItem, selectType)
+    // console.log("IN BUILD SELECT", db, subjectItem, selectType)
 
     const reducedList = db.filter((i) => i.type === selectType && subjectItem.majId !== i.majId)
         .map(item => ({
@@ -387,7 +398,7 @@ function sanitizeObject(obj) {
     }
     
     if (Array.isArray(obj)) {
-    return obj.map(sanitizeObject);
+        return obj.map(sanitizeObject);
     }
     
     if (obj !== null && typeof obj === 'object') {
@@ -398,9 +409,8 @@ function sanitizeObject(obj) {
             }
         }
         return sanitizedObj;
-      }
-    
-      return obj; // Return the value as is if it's not a string, array, or object
+    }
+    return obj; // Return the value as is if it's not a string, array, or object
 }
 
 export function restoreObject(obj) {

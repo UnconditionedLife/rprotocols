@@ -22,7 +22,7 @@ import HeaderArea from '../HeaderArea.jsx';
 
 
 export default function AddSetPage(props) {
-    const { setInfo, handleSetAddSet,  needsList, displayState, addRemoveItemInMemory, 
+    const { setInfo, handleSetAddSet,  needsList, action, addRemoveItemInMemory, 
         handleGoto } = props;
     const [ setText, setSetText ] = useState("")
     const [ needMajId, setNeedMajId ] = useState("")
@@ -126,7 +126,7 @@ export default function AddSetPage(props) {
         console.log("CANCELING SET")
         if (stage === 'upload') {
             setSetText("")
-            handleGoto('/studio/need/' + needMajId + "/" + urlizeString(needTitle[ lang ]) )
+            handleGoto(`/${lang}/studio/need/${urlizeString(needTitle[ lang ])}/${needMajId}` )
         }
 
         if (stage === 'save' ) {
@@ -149,8 +149,7 @@ export default function AddSetPage(props) {
 
                     // TODO clear setInfo
     
-                    handleGoto( '/studio/' + item.type.toLowerCase() + "/" + urlizeString(item.title[ lang ]) + "/" + item.minId )
-                    // handleGoto('/studio/need/' + needMajId + "/" + urlizeString(needTitle[ lang ]) )
+                    handleGoto( `/${lang}/studio/${item.type.toLowerCase()}/${urlizeString(item.title[ lang ])}/${item.minId}` )
                     // reloadProtocols()
                     // integrate item into db 
                 } else {
@@ -180,7 +179,7 @@ export default function AddSetPage(props) {
                 <Box display='flex' flexDirection='column' width='100%' marginTop='0px'>
                     <Box display='flex' marginLeft='16px' pt={ 1 } width='calc(100% - 16px)' textAlign='left' flexDirection='column'> 
 
-                        <HeaderArea item={ setInfo } displayState={ displayState } lang={ lang } />
+                        <HeaderArea item={ setInfo } action={ action } lang={ lang } />
 
                         <Box className='formFieldContainer'>
                             <b>SET OF ITEMS UPLOADED</b> <br/>
@@ -239,7 +238,7 @@ export default function AddSetPage(props) {
                 { ( loaded === false ) && 
                 <Box display='flex' flexDirection='column' width='100%' marginTop='0px'>
                     
-                    <HeaderArea item={ setInfo } displayState={ displayState } lang={ lang }
+                    <HeaderArea item={ setInfo } action={ action } lang={ lang }
                         handleLanguage={ handleLanguage }/>
                     
                     <Box display='flex' marginLeft='16px' pt={ 1 } width='calc(100% - 16px)' textAlign='left' flexDirection='column'>  

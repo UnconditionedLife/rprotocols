@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import ProtocolsHome from './ProtocolsHome.jsx';
+import Home from './Home.jsx';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import StudioExplore from './Studio/StudioExplore.jsx';
 import Studio from './Studio/Studio.jsx';
@@ -13,26 +13,37 @@ import SessionsPage from './Collab/SessionsPage.jsx';
 import SessionsFormPage from './Collab/SessionsFormPage.jsx';
 import AboutPage from './Collab/AboutPage.jsx';
 import PrivacyPage from './Collab/PrivacyPage.jsx';
+import LangSwitcher from './LangSwitcher.jsx';
+import HomeSwitcher from './HomeSwitcher.jsx';
 
 
 const theSite = import.meta.env.VITE_SITE;
 
-const TheHomePage = (theSite == 'rCollabs') ? CollabHomePage : ProtocolsHome
+// const TheHomePage = (theSite == 'rCollabs') ? CollabHomePage : ProtocolsHome
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Root/>,
         // element: <div>Hello World!</div>,
-        errorElement: <div>ERROR NOT FOUND</div>,
+        errorElement: <Studio />,
+        //from404={ true }
+
         children: [
             // COLLABS or PROTOCOLS
             {
                 path: "/",
-                element: <TheHomePage />
+                element: <LangSwitcher lang="en" />
+            },
+            
+            {
+                path: "/:lang",
+                element: <HomeSwitcher />
+                // <Studio PageNotFound={ false }/>
                 // element: <StudioHome/>
                 // <HomePage/>
             },
+
             // COLLABS
             {
                 path: "/rcollabs",
@@ -47,83 +58,38 @@ const router = createBrowserRouter([
                 element: <SessionsPage/>
             },
 
-            // PROTOCOLS
+            // DYNAMIC ROUTES
             { 
-                path: "/studio/explore",
-                element: <StudioExplore/>
-            },
-            { 
-                path: "/studio",
+                path: "/:lang/:area",
                 element: <Studio />
             },
             { 
-                path: "/studio/adopt/:itemId",
+                path: "/:lang/:area/:action",
                 element: <Studio />
             },
             { 
-                path: "/studio/edit/:itemId",
+                path: "/:lang/:area/:action/:value1",
                 element: <Studio />
             },
+            { 
+                path: "/:lang/:area/:action/:value1/:value2",
+                element: <Studio />
+            },
+
+
+            // FIXED PATHS
             // { 
-            //     path: "/studio/add-to/:parentId",
-            //     element: <Studio />
+            //     path: "/:lang/privacy_protocols",
+            //     element: <PrivacyPage/>
             // },
             { 
-                path: "/studio/add/",
-                element: <Studio />
-            },
-            {
-                path: "/studio/add-set/",
-                element: <Studio />
-            },
-            { 
-                path: "/studio/fork/",
-                element: <Studio />
-            },
-            { 
-                path: "/studio/search",
-                element: <Studio />
-            },
-            { 
-                path: "/studio/search/:searchTerm",
-                element: <Studio />
-            },
-            // { 
-            //     path: "/studio/view/:urlId",
-            //     element: <Studio />
-            // },
-            // { 
-            //     path: "/studio/view/:itemName/:urlId",
-            //     element: <Studio />
-            // },
-            { 
-                path: "/studio/need/:itemName/:urlId",
-                element: <Studio />
-            },
-            { 
-                path: "/studio/protocol/:itemName/:urlId",
-                element: <Studio />
-            },
-            { 
-                path: "/studio/guide/:itemName/:urlId",
-                element: <Studio />
-            },
-            { 
-                path: "/studio/guides",
-                element: <Studio />
-            },
-            { 
-                path: "privacy_protocols",
-                element: <PrivacyPage/>
-            },
-            { 
-                path: "coop2",
+                path: "/:lang/coop2",
                 element: <COOP2/>
             },
-            { 
-                path: "about",
-                element: <AboutPage/>
-            },
+            // { 
+            //     path: "/:lang/about",
+            //     element: <AboutPage/>
+            // },
         ],
     },
 ]);

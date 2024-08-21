@@ -10,21 +10,26 @@ export default function ProtocolsAreaEdit(props) {
     const { protocols, setProtocols, lang, errors, updateArrayItems, addArrayItem, 
         removeArrayItem, show, db, formState } = props
     const [ contentShow, setContentShow ] = useState( 'none' )
+    const [ sortedProtocols, setSortedProtocols ] = useState( null )
 
     useEffect(() => {
         setContentShow( show ? 'flex' : 'none')
     }, [ show ])
 
+        // BUILDS & SORTS ARRAY OF OBJECT WITH ** majId ** & ** title **
+    useEffect(() => {
+        // const sortedProtocols = useMemo(() => {
+        const selectType = "Protocol"
+        const protocolList = buildItemsForSelect(db, formState, selectType)
+        setSortedProtocols(sortArrByTitle(protocolList, lang))
+
+    }, [ lang, db ]);
+
     function handleShow() {
         setContentShow( contentShow === 'none' ? 'flex' : 'none' )
     }
     
-    // BUILDS & SORTS ARRAY OF OBJECT WITH ** majId ** & ** title **
-    const sortedProtocols = useMemo(() => {
-        const selectType = "Protocol"
-        const protocolList = buildItemsForSelect(db, formState, selectType)
-        return sortArrByTitle(protocolList, lang)
-    }, [ lang, db, formState ]);
+
 
 // console.log("sortedProtocols", sortedProtocols)
 
@@ -32,7 +37,7 @@ export default function ProtocolsAreaEdit(props) {
 
     return (
         <Box display='flex' flexDirection='column' width='100%' marginTop='12px'>
-            <Accordion title='Elements' show={ contentShow } handleArea={ handleShow } />
+            <Accordion title='Sub-Protocols' show={ contentShow } handleArea={ handleShow } />
             <Box display={ contentShow } marginLeft='0px' pt={ 1 } width='calc(100% + 58px)' textAlign='left' >                    
                 <Box className='formFieldContainer' textAlign='center'>
                     
@@ -48,7 +53,7 @@ export default function ProtocolsAreaEdit(props) {
                                         </Box>
                                         <Autocomplete id="item-selector" key={ sortedProtocols.majId } sx={{ width:'600px' }}
                                             options={ sortedProtocols } autoHighlight clearOnEscape
-                                            value={ sortedProtocols.find((proto) => proto.majId === protocol.majId ) }
+                                            value={ sortedProtocols.find((p) => p.majId === protocol.majId ) }
                                             getOptionLabel={(option) => { return option.title[ lang ] || '' }}
                                             onChange={(event, newValue) => {
                                                 // console.log('newValue', newValue)

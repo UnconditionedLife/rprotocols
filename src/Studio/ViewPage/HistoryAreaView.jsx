@@ -51,7 +51,7 @@ export default function HistoryAreaView(props) {
                 { (history.length > 5) &&
                     <Box width='100%' textAlign='center' className='textLink' onClick={ () => { handleLimit() } }>{ limitText }</Box>
                 }
-                <Box width='100%' textAlign='center' fontSize='.8em'>{ item.minId }</Box>
+                <Box width='100%' textAlign='center' fontSize='.75rem' fontFamily='monospace'>{ item.minId }</Box>
             </Box>
         </Box>
     )

@@ -1,14 +1,10 @@
 import { Box } from "@mui/material";
 import ForkIcon from '@mui/icons-material/ForkRight';
 import AdoptIcon from '@mui/icons-material/FactCheck';
-import GuideIcon from '@mui/icons-material/MenuBook';
 import SupportIcon from '@mui/icons-material/Favorite';
 import FollowIcon from '@mui/icons-material/RemoveRedEye';
 import aveta from "aveta";
-
 import CountDot from "./CountDot";
-
-
 
 export default function StatusBadge(props) {
     const { label, icon, count, color, size } = props;
@@ -25,7 +21,7 @@ export default function StatusBadge(props) {
         <Box className={ statusClass } borderColor={ color } marginBottom='0px' marginTop='-1px'>
             { icon === 'Fork' && <ForkIcon className={ iconClass } style={{ height: iconHeight, color: color }} />}
             { icon === 'Adopt' && <AdoptIcon className={ iconClass } style={{ height: iconHeight, color: color }}/>}
-            { icon === 'Guide' && <GuideIcon className={ iconClass } style={{ height: iconHeight, color: color }}/>}
+            {/* { icon === 'Guide' && <GuideIcon className={ iconClass } style={{ height: iconHeight, color: color }}/>} */}
             { icon === 'Support' && <SupportIcon className={ iconClass } style={{ height: iconHeight, color: color }}/>}
             { icon === 'Follow' && <FollowIcon className={ iconClass } style={{ height: iconHeight, color: color }}/>}
             { label !== '' &&
