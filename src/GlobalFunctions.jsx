@@ -314,19 +314,24 @@ export function makeFork(original, majorVersions) {
     return fork
 }
 
-
 export function wordCase(word) {
-  return word.charAt(0).toUpperCase() + word.slice(1)
+    if ( word.includes(" ")) {
+        const wordArr = word.split(" ")
+        wordArr.forEach((w, i) => wordArr[i] = oneWord(w))
+        return wordArr.join(" ")
+    } else {
+        return oneWord(word)
+    }
+    
+    function oneWord( singleWord ) {
+        return singleWord.charAt(0).toUpperCase() + singleWord.slice(1)
+    }
 }
   
 export function sortByName(array) {
     return array.sort((a, b) => {
-        if (a.name.en < b.name.en) {
-            return -1;
-        }
-        if (a.name.en > b.name.en) {
-            return 1;
-        }
+        if (a.name.en < b.name.en) return -1
+        if (a.name.en > b.name.en) return 1
         return 0;
     });
 }

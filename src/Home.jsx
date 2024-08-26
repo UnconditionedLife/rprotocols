@@ -48,7 +48,7 @@ export default function Home(props) {
                     <Box><p className='paragraph'>Protocols, unlike rules, are designed to liberate rather than control. They offer flexible, consensual ways of collaborating, adopted voluntarily based on their relevance to specific needs. Each protocol is an experiment in finding the most effective methods for collaboration within specific contexts.</p></Box>
                 </Box>
             </Box>
-            <Box alignSelf={"center"} maxWidth='95%'>
+            <Box alignSelf={"center"} maxWidth='100%'>
                 <h5 style={{ fontSize:'clamp(1.2rem, 2.5vw, 1.5rem)' }}>Find Agreements, Contracts, Policies, and Practices!</h5>
                 <p className='paragraph' style={{textAlign:"center"}}><b>No more slow and costly documents — let&apos;s take matters into our hands.</b></p>
                 <Box><p className='paragraph'>Protocols range from replacing traditional contracts to shaping everyday practices, enabling a peer-to-peer environment that fosters radical collaboration and innovation. By adopting protocols, people take responsibility for their work and create a more dynamic, inclusive, and effective way of working together.</p></Box>

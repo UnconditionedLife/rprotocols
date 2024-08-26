@@ -1,14 +1,8 @@
-import { Fragment, useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { Box, CircularProgress, TextField, InputAdornment, Alert, AlertTitle,
-    Snackbar, IconButton,
-    Card} from '@mui/material'
-import { useInView } from "react-intersection-observer";
+    Snackbar, IconButton, Card} from '@mui/material'
 import { SearchRounded } from '@mui/icons-material';
-import MyLocationIcon from '@mui/icons-material/MyLocation';        // Context
-import CategoryIcon from '@mui/icons-material/Category';            // Domain
-import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';  // Purpose
-import SignpostIcon from '@mui/icons-material/Signpost';            // Protocol
 import { CloseRounded } from '@mui/icons-material';
 import { getDbAsync } from '../Database.js';
 import rProtocolStudio from '/rProtocolStudio.svg';
@@ -17,18 +11,19 @@ import { useNavigate } from 'react-router-dom';
 import SearchResults from './SearchResults.jsx';
 import ViewItemPage from './ViewPage/ViewItemPage.jsx';
 import elasticlunr from 'elasticlunrjs';
-import { BuildNewHistory, buildRelationships, getListOfNeeds, IncrementMinorVersion, LoadIndex, saveItemToDb } from './StudioFunctions.jsx';
+import { buildRelationships, getListOfNeeds, LoadIndex } from './StudioFunctions.jsx';
 import EditItemPage from './EditPage/EditItemPage.jsx';
 import { BuildNewItem } from './StudioFunctions.jsx';
-import GraphPage from './Graph/GraphPage.jsx';
 import AddSetPage from './AddSetPage/AddSetPage.jsx';
 import StudioExplore from './StudioExplore.jsx';
 import Home from '../Home.jsx';
 import HomeSwitcher from '../HomeSwitcher.jsx';
-import AboutPage from '../Collab/AboutPage.jsx';
+import AboutUs from '../Collab/AboutUs.jsx';
 import PrivacyPage from '../Collab/PrivacyPage.jsx';
 
-// console.log('LOADING STUDIO')
+import GraphPage from './Graph/GraphPage.jsx';
+import SectionDiamond from '../SectionDiamond.jsx';
+
 
 export default function Studio() {
     const itemCardRef = useRef(null)
@@ -37,29 +32,21 @@ export default function Studio() {
     const [ db, setDb ] = useState(null)
     const [ relDb, setRelDb ] = useState({})
     const [ needsList, setNeedsList ] = useState(null)
-    
     const [ index, setIndex ] = useState(null)
-
     const { lang, area, action, value1, value2 } = useParams();
-    // const { searchterm } = useParams();
-
     const [ item, setItem ] = useState(null)
     const [ newItem, setNewItem ] = useState(null)
     const [ setInfo, setSetInfo ] = useState(null)
-
-    // const [ parentItem, setParentItem ] = useState(null)
-    const [ itemType, setItemType ] = useState(null)
-    const [ searching, setSearching ] = useState(false)
+    // const [ searching, setSearching ] = useState(false)
     const [ goto, setGoto ] = useState(null)
 
     const [ searchResults, setSearchResults ] = useState([])
     const [ alertMessage, setAlertMessage ] = useState( '')
     const [ aboutToEdit, setAboutToEdit ] = useState( false )
-    const [ searchTerm, setSearchTerm ] = useState(null)
-    
+    const [ searchTerm, setSearchTerm ] = useState("")    
     const navigate = useNavigate()
 
-console.log("location", location)
+
 
     useEffect(() => {
         if (area === "home" && location.state && location.state.from404) {
@@ -68,7 +55,7 @@ console.log("location", location)
             // Clear the location state
             navigate(location.pathname, { replace: true, state: null });
         }
-    }, [ area, location ]);
+    }, [ area, location, navigate ]);
 
 
     useEffect(() => {
@@ -76,64 +63,32 @@ console.log("location", location)
             if (action === "search" && value1 ) {
                 setSearchTerm(value1)
             } else {
-                setSearchTerm(null)
+                setSearchTerm(undefined)
+                // setSearching( true )
             }
+
+            // **** check if about to Edit ****
+            if (action === 'edit') setAboutToEdit( true )
         }
     }, [ area, action, value1 ])
 
 
-    // console.log('LOADING STUDIO -- BEFORE USE EFFECTS')
-
+    // **** LOAD DATABASE TO GET LATEST DATA FOR EDITING ****
     useEffect(() => {
-        // get the second element of the path and set the display state
-        // VIEW, EDIT, ADD
-        // const pathArray = location.pathname.split('/')
-        // pathArray.shift()
-
-        // console.log("PATH", pathArray)
-        console.log("AREA", area)
-        console.log("ACTION", action)
-        console.log("VALUE1", value1)
-        console.log("VALUE2", value2)
-
-        console.log("SEARCH TERM", searchTerm)
-
-        // const mainSection = location.pathname.split('/', 4)[3]
-        // let newState = !mainSection ? "home" : location.pathname.slpit('/', 3)[2] === "studio" ? "studio" : mainSection
-
-        // console.log("newState", `**${newState}**`)
-
-        // let mainSection = 'null'
-        if (area === 'studio') {
-            // mainSection = "studio"
-            // if (action === "need") mainSection = "need"
-            if (action === 'edit') setAboutToEdit( true )
-            // if (action === 'add-set') mainSection = "add-set"
-        }
-
-        // if ( mainSection === "need" || mainSection === "protocol" ) newState = "view"
-
-        // console.log('newState', newState)
-
-        
-
-        
-    }, [ location.pathname ])
-
-
-    // const user = globalVars.user
-
-    // LOAD DATABASE
-    useEffect(() => {
-        console.log("GOING FOR DATA")
+        // console.log("GOING FOR DATA")
         getDbAsync().then((latestItems)=> {
 
         // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
             latestItems.forEach((item, i) => {
+
+                if (item.iId === "P.20240819T233440225-335") console.log("LOAD ITEM", item)
+
                 if (item.parentNeeds === undefined)
+                    console.log("ParentNeeds Undefined")
                     latestItems[i].parentNeeds = []
 
                 if (item.needMajId !== "" && item.parentNeeds.length === 0)
+                        console.log("EMPTY ParentNeeds")
                         latestItems[i].parentNeeds.push( item.needMajId )
 
                 if ( item.minId.includes("NaN") ) {
@@ -144,13 +99,18 @@ console.log("location", location)
                 if (item.needMinId) delete latestItems[i].needMinId
                 if (item.needMajId) delete latestItems[i].needMajId
                 if (item.needTitle) delete latestItems[i].needTitle
-                item.parentNeeds.forEach((p, iii) => {
-                    if (p !== 'ROOT') {
-                        const idArr = p.split('.')
-                        if (idArr[2] !== '0')
-                            latestItems[i].parentNeeds[iii] = `${idArr[0]}.${idArr[1]}.0`
-                    }       
-                })
+                
+                
+
+                // item.parentNeeds.forEach((p, iii) => {
+                //     console.log("P", `|${p}|`)
+                //     if (p !== 'ROOT') {
+                //         const idArr = p.split('.')
+                //         console.log("ID ARRAY", idArr)
+                //         if (idArr[2] !== '0')
+                //             latestItems[i].parentNeeds[iii] = `${idArr[0]}.${idArr[1]}.0`
+                //     }       
+                // })
             })
         // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
 
@@ -338,12 +298,12 @@ console.log("location", location)
         
 // console.log("Passed URL", url)
         
-        setSearching(false)
+        // setSearching(false)
         setGoto(url)
     }
 
     function handleSearchTerm(newValue){
-        setSearching(true)
+        // setSearching(true)
         handleGoto(`/${lang}/studio/search/${newValue}` )
     }
 
@@ -402,7 +362,7 @@ if (item) console.log("item", item)
     if (db === null) return null
 
     return (
-        <Box className='myceliumBackground' >
+        <Box className='myceliumBackground' id="Studio-Page-Container">
 
             {/* ********  ERROR MESSAGES ********* */}
 
@@ -432,7 +392,7 @@ if (item) console.log("item", item)
                 { area !== "home" &&
                     <span style={{ color:'white', lineHeight:'60px', cursor:'pointer', fontSize:'1.1rem' }} 
                         onClick={ () => { handleGoto(`/${lang}/home`) }}>
-                        Show Home
+                        Home
                     </span>
                 }
             </Box>
@@ -449,7 +409,7 @@ if (item) console.log("item", item)
 
                     <Box alignSelf='center' backgroundColor='rgba(255, 255, 255, 0.9)' 
                         padding='8px' borderRadius='10px' width="94%" maxWidth='340px' marginTop='8px'>
-                        <TextField size='small' className='formField' width='90%' maxWidth='300px'
+                        <TextField size='small' className='formField' width='90%'
                             name={ "search" } value={ searchTerm } autoComplete='off'
                             placeholder="Find needs and protocols..."
                             InputProps={{startAdornment: (
@@ -460,10 +420,7 @@ if (item) console.log("item", item)
                             onChange={ (e) => { handleSearchTerm(e.target.value) } }
                             onFocus={ (e) => { handleSearchTerm(e.target.value) }} />
                     </Box>
-                    {/* <Box style={{ fontSize:'0.8rem', color:'white',  margin:'8px', marginBottom:'30px', cursor: 'pointer' }}
-                        onClick={ () => { handleSearchTerm("Life's Needs"); handleGoto('/studio/need/life-s-needs/N.20240716T165825706-1513.0') }}>Or, start with the ROOT needs</Box> */}
-
-                    {/* <Box color='green' onClick={ () => saveAllItemsToDynamoDB() }>UPLOAD TO DYNAMODB</Box> */}
+            
                     { area !== "studio" &&
                         <Box mb='4em' mx={10} alignSelf={"center"} style={{ cursor:'pointer' }}>
                             <Card style={{ marginTop:'30px', paddingTop:'1.1em', paddingBottom:'0.8em', paddingLeft:'2em', paddingRight:'2em', backgroundColor:'#FFC400' }}
@@ -473,13 +430,11 @@ if (item) console.log("item", item)
                         </Box>
                     }
                     
-                    { area === "studio"  && action === 'search' && searchResults.length === 0 &&
-                        <Box width='200px' height='200px' margin='30px' alignSelf='center' ><CircularProgress/></Box>
-                    }
-
-                    { area === "studio" &&  action === "search" && searchResults.length > 0 &&
-                        <SearchResults searchResults={ searchResults } handleGoto={ handleGoto }/>
-                    }
+                    {area === "studio" && action === "search" && (
+                        searchResults.length === 0
+                            ? <Box width='200px' height='200px' margin='30px' alignSelf='center'><CircularProgress/></Box>
+                            : <SearchResults searchResults={searchResults} handleGoto={handleGoto} />
+                    )}
 
                     { (area === "studio" && (action === "need" || action === "protocol") && item !== null ) &&
                         <Box alignSelf='center' marginTop='30px' ref={ itemCardRef } >
@@ -527,54 +482,23 @@ if (item) console.log("item", item)
                         </Box>
                     } */}
 
-
-
                 {/* </Box> */}
 
                 { (db === null) && <Box width='200px' height='200px' margin='50px' alignSelf='center' ><CircularProgress/></Box> }
-                <br/>
-                <br/>
-                <br/>
+                
             </Box>
-            
-            <Box style={{ width:'95%', height:'60px', backgroundColor:'rgba(34, 127, 175, 0.4)',
-                clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}>
-                { area !== "explore" && area !== "home" &&
-                    <span style={{ color:'white', lineHeight:'60px', cursor:'pointer', fontSize:'1.1rem' }} 
-                        onClick={ () => { handleGoto(`/${lang}/explore`) }}>
-                        Explore Protocols
-                    </span>
-                }
-            </Box>
-            
-            { area === "explore" || area === "home" && 
-                <StudioExplore db={ db } handleGoto={ handleGoto } lang={ lang } />
+
+            <SectionDiamond section="explore" handleGoto={ handleGoto } />
+            { (area === "explore" || area === "home") && 
+                <StudioExplore db={ db } handleGoto={ handleGoto } lang={ lang } area={ area } />
             }
 
-            <Box style={{ width:'95%', height:'60px', backgroundColor:'rgba(34, 127, 175, 0.4)',
-                marginTop:"50px", clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}>
-                { area !== "about-us" && area !== "home" &&
-                    <span style={{ color:'white', lineHeight:'60px', cursor:'pointer', fontSize:'1.1rem' }} 
-                        onClick={ () => { handleGoto(`/${lang}/about-us`) }}>
-                        About Us
-                    </span>
-                }
-            </Box>
-
+            <SectionDiamond section="about-us" handleGoto={ handleGoto } />
             { (area === "about-us" || area === "home") && 
-                <AboutPage lang={ lang } />
-            }
+                <AboutUs lang={ lang } area={ area } />
+            }    
 
-            <Box style={{ width:'95%', height:'60px', backgroundColor:'rgba(34, 127, 175, 0.4)',
-                marginTop:"50px", clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}>
-                { area !== "privacy-protocols" && area !== "home" &&
-                    <span style={{ color:'white', lineHeight:'60px', cursor:'pointer', fontSize:'1.1rem' }} 
-                        onClick={ () => { handleGoto(`/${lang}/privacy-protocols`) }}>
-                        Privacy Protocols
-                    </span>
-                }
-            </Box>
-
+            <SectionDiamond section="privacy-protocols" handleGoto={ handleGoto } />
             { (area === "privacy-protocols" || area === "home") && 
                 <PrivacyPage lang={ lang } db={ db } handleGoto={ handleGoto } />
             }

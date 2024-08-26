@@ -20,7 +20,7 @@ export default function Footer() {
     return (
         <Box className='footer'>
             <Box pl='20px' width='60px' maxWidth='60px'>
-                <img src="/RadicalPerson.svg" height="30px" style={{ margin:'10px'}}></img>
+                <img src="/rManIcon.svg" height="30px" style={{ margin:'10px'}}></img>
             </Box>
             <Box display='flex' flexWrap='wrap' flexDirection='row' marginTop='.8em'>
                 <span className='footerText'>©2024 rCollabs (a Radical World Collaborative)</span>

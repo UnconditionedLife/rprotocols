@@ -5,7 +5,11 @@ import ProtocolIcon from '/ProtocolIcon-reverse.svg';
 import CardSlider from './CardSlider.jsx';
 import Quote from '../Library/Quote.jsx';
 
-export default function StudioExplore({ db, handleGoto, lang }) {
+export default function StudioExplore({ db, handleGoto, lang, area }) {
+
+
+    console.log("Loaded Explore")
+
 
     const samples = [
         { sec: "health", items: [
@@ -39,7 +43,7 @@ export default function StudioExplore({ db, handleGoto, lang }) {
 
     // console.log("DB", db)
 
-    if (db === null) return null
+    // if (db === null) return null
 
     samples.forEach((sec, i) => {
         sec.items.forEach((iMajId, ii) => {
@@ -51,18 +55,17 @@ export default function StudioExplore({ db, handleGoto, lang }) {
     
     // console.log("Samples", samples)
 
-    function handleViewBundle(){
-        // console.log("something")
-    }
+    console.log("Explore Return")
 
     return (
         <Fragment>
+        {/* // <Box id="Explore Container" display="flex" flexDirection='column' alignItems='center' > */}
             <br/>
-            <Box style={{ placeItems: 'center', marginTop:'50px', marginBottom:'50px' }}>
+            <Box display="flex" flexDirection="column" width="100%" style={{ placeItems: 'center', marginTop:'50px', marginBottom:'50px' }}>
                 {/* <img src="/RadicalPerson.svg" height="40px"></img> */}
                 <img style={{ marginTop:"30px" }} src="/rManIcon.svg" height='90em'></img><br/>
                 <span className='sectionTitle'>HOW IT WORKS</span>
-                <Box display='flex' flexDirection='row' flexWrap='wrap'>
+                <Box display='flex' flexDirection='row' flexWrap='wrap' maxWidth='95vw' alignItems='center' justifyContent='center'>
                     <Box margin='20px' maxWidth='220px'>
                         <h2 className='cardTitle' >Discover</h2>
                         <span className='calloutText'>Browse through the library of Needs and Protocols.</span>
@@ -79,36 +82,34 @@ export default function StudioExplore({ db, handleGoto, lang }) {
             </Box>
             
             <h3><b>THE STRUCTURE</b></h3>
-            <span className='calloutText'>rPROTOCOLS are arranged into two levels</span>
+            <span className='calloutText'>rPROTOCOLS are organized in two levels</span>
 
-            <Box display='grid' >
-                <Box display={'flex'} flexDirection={'row'}>
-                    {/* <Box className='benefits'> */}
-                        {/* <Box m={1} display={'flex'} flexDirection={'row'} flexWrap='wrap' > */}
-                            <Box m={1} p={2} minHeight={"90px"} width='300px'>
-                                {/* <CategoryIcon fontSize='large' color='primary'/> */}
-                                <img src={ NeedIcon } height='38px' alt="Need Icon" style={{ marginBottom:'15px' }} />
-                
-                                <p className='cardTitle'>Needs</p>
-                                <span className='calloutText'>
-                                <b>Identify and understand the essential needs that drive our actions.</b> Each need highlights a specific requirement that must be met, serving as the foundation for the corresponding protocol that offers a path to fulfillment.
-                                    {/* Needs define a practical need to a protocol can guide us through meeting:<br/><strong>How can we address this need?</strong> */}
-                                    </span>
-                            </Box>
-                        {/* </Box>
-                        <Box m={1} display={'flex'} flexDirection={'row'} flexWrap='wrap' > */}
-                            <Box m={1} p={2} minHeight={"90px"} width='300px'>
-                                {/* <MyLocationIcon fontSize='large' color='primary'/> */}
-                                <img src={ ProtocolIcon } height='38px' alt="Protocol Icon" style={{ marginBottom:'15px' }} />
-                                <p className='cardTitle'>Protocols</p>
-                                <span className='calloutText'>
-                                    <b>Follow structured protocols to effectively address identified needs.</b> Each protocol provides step-by-step guidance, ensuring that every need is met with precision, clarity, and consistency.
-                                    
-                                    </span>
-                            </Box>
-                        {/* </Box> */}
+            <Box display={'flex'} flexDirection={'row'} flexWrap='wrap' maxWidth='95vw' alignItems='center' justifyContent='center'>
+                {/* <Box className='benefits'> */}
+                    {/* <Box m={1} display={'flex'} flexDirection={'row'} flexWrap='wrap' > */}
+                        <Box m={1} p={2} minHeight={"90px"} width='300px'>
+                            {/* <CategoryIcon fontSize='large' color='primary'/> */}
+                            <img src={ NeedIcon } height='38px' alt="Need Icon" style={{ marginBottom:'15px' }} />
+            
+                            <p className='cardTitle'>Needs</p>
+                            <span className='calloutText'>
+                            <b>Identify and understand the essential needs that drive our actions.</b> Each need highlights a specific requirement that must be met, serving as the foundation for the corresponding protocol that offers a path to fulfillment.
+                                {/* Needs define a practical need to a protocol can guide us through meeting:<br/><strong>How can we address this need?</strong> */}
+                                </span>
+                        </Box>
+                    {/* </Box>
+                    <Box m={1} display={'flex'} flexDirection={'row'} flexWrap='wrap' > */}
+                        <Box m={1} p={2} minHeight={"90px"} width='300px'>
+                            {/* <MyLocationIcon fontSize='large' color='primary'/> */}
+                            <img src={ ProtocolIcon } height='38px' alt="Protocol Icon" style={{ marginBottom:'15px' }} />
+                            <p className='cardTitle'>Protocols</p>
+                            <span className='calloutText'>
+                                <b>Follow structured protocols to effectively address identified needs.</b> Each protocol provides step-by-step guidance, ensuring that every need is met with precision, clarity, and consistency.
+                                
+                                </span>
+                        </Box>
                     {/* </Box> */}
-                </Box>
+                {/* </Box> */}
             </Box>
 
         {/* <Box className='myceliumBackground' display={'flex'} flexDirection={'column'} backgroundColor='black' alignItems='center' overflow='hidden'> */}
@@ -187,8 +188,7 @@ export default function StudioExplore({ db, handleGoto, lang }) {
             <CardSlider items={ samples[5].items } handleGoto={ handleGoto } lang={ lang } />
             <Button variant='contained' style={{ margin: '10px', marginBottom: '40px' }}
                 onClick={ () => { handleGoto(`/${ lang }/studio/need/how-to-ensure-safety-and-security/N.20240719T013958122-8822.0#view-item`)}}>Safety & Security &gt; Protocol Studio</Button>
-
-
+        {/* </Box> */}
         </Fragment>
     )
 }

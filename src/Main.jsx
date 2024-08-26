@@ -11,8 +11,6 @@ import COOP2 from './COOP2.jsx';
 import CollabHomePage from './Collab/HomePage.jsx';
 import SessionsPage from './Collab/SessionsPage.jsx';
 import SessionsFormPage from './Collab/SessionsFormPage.jsx';
-import AboutPage from './Collab/AboutPage.jsx';
-import PrivacyPage from './Collab/PrivacyPage.jsx';
 import LangSwitcher from './LangSwitcher.jsx';
 import HomeSwitcher from './HomeSwitcher.jsx';
 
@@ -75,21 +73,10 @@ const router = createBrowserRouter([
                 path: "/:lang/:area/:action/:value1/:value2",
                 element: <Studio />
             },
-
-
-            // FIXED PATHS
-            // { 
-            //     path: "/:lang/privacy_protocols",
-            //     element: <PrivacyPage/>
-            // },
             { 
                 path: "/:lang/coop2",
                 element: <COOP2/>
             },
-            // { 
-            //     path: "/:lang/about",
-            //     element: <AboutPage/>
-            // },
         ],
     },
 ]);

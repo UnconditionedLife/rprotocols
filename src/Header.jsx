@@ -126,7 +126,7 @@ export default function Header(props) {
     return (
         <Box className='header'>
             <Box display='flex' pl='20px' flexDirection='row' >
-                <a href='/'><img src="/rManIcon.svg" height="30px" style={{ margin:'10px'}}></img></a>
+                <a href='/en/home'><img src="/rManIcon.svg" height="30px" style={{ margin:'10px'}}></img></a>
                 <Box display='flex' pl='10px' flexDirection='row' 
                     style={{ fontSize:'1rem', fontWeight:600, color:'white', marginTop:'6px', marginLeft:'-10px'}}>
                     BETA <Box style={{ fontSize:'0.7em', fontWeight:400, color:'white', marginTop:'2px', marginLeft:'5px' }}>({ appVerNum })</Box>
@@ -150,9 +150,7 @@ export default function Header(props) {
                 <MenuIcon style={{ color:"white" }}/>
             </Box>
             <Box style={{ marginRight:'20px'}}>
-                
                 <Menu id="hamburger" anchorEl={anchorEl} open={open} onClose={ handleClose }>
-
                     <MenuItem onClick={() => { handleClose('/') }}>Home</MenuItem>
                     { (siteProp == 'rProtocols') &&
                        <MenuItem onClick={() => { handleClose('/en/studio') }}>Studio</MenuItem>
@@ -173,5 +171,4 @@ export default function Header(props) {
             </Box>
         </Box>
     )
-
 }

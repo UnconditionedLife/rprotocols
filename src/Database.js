@@ -157,7 +157,6 @@ export function getDbAsync() {
 
     return dbGetLatestProtocolsAsync(latestLocal.year, latestLocal.sinceDate ).then((items) => {
         let allItems = latestLocal.items
-
         //RESTORE SPECIAL CHARACTERS
         const restoredItems = []
         items.forEach( item => {
@@ -169,7 +168,6 @@ export function getDbAsync() {
             allItems = updateLocalStorage(restoredItems)
         
         // console.log("ALL ITEMS", allItems, dayjs().valueOf())
-             
         return allItems
     })
 }

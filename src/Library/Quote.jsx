@@ -12,12 +12,11 @@ export default function Quote(props) {
     });
 
     return (
-        
         <Box className="quoteContainer">
-        <span className='quote' >
-            &ldquo;{ lines }&rdquo;<br/>
-            <span style={{ fontFamily:'fantasy', fontSize:'1em' }}>{ author }</span>
-        </span>
-    </Box>
+            <span className='quote' >
+                &ldquo;{ lines }&rdquo;<br/>
+                <span style={{ fontFamily:'fantasy', fontSize:'1em' }}>{ author }</span>
+            </span>
+        </Box>
     )
 }

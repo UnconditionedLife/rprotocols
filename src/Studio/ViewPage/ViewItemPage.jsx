@@ -26,12 +26,6 @@ import BreadcrumbTabs from '../BreadcrumbTabs';
 export default function ViewItemPage(props) {
     const { item, getLinkedItems, handleGoto, action, handleBuildNewItem,
         db, relDb, handleSetAddSet, needsList } = props
-    // const [ introShow, setIntroShow ] = useState( 'none' )
-    // const [ elemShow, setElemShow ] = useState( 'none' )
-    // const [ protoShow, setProtoShow ] = useState( 'none' )
-    // const [ linksShow, setLinksShow ] = useState( 'none' )
-    // const [ attribShow, setAttribShow ] = useState( 'none' )
-    // const [ histShow, setHistShow ] = useState( 'none' )
     const [ lang, setLang ] = useState('en')
     const [ showAll, setShowAll ] = useState( true )
     const [ linkedItems, setLinkedItems ] = useState([])
@@ -215,6 +209,9 @@ export default function ViewItemPage(props) {
                 }
 
                 <HistoryAreaView item={ item } history={ item.history } lang={ lang } show={ showAll } />
+
+                <img height="36px" style={{marginTop:"-8px"}} 
+                    src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png"/>
                 
                 <CardActions sx={{ marginBottom:'20px' }}>
                     { (!user) &&
