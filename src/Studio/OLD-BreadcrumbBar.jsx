@@ -13,27 +13,27 @@ export default function BreadcrumbBar(props) {
 
     const lang = "en"
 
+    // BUILD LOOKUP TABLE BY MAJID
     const dbLookup = {}
-
-    db.forEach(i => {
-        dbLookup[i.majId] = i
-    })
-
+    db.forEach(i => dbLookup[i.majId] = i)
 
     useEffect(() => {
         setBoxColor(getItemColor(item.type))
     }, [ item ])
 
-    const statusBadgeColor = boxColor
-    const isNarrow = windowSize[0] < 500 ? true : false
+    // const statusBadgeColor = boxColor
+    // const isNarrow = windowSize[0] < 500 ? true : false
 
     if ( !item || !relDb ) return null
 
+    // BUILD BREADCRUMB LIST
     const breadcrumbs = []
     const links = new Array()
-    links.push({ title: item.title[lang], majId: item.majId, parentNeeds: item.parentNeeds, type: item.type })
-    let reachedRoot = false
     
+    // INSERT SUBJECT ITEM TO SEED THE SEARCH
+    links.push({ title: item.title[lang], majId: item.majId, parentNeeds: item.parentNeeds, type: item.type })
+    
+    let reachedRoot = false
     do {
         const newParentKeys = links[links.length -1]
         if (newParentKeys.parentNeeds[0]) {

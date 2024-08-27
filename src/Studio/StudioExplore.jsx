@@ -8,7 +8,7 @@ import Quote from '../Library/Quote.jsx';
 export default function StudioExplore({ db, handleGoto, lang, area }) {
 
 
-    console.log("Loaded Explore")
+    // console.log("Loaded Explore")
 
 
     const samples = [
@@ -55,7 +55,7 @@ export default function StudioExplore({ db, handleGoto, lang, area }) {
     
     // console.log("Samples", samples)
 
-    console.log("Explore Return")
+    // console.log("Explore Return")
 
     return (
         <Fragment>
@@ -63,6 +63,7 @@ export default function StudioExplore({ db, handleGoto, lang, area }) {
             <br/>
             <Box display="flex" flexDirection="column" width="100%" style={{ placeItems: 'center', marginTop:'50px', marginBottom:'50px' }}>
                 {/* <img src="/RadicalPerson.svg" height="40px"></img> */}
+                <h3><b>EXPLORE PROTOCOLS</b></h3>
                 <img style={{ marginTop:"30px" }} src="/rManIcon.svg" height='90em'></img><br/>
                 <span className='sectionTitle'>HOW IT WORKS</span>
                 <Box display='flex' flexDirection='row' flexWrap='wrap' maxWidth='95vw' alignItems='center' justifyContent='center'>
@@ -80,8 +81,9 @@ export default function StudioExplore({ db, handleGoto, lang, area }) {
                     </Box>
                 </Box>
             </Box>
-            
-            <h3><b>THE STRUCTURE</b></h3>
+            <br/>
+            <br/>
+            <span className='sectionTitle'>THE STRUCTURE</span>
             <span className='calloutText'>rPROTOCOLS are organized in two levels</span>
 
             <Box display={'flex'} flexDirection={'row'} flexWrap='wrap' maxWidth='95vw' alignItems='center' justifyContent='center'>
