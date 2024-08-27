@@ -8,7 +8,9 @@ import { getItemColor, urlizeString } from '../GlobalFunctions';
 
 export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, lang }) {
     const [ lookup, setLookup ] = useState([])
-    const [ links, setLinks ] = useState([])
+    // const [ links, setLinks ] = useState([])
+
+    let links = new Array()
     
     useEffect(() => {
         // build lookup
@@ -16,70 +18,70 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
         db.forEach(i => { idLookup[i.majId] = i })
         setLookup(idLookup)
   
-        // build links/tabs list
-        const newLinks = new Array()
-        newLinks.push({ title: item.title[lang], majId: item.majId, 
-            parentNeeds: item.parentNeeds, type: item.type, bgcolor: getItemColor(item.type)  })
-
-            console.log("PARENT NEEDS BUG",item)
-
-
-        setLinks(newLinks)
+        // BUILD BREADCRUMB/TABS LIST && INSERT SUBJECT ITEM TO SEED LOOP
+        
     }, [ db, item, lang ])
-    
-    return null
 
     if ( !item || !relDb ) return null
 
     // console.log("LINKS", links, lang)
     
-    if (prePost === 'pre') {
-        let reachedRoot = false
-        do {
-            
-            const newParentKeys = links[links.length -1]
-            console.log("NextItem", newParentKeys)
-            if (!newParentKeys) continue;
-            console.log("NextItem", newParentKeys.parentNeeds)
-            if (newParentKeys.parentNeeds[0]) {
-                console.log("NextItem", newParentKeys.parentNeeds)
-                const nextItem = lookup[ newParentKeys.parentNeeds[0] ]
-                if (newParentKeys.parentNeeds[0] === 'ROOT') { 
-                    reachedRoot = true 
-                    break
-                } else {
-                    links.push({ title: nextItem.title[lang], majId: nextItem.majId, 
-                        parentNeeds: nextItem.parentNeeds, type: nextItem.type, bgcolor: getItemColor(nextItem.type), cursor:"pointer" })
-                }
-            } else {
-                break
-            }
-        } while (reachedRoot === false)
-        
-        // links.push({ title: "THE RADICAL BEGINNING", majId: "", parentNeeds: "", type: "", bgcolor: "grey", cursor:"default" })
+    function addTab(i){
+        if (i !== null ) {
+            links.push({ title: i.title[lang], majId: i.majId,
+                parentNeeds: i.parentNeeds, type: i.type, 
+                bgcolor: getItemColor(i.type), cursor:"pointer" })
+        } else {
+            links.push({ title: "NO OTHER NEEDS", majId: "", parentNeeds: "", 
+                type: "", bgcolor: "grey", cursor:"default" })
+        }
     }
 
-    if (prePost === 'post') {
+    function getNextTab(){
+        const lastTab = links[links.length -1]
+        if (lastTab && lastTab.parentNeeds[0] && lastTab.parentNeeds[0] !== "") {
+            const nextTab = lookup[ lastTab.parentNeeds[0] ]
+            return nextTab
+        }
+    }
+
+    function doNextTab(){
+        const latestTab = getNextTab()
+        if (latestTab !== undefined){
+            addTab(latestTab)
+            if (latestTab.parentNeeds[0] !== 'ROOT') doNextTab()
+        }
+    }
+
+    if (prePost === 'pre') {
+        addTab(item) // add current item
+        doNextTab()
+        cleanLinkList(true)
+
+        console.log("LINKS", links)
+
+    } else if (prePost === 'post') {
         const children = relDb.p[ item.majId ]
+
+        console.log("CHILDREN IN POST", children )
+
         if (children) {
             children.forEach( (majId) => {
-                const i = lookup[ majId ]
-                if (i.type === "Need") {
-                    links.push({ title: i.title[lang], majId: i.majId, 
-                        parentNeeds: i.parentNeeds, type: i.type, bgcolor: getItemColor(i.type), cursor:"pointer" })
-                }
+                // const i = 
+                // if (i.type === "Need") 
+                    addTab(lookup[ majId ])
             })
         }
-
-        if ( links.length < 2 ) {
-            links.push({ title: "NO OTHER NEEDS", majId: "", parentNeeds: "", type: "", bgcolor: "grey", cursor:"default" })
-        }
+        if ( links.length === 0 ) addTab(null) // SHOW "NO OTHER NEEDS" TAB
+        cleanLinkList(false)
     }
 
-    // flip them around and remove the last one(same as current item)
-    links.reverse()
-    links.pop()
-
+    function cleanLinkList(pop){
+        // flip them around and remove the last one (current item)
+        links.reverse()
+        if (pop === true)links.pop()
+    }
+    
     function handleClick(i) {
         if (i.majId !== "") {
             handleGoto(`/${lang}/studio/need/${urlizeString(i.title)}/${i.majId}`  )

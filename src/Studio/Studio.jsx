@@ -80,16 +80,13 @@ export default function Studio() {
 
         // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
             latestItems.forEach((item, i) => {
-
-                if (item.iId === "P.20240819T233440225-335") console.log("LOAD ITEM", item)
-
                 if (item.parentNeeds === undefined)
-                    console.log("ParentNeeds Undefined")
                     latestItems[i].parentNeeds = []
 
-                if (item.needMajId !== "" && item.parentNeeds.length === 0)
-                        console.log("EMPTY ParentNeeds")
-                        latestItems[i].parentNeeds.push( item.needMajId )
+                if (item.parentNeeds.length === 0 && item.needMajId && item.needMajId !== "" ) {
+                    console.log("EMPTY ParentNeeds")
+                    latestItems[i].parentNeeds.push( item.needMajId )
+                }
 
                 if ( item.minId.includes("NaN") ) {
                     latestItems[i].minId = item.minId.replaceAll("NaN", "0")
@@ -99,8 +96,6 @@ export default function Studio() {
                 if (item.needMinId) delete latestItems[i].needMinId
                 if (item.needMajId) delete latestItems[i].needMajId
                 if (item.needTitle) delete latestItems[i].needTitle
-                
-                
 
                 // item.parentNeeds.forEach((p, iii) => {
                 //     console.log("P", `|${p}|`)
