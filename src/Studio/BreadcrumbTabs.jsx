@@ -1,14 +1,11 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Box } from '@mui/material'
 import { getItemColor, urlizeString } from '../GlobalFunctions';
-// import StatusBadge from '../Library/StatusBadge';
-// import useSize from '../Library/useSize';
-// import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-// import LinkIcon from '@mui/icons-material/Link';
+import NeedIcon from '/NeedIcon-reverse.svg';
+import ProtocolIcon from '/ProtocolIcon-reverse.svg';
 
 export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, lang }) {
     const [ lookup, setLookup ] = useState([])
-    // const [ links, setLinks ] = useState([])
 
     let links = new Array()
     
@@ -16,15 +13,10 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
         // build lookup
         const idLookup = {}
         db.forEach(i => { idLookup[i.majId] = i })
-        setLookup(idLookup)
-  
-        // BUILD BREADCRUMB/TABS LIST && INSERT SUBJECT ITEM TO SEED LOOP
-        
+        setLookup(idLookup)        
     }, [ db, item, lang ])
 
     if ( !item || !relDb ) return null
-
-    // console.log("LINKS", links, lang)
     
     function addTab(i){
         if (i !== null ) {
@@ -32,46 +24,37 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
                 parentNeeds: i.parentNeeds, type: i.type, 
                 bgcolor: getItemColor(i.type), cursor:"pointer" })
         } else {
-            links.push({ title: "NO OTHER NEEDS", majId: "", parentNeeds: "", 
+            links.push({ title: "NO OTHER NEEDS/PROTOCOLS", majId: "", parentNeeds: "", 
                 type: "", bgcolor: "grey", cursor:"default" })
-        }
-    }
+    }}
 
     function getNextTab(){
         const lastTab = links[links.length -1]
         if (lastTab && lastTab.parentNeeds[0] && lastTab.parentNeeds[0] !== "") {
             const nextTab = lookup[ lastTab.parentNeeds[0] ]
             return nextTab
-        }
-    }
+    }}
 
     function doNextTab(){
         const latestTab = getNextTab()
         if (latestTab !== undefined){
             addTab(latestTab)
             if (latestTab.parentNeeds[0] !== 'ROOT') doNextTab()
-        }
-    }
+    }}
 
     if (prePost === 'pre') {
         addTab(item) // add current item
         doNextTab()
         cleanLinkList(true)
 
-        console.log("LINKS", links)
-
     } else if (prePost === 'post') {
         const children = relDb.p[ item.majId ]
-
-        console.log("CHILDREN IN POST", children )
-
         if (children) {
             children.forEach( (majId) => {
                 // const i = 
                 // if (i.type === "Need") 
                     addTab(lookup[ majId ])
-            })
-        }
+        })}
         if ( links.length === 0 ) addTab(null) // SHOW "NO OTHER NEEDS" TAB
         cleanLinkList(false)
     }
@@ -83,20 +66,35 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
     }
     
     function handleClick(i) {
-        if (i.majId !== "") {
-            handleGoto(`/${lang}/studio/need/${urlizeString(i.title)}/${i.majId}`  )
-        }
+        if (i.majId !== "")
+            handleGoto( `/${lang}/studio/need/${urlizeString(i.title)}/${i.majId}` )
     }
 
-    // set the CSS ClassName
-    const boxClass = prePost === 'pre' ? 'breadcrumbTabPre' : 'breadcrumbTabPost'
+    function getRadius(corner, i){
+        if (prePost === "pre") {
+            if (corner === "top") return (i === 0) ? "10% 30%" : "0"
+        }
+        if (prePost === "post") {
+            if (corner === "bottom") return (i === links.length - 1) ? "10% 30%" : "0"
+        }
+        return "0"
+    }
 
     return (
         <Fragment>
-            {links.map((b) => (
-                <Box key={ b.majId }  className={ boxClass } bgcolor={ b.bgcolor } 
-                    onClick={ () => handleClick(b) } style={{ cursor: b.cursor }} >
-                        { b.title }
+            {links.map((b, i) => (
+                <Box key={ b.majId } display="flex" marginLeft="40px" borderLeft="2px solid grey" marginBottom="-4px" marginTop="4px" height='54px' bgcolor="rgba(0,0,0,0)"
+                    style={{ color:"white", textAlign:"left", lineHeight:"54px", paddingLeft:"30px", cursor: b.cursor, borderTopLeftRadius:getRadius("top",i), borderBottomLeftRadius:getRadius("bottom",i)}}
+                    onClick={ () => handleClick(b) } >
+                    <Box style={{ marginLeft:"-42px", paddingTop:"8px", backgroundColor:"rgba(0,0,0,0)"}}>
+                        { b.type === 'Need' && <img src={ NeedIcon } height='20px' alt="Need Icon" /> }
+                        { b.type === 'Protocol' && <img src={ ProtocolIcon } height='22px' alt="Protocol Icon" /> }
+                        { b.type === '' && <Box height="12px" width="12px" marginLeft="3px" marginTop="10px"  borderRadius="50%" 
+                            backgroundColor="white" border="2px solid grey"></Box> } 
+                    </Box>
+                    <Box style={{ marginLeft:"15px", backgroundColor:"rgba(0,0,0,0)", color: b.bgcolor }}>
+                        <b>{ b.title }</b>
+                    </Box>     
                 </Box>
             ))}
         </Fragment>
