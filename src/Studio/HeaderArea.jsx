@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box } from '@mui/material'
+import { Box, Tooltip } from '@mui/material'
 import LanguageBar from './LanguageBar';
 // import NorthIcon from '@mui/icons-material/North';
 import { getItemColor } from '../GlobalFunctions';
@@ -16,15 +16,24 @@ import NeedsBar from './EditPage/NeedsBar';
 export default function HeaderArea(props) {
     const { item, lang, handleLanguage, action, handleGoto, parentNeeds } = props
     const [ itemColor, setItemColor ] = useState('')
+    const [ isBeta, setIsBeta ]  = useState(false)
 
 // console.log("HEADER ITEM", item)
 // console.log("action", action)
     
     useEffect(() => {
         setItemColor(getItemColor(item.type))
+        if (item.verNum.split(".")[0] === "0" ) {
+            setIsBeta(true)
+        } else {
+            setIsBeta(false)
+        }
     }, [ item ])
 
     if (!item) return null
+
+    const verNumColor = isBeta ? "red" : "darkgray"
+    // const toolTipTitle = isBeta ? "Beta version - Promote button can make v.1.0" : "Current version number"
 
     return (
         <Box display='flex' flexDirection='column' width='100%'>
@@ -53,10 +62,12 @@ export default function HeaderArea(props) {
             
             {/* <h5 className='cardClas' style={{ marginTop:'4px', fontSize:'1.0em', fontWeight: 500, color: itemColor }} >{ item.type.toUpperCase() }</h5> */}
             
-            { action !== 'add-set' && 
-                <span className='cardVersion' color={itemColor} style={{ fontSize:'0.9em', fontWeight:500, color:{ itemColor }, fontFamily:'monospace' }}>
-                    ––&nbsp;v.{ item.verNum }&nbsp;––
-                </span>
+            { action !== 'add-set' &&
+                // <Tooltip title={`Edit ${wordCase(item.type)}`} placement="top">
+                    <span className='cardVersion' style={{ color:`${verNumColor}`, fontSize:'0.9em', fontWeight:500, fontFamily:'monospace' }}>
+                        ––&nbsp;v.{ item.verNum }{isBeta && <span> beta</span> }&nbsp;––
+                    </span>
+                // </Tooltip>
             }
 
             { action !== 'add-set' && 

@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from "dayjs"
 import { mergeArrays, updateLocalStorage } from "./GlobalFunctions"
-import { getLatestStoredInfo, restoreObject } from "./Studio/StudioFunctions"
+import { getLatestStoredInfo, removeDuplicateBetaItems, restoreObject } from "./Studio/StudioFunctions"
 
 const dbUrl = "https://d61l6zqpvl.execute-api.us-west-2.amazonaws.com/prod"
 
@@ -166,8 +166,9 @@ export function getDbAsync() {
         // MERGE DB AND LOCAL STORAGE
         if (items.length > 0) 
             allItems = updateLocalStorage(restoredItems)
+            const dedupBeta = removeDuplicateBetaItems(allItems)
         
         // console.log("ALL ITEMS", allItems, dayjs().valueOf())
-        return allItems
+        return dedupBeta
     })
 }

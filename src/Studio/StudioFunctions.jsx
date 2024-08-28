@@ -482,3 +482,20 @@ export function restoreString(input) {
     return replacements[match];
   });
 }
+
+export function removeDuplicateBetaItems(arr){
+    return Array.from(
+        arr.reduce((map, obj) => {
+            const current = map.get(obj.iId);
+            const newVersion = parseFloat(obj.verNum);
+
+            // Check if the current version starts with '0.'
+            if (!current || !current.verNum.startsWith('0.') || newVersion >= 1) {
+                if (newVersion >= 1 || !current || current.verNum.startsWith('0.')) {
+                map.set(obj.iId, obj);
+                }
+            }
+            return map;
+        }, new Map()).values()
+    );
+}

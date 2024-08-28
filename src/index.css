@@ -756,7 +756,7 @@ button:focus-visible {
     font-weight: 400;
     font-style: italic;
     cursor: pointer;
-    color: darkgray;
+    /* color: darkgray; */
 }
 
 .cardDescription {
