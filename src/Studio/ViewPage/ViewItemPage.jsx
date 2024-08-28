@@ -1,9 +1,10 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Box, Card, CardActions, Button } from '@mui/material'
+import { Box, Card, CardActions, Button, Tooltip } from '@mui/material'
 import Accordion from '../../Accordion';
-import { getUserObject, getUserName, deepCopy } from '../../GlobalFunctions';
+import { getUserObject, getUserName, deepCopy, wordCase } from '../../GlobalFunctions';
 import ProtocolForm from '../EditPage/EditItemPage';
 import EditIcon from '@mui/icons-material/EditNote';
+import PromoteIcon from '@mui/icons-material/PlusOne';
 import ForkIcon from '@mui/icons-material/ForkRight';
 import AdoptIcon from '@mui/icons-material/FactCheck';
 import CloseIcon from '@mui/icons-material/CloseOutlined';
@@ -117,33 +118,39 @@ export default function ViewItemPage(props) {
         handleGoto(`/${lang}/studio/add-set/`)
     }
 
-    // function handleButtons(button){
-    //     if (button === 'add') {
-    //         console.log('ADD BUTTON: OPEN POPUP')
-    //         setAddPopup( true )
-    //         // handleGoto( '/studio/add/'+ item.id )
-    //     }
-    // }
-
     // console.log('**USER**', getUserName())
     
     // console.log('**item**', item)
 
+    const version = item.verNum.split(".")[0]
+
     const buttons = (
         <Fragment>
-            <Button size="small" variant="outlined" style={{ margin:'4px' }}
+            <Tooltip title={`Edit ${wordCase(item.type)}`} placement="top">
+            <Button size="small" variant="contained" style={{ margin:'4px' }}
                 onClick={() => { handleGoto( `/${lang}/studio/edit/${item.minId}` ) }} 
                 endIcon={ <EditIcon /> }>EDIT</Button>
+            </Tooltip>
             
-            { item.type === 'Protocol' &&
-                <Button size="small" variant="outlined" style={{ margin:'4px' }} 
-                    onClick={() => { handleGoto( `/${lang}/studio/fork/${item.minId}` ) }}
-                    endIcon={ <ForkIcon /> }>NEW VERSION</Button>
+            { version === '0' &&
+                <Tooltip title={`Promote ${wordCase(item.type)} from v.${item.verNum} to v.1.0`} placement="top">
+                    <Button size="small" variant="outlined" style={{ margin:'4px' }} 
+                        onClick={() => { handleGoto( `/${lang}/studio/promote/${item.minId}` ) }}
+                        endIcon={ <PromoteIcon /> }>PROMOTE</Button>
+                </Tooltip>
             }
 
-            <Button size="small" variant="outlined" style={{ margin:'4px' }}
+            { item.type === 'Protocol' && version === "1" &&
+                <Tooltip title={`Copy ${wordCase(item.type)} to New Version`} placement="top">
+                    <Button size="small" variant="outlined" style={{ margin:'4px' }} 
+                        onClick={() => { handleGoto( `/${lang}/studio/fork/${item.minId}` ) }}
+                        endIcon={ <ForkIcon /> }>FORK</Button>
+                </Tooltip>
+            }
+
+            {/* <Button size="small" variant="outlined" style={{ margin:'4px' }}
                 onClick={() => { handleGoto( `/${lang}/studio` ) }} 
-                endIcon={ <CloseIcon /> }>CLOSE</Button>
+                endIcon={ <CloseIcon /> }>CLOSE</Button> */}
         </Fragment>
     )
 

@@ -21,8 +21,10 @@ import HomeSwitcher from '../HomeSwitcher.jsx';
 import AboutUs from '../Collab/AboutUs.jsx';
 import PrivacyPage from '../Collab/PrivacyPage.jsx';
 
+
 import GraphPage from './Graph/GraphPage.jsx';
 import SectionDiamond from '../SectionDiamond.jsx';
+import PromoteItem from './PromoteItem.jsx';
 
 
 export default function Studio() {
@@ -186,8 +188,11 @@ export default function Studio() {
     // USE VALUE2 TO SET ITEM
     useEffect(() => {
         let theItem
-        if ( area === "studio" && (action === "need" || action === "protocol") && value2 && db ) {
-            const urlId = value2
+        if ( area === "studio" && (action === "need" || action === "protocol" || action === "promote") && db ) {
+            let urlId
+            if ( value2 ) urlId = value2
+            if ( value1 && !value2 ) urlId = value1
+
             const idParts = urlId.split(".").length
 
 // console.log("idParts", idParts)
@@ -246,14 +251,14 @@ export default function Studio() {
     const validLangs = [ undefined, "en", "es", "pt" ]
     if (!validLangs.includes(lang)) error = true
 
-    const validAreas = [ undefined, "home", "studio", "explore", "about-us", "privacy-protocols" ]
+    const validAreas = [ undefined, "home", "studio", "explore-protocols", "about-us", "privacy-protocols" ]
     if (!validAreas.includes(area)) {
         error = true
     } else {
         if ( area === "home" && action !== undefined ) error = true
-        if ( area === "explore" && action !== undefined ) error = true
+        if ( area === "explore-protocols" && action !== undefined ) error = true
 
-        const validActions = [ "edit", "need", "protocol", "add", "add-set", "fork", "search" ]
+        const validActions = [ "edit", "promote", "need", "protocol", "add", "add-set", "fork", "search" ]
         if ( area === "studio" && !validActions.includes(action) ) error = true
     }
 
@@ -348,13 +353,17 @@ export default function Studio() {
 
 // console.log("Search Results", searchResults)
 
-if (item) console.log("item", item) 
 
-// console.log("ADD setInfo", setInfo)
 
-// console.log("DB @ STUDIO", db)
+console.log("ADD setInfo", setInfo)
 
-    if (db === null) return null
+console.log("DB @ STUDIO", db)
+
+    console.log("ITEM", item)
+    
+
+
+    if (db === null ) return null
 
     return (
         <Box className='myceliumBackground' id="Studio-Page-Container">
@@ -415,6 +424,11 @@ if (item) console.log("item", item)
                             onChange={ (e) => { handleSearchTerm(e.target.value) } }
                             onFocus={ (e) => { handleSearchTerm(e.target.value) }} />
                     </Box>
+
+                    {area === "studio" && action === "promote" && (
+                        <PromoteItem item={ item } lang={ lang } handleGoto={ handleGoto } 
+                            addRemoveItemInMemory={ addRemoveItemInMemory } handleNewItemChange={ handleNewItemChange }/>
+                    )}
             
                     { area !== "studio" &&
                         <Box mb='4em' mx={10} alignSelf={"center"} style={{ cursor:'pointer' }}>
@@ -431,7 +445,7 @@ if (item) console.log("item", item)
                             : <SearchResults searchResults={searchResults} handleGoto={handleGoto} />
                     )}
 
-                    { (area === "studio" && (action === "need" || action === "protocol") && item !== null ) &&
+                    { (area === "studio" && (action === "need" || action === "protocol" || action === "promote") && item !== null ) &&
                         <Box alignSelf='center' marginTop='30px' ref={ itemCardRef } >
                             <ViewItemPage item={ item } getLinkedItems={ getLinkedItems } 
                                 handleBuildNewItem={ handleBuildNewItem } action={ action } 
@@ -483,8 +497,8 @@ if (item) console.log("item", item)
                 
             </Box>
 
-            <SectionDiamond section="explore" handleGoto={ handleGoto } />
-            { (area === "explore" || area === "home") && 
+            <SectionDiamond section="explore-protocols" handleGoto={ handleGoto } />
+            { (area === "explore-protocols" || area === "home") && 
                 <StudioExplore db={ db } handleGoto={ handleGoto } lang={ lang } area={ area } />
             }
 

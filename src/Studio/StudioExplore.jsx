@@ -65,7 +65,7 @@ export default function StudioExplore({ db, handleGoto, lang, area }) {
                 {/* <img src="/RadicalPerson.svg" height="40px"></img> */}
                 <h3><b>EXPLORE PROTOCOLS</b></h3>
                 <img style={{ marginTop:"30px" }} src="/rManIcon.svg" height='90em'></img><br/>
-                <span className='sectionTitle'>HOW IT WORKS</span>
+                <span className='sectionTitle'>HOW THEY WORK</span>
                 <Box display='flex' flexDirection='row' flexWrap='wrap' maxWidth='95vw' alignItems='center' justifyContent='center'>
                     <Box margin='20px' maxWidth='220px'>
                         <h2 className='cardTitle' >Discover</h2>
