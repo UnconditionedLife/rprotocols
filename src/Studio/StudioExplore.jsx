@@ -21,6 +21,7 @@ export default function StudioExplore({ db, handleGoto, lang, area }) {
             "P.20240716T165602811-5197",
             "P.20240802T222430553-1659",
             "P.20240816T151315000-4430",
+            "P.20240730T160518275-5721"
         ]},
         { sec: "personal", items: [
             "P.20240820T014402960-4876",
