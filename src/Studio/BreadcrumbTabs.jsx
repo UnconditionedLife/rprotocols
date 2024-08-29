@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useCallback } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Box } from '@mui/material'
 import { getItemColor, urlizeString } from '../GlobalFunctions';
 import NeedIcon from '/NeedIcon-reverse.svg';
@@ -8,7 +8,7 @@ import { deepClone } from '@mui/x-data-grid/internals';
 export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, lang }) {
     const [ lookup, setLookup ] = useState([])
     const [ links, setLinks ] = useState([])
-    
+        
     // let tempLinks = [];
 
     // let links = new Array()
@@ -20,7 +20,7 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
             return acc;
         }, {});
 
-        console.log("LOOKUP", idLookup)
+        // console.log("LOOKUP", idLookup)
 
         setLookup(idLookup);
     }, [ db ]);
@@ -91,7 +91,7 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
     // Handle different prePost states
     useEffect(() => {
 
-        console.log("IN BUILD BREADCRUMB LINKS")
+        // console.log("IN BUILD BREADCRUMB LINKS")
         const getNextTab = ((tempLinks) => {
 
 // console.log("GET NEXT TEMPLINKS", tempLinks)
@@ -138,19 +138,8 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
             if (latestItem !== null) {
                 // addTab(latestItem);
                 const i = latestItem
-                tempLinks.push({
-                    title: i.title[lang],
-                    majId: i.majId,
-                    parentNeeds: i.parentNeeds,
-                    type: i.type,
-                    bgcolor: getItemColor(i.type),
-                    cursor: "pointer"
-                })
-                if (latestItem.parentNeeds[0] !== 'ROOT') { 
-                    // if not root go again
-                    doNextTab(tempLinks);
-                } else {
-                    // if next one is root then add it
+                
+                if (latestItem.minId !== item.minId) {
                     tempLinks.push({
                         title: i.title[lang],
                         majId: i.majId,
@@ -160,6 +149,9 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
                         cursor: "pointer"
                     })
                 }
+
+                if (latestItem.parentNeeds[0] !== 'ROOT') doNextTab(tempLinks);
+
                 return tempLinks
             }
         });
@@ -181,19 +173,19 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
         if (prePost === 'pre') {
             let tempLinks = []
             const i = item
-            tempLinks.push({
-                title: i.title[lang],
-                majId: i.majId,
-                parentNeeds: i.parentNeeds,
-                type: i.type,
-                bgcolor: getItemColor(i.type),
-                cursor: "pointer"
-            })
-
-            console.log("TEMPLINKS", tempLinks)
-            
-            tempLinks = doNextTab(tempLinks);
-            tempLinks = cleanLinkList(tempLinks, true);
+            if (i.parentNeeds[0] !== 'ROOT') {
+                tempLinks.push({
+                    title: i.title[lang],
+                    majId: i.majId,
+                    parentNeeds: i.parentNeeds,
+                    type: i.type,
+                    bgcolor: getItemColor(i.type),
+                    cursor: "pointer"
+                })
+                
+                tempLinks = doNextTab(tempLinks);
+                tempLinks = cleanLinkList(tempLinks, true);
+            }
 
             if (tempLinks !== undefined) setLinks(tempLinks)
             
@@ -202,7 +194,7 @@ export default function BreadcrumbTabs({ item, relDb, db, handleGoto, prePost, l
 
             const children = relDb.p[item.majId];
 
-            console.log("CHILDREN IN POST", children)
+            // console.log("CHILDREN IN POST", children)
 
             if (children) {
                 children.forEach((majId) => {
