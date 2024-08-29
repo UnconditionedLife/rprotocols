@@ -64,7 +64,7 @@ export default function HeaderArea(props) {
             
             { action !== 'add-set' &&
                 // <Tooltip title={`Edit ${wordCase(item.type)}`} placement="top">
-                    <span className='cardVersion' style={{ color:`${verNumColor}`, fontSize:'0.9em', fontWeight:500, fontFamily:'monospace' }}>
+                    <span className='cardVersion' style={{ color:`${verNumColor}` }}>
                         ––&nbsp;v.{ item.verNum }{isBeta && <span> beta</span> }&nbsp;––
                     </span>
                 // </Tooltip>

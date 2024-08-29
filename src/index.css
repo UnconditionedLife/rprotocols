@@ -751,12 +751,14 @@ button:focus-visible {
 .cardVersion { 
     margin-top: 0px;
     margin-bottom: 5px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.5rem;
     font-weight: 400;
     font-style: italic;
     cursor: pointer;
     /* color: darkgray; */
+    font-family: monospace;
+    font-weight:500;
 }
 
 .cardDescription {

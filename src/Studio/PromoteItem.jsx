@@ -8,12 +8,12 @@ import { urlizeString } from "../GlobalFunctions";
 
 export default function PromoteItem({ item, lang, handleGoto, addRemoveItemInMemory, handleNewItemChange }) {
     const [ confirmPopup, setConfirmPopup ] = useState(true)
-    const [ confirmed, setConfirmed ] = useState(false)
+    const [ promoteConfirmed, setPromoteConfirmed ] = useState(false)
 
     console.log("PROMOTE ITEM", item)
 
     useEffect(() => {
-        if (confirm) {
+        if (promoteConfirmed && item) {
             console.log("READY TO PROMOTE")
             const promotedItem = deepClone(item)
             const newMajVer = "1"
@@ -27,18 +27,17 @@ export default function PromoteItem({ item, lang, handleGoto, addRemoveItemInMem
             promotedItem.history.unshift(newHistory)
             saveItemToDb( promotedItem ).then((r) => {
                 if (r === 'success') {
-                    // Remove the item from memory so we don't see duplicates
-                    addRemoveItemInMemory(promotedItem, item.minId)
                     handleNewItemChange(null)
                     handleGoto( `/${lang}/studio/${promotedItem.type.toLowerCase()}/${urlizeString(promotedItem.title[ lang ])}/${promotedItem.minId}` )
-
+                    // Remove the item from memory so we don't see duplicates
+                    addRemoveItemInMemory(promotedItem, item.minId)
                 }
             })
             
             //saveItem
             //handleGoto
         }
-    }, [ confirmed, item ])
+    }, [ promoteConfirmed, item, addRemoveItemInMemory, handleGoto, handleNewItemChange, lang ])
 
     // const currentVersion = item.verNum.split(".")[0]
     // const currentSubVersion = item.verNum.split(".")[1]
@@ -49,8 +48,11 @@ export default function PromoteItem({ item, lang, handleGoto, addRemoveItemInMem
     // }
 
     function handleConfirmation(value){
-        setConfirmed(value)
+        setPromoteConfirmed(value)
         setConfirmPopup(false)
+        if (value === false) {
+            handleGoto( `/${lang}/studio/${item.type.toLowerCase()}/${urlizeString(item.title[ lang ])}/${item.minId}` )
+        }
     }
 
     return (

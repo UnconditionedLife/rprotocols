@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Box, Card, CardActions, Button, Tooltip } from '@mui/material'
-import Accordion from '../../Accordion';
-import { getUserObject, getUserName, deepCopy, wordCase } from '../../GlobalFunctions';
+import { getUserObject, getUserName, deepCopy, wordCase, urlizeString } from '../../GlobalFunctions';
 import ProtocolForm from '../EditPage/EditItemPage';
 import EditIcon from '@mui/icons-material/EditNote';
 import PromoteIcon from '@mui/icons-material/PlusOne';
@@ -45,7 +44,7 @@ export default function ViewItemPage(props) {
 
 
     useEffect(() => {
-        console.log("IN LINKED ITEMS USEEFFECT")
+        // console.log("IN LINKED ITEMS USEEFFECT")
         setLinkedItems(getLinkedItems(item.majId, item.minDate))
     }, [ item.majId, item.minDate, getLinkedItems ])
 
@@ -135,15 +134,15 @@ export default function ViewItemPage(props) {
             { version === '0' &&
                 <Tooltip title={`Promote ${wordCase(item.type)} from v.${item.verNum} to v.1.0`} placement="top">
                     <Button size="small" variant="outlined" style={{ margin:'4px' }} 
-                        onClick={() => { handleGoto( `/${lang}/studio/promote/${item.minId}` ) }}
+                        onClick={() => { handleGoto( `/${lang}/studio/promote/${ urlizeString( item.title[lang] )}/${item.minId}` ) }}
                         endIcon={ <PromoteIcon /> }>PROMOTE</Button>
                 </Tooltip>
             }
 
-            { item.type === 'Protocol' && version === "1" &&
+            { item.type === 'Protocol' && version !== "0" &&
                 <Tooltip title={`Copy ${wordCase(item.type)} to New Version`} placement="top">
                     <Button size="small" variant="outlined" style={{ margin:'4px' }} 
-                        onClick={() => { handleGoto( `/${lang}/studio/fork/${item.minId}` ) }}
+                        onClick={() => { handleGoto( `/${lang}/studio/fork/${ urlizeString( item.title[lang] )}/${item.minId}`) }}
                         endIcon={ <ForkIcon /> }>FORK</Button>
                 </Tooltip>
             }
@@ -166,7 +165,9 @@ export default function ViewItemPage(props) {
                 addNewItem={ addNewItem } addNewSet={ addNewSet } db={ db } lang={ lang }
                 handleViewAddLink={ handleViewAddLink } />
 
-            <BreadcrumbTabs item={ item } relDb={ relDb } db={ db } handleGoto={ handleGoto } prePost="pre" lang={ lang } />
+            { item && relDb && db && 
+                <BreadcrumbTabs item={ item } relDb={ relDb } db={ db } handleGoto={ handleGoto } prePost="pre" lang={ lang } />
+            }
         
             <Card key={item.id} className="itemCard" >
 
@@ -230,7 +231,9 @@ export default function ViewItemPage(props) {
                 </CardActions>
             </Card>
             
-            <BreadcrumbTabs item={ item } relDb={ relDb } db={ db } handleGoto={ handleGoto } prePost="post" lang={ lang }/>
+            { item && relDb && db && 
+                <BreadcrumbTabs item={ item } relDb={ relDb } db={ db } handleGoto={ handleGoto } prePost="post" lang={ lang }/>
+            }
 
         </Box>
     )

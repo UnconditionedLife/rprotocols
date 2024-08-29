@@ -19,7 +19,7 @@ export default function CardView(props) {
                 />
                 <Box paddingX='6px'>
                     <h5>{ item.title[ lang ] }</h5>
-                    <p className='cardVersion'>- { item.verNum } -</p>
+                    <p className='cardVersion' style={{ color: "darkgray" }}>- { item.verNum } -</p>
                     <span style={{ fontSize:'.9em', fontWeight:'300' }}> { item.description[ lang ] }</span>
                 </Box>
             </Card>

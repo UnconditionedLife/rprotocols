@@ -1,12 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { Box, CircularProgress, TextField, InputAdornment, Alert, AlertTitle,
-    Snackbar, IconButton, Card} from '@mui/material'
+import { Box, CircularProgress, TextField, InputAdornment, Card} from '@mui/material'
 import { SearchRounded } from '@mui/icons-material';
-import { CloseRounded } from '@mui/icons-material';
 import { getDbAsync } from '../Database.js';
 import rProtocolStudio from '/rProtocolStudio.svg';
-import { getUserObject, deepCopy } from '../GlobalFunctions.jsx';
+import { getUserObject, deepCopy, urlizeString } from '../GlobalFunctions.jsx';
 import { useNavigate } from 'react-router-dom';
 import SearchResults from './SearchResults.jsx';
 import ViewItemPage from './ViewPage/ViewItemPage.jsx';
@@ -21,10 +19,11 @@ import HomeSwitcher from '../HomeSwitcher.jsx';
 import AboutUs from '../Collab/AboutUs.jsx';
 import PrivacyPage from '../Collab/PrivacyPage.jsx';
 
-
 import GraphPage from './Graph/GraphPage.jsx';
 import SectionDiamond from '../SectionDiamond.jsx';
 import PromoteItem from './PromoteItem.jsx';
+import ForkItem from './ForkItem.jsx';
+import AlertBar from '../Library/AlertBar.jsx';
 
 
 export default function Studio() {
@@ -43,17 +42,23 @@ export default function Studio() {
     const [ goto, setGoto ] = useState(null)
 
     const [ searchResults, setSearchResults ] = useState([])
-    const [ alertMessage, setAlertMessage ] = useState( '')
+    const [ alertMessage, setAlertMessage ] = useState({})
     const [ aboutToEdit, setAboutToEdit ] = useState( false )
     const [ searchTerm, setSearchTerm ] = useState("")    
     const navigate = useNavigate()
+    const validItemLoadActions = [ "need", "protocol", "promote", "fork" ]
+    const isValidAction = validItemLoadActions.includes(action)
 
 
 
     useEffect(() => {
         if (area === "home" && location.state && location.state.from404) {
-            setAlertMessage("Oops! It seems this page wandered off somewhere... or maybe it never existed?")
-            
+            setAlertMessage({
+                severity: "error", // success, info, warning, error
+                title: "Missing Item",
+                msg: "Oops! It seems this page wandered off somewhere... or maybe it never existed?"
+            })
+
             // Clear the location state
             navigate(location.pathname, { replace: true, state: null });
         }
@@ -185,25 +190,62 @@ export default function Studio() {
     // })
 
 
-    // USE VALUE2 TO SET ITEM
+    // console.log("ACTION", action)
+
+
+    // USE VALUE1 or VALUE2 TO SET ITEM
     useEffect(() => {
+
+        function getItem(idType, urlId){
+            return db.find(item => item[idType] === urlId)
+        }
+        function dealWithRedirect(urlId, newUrlId){
+            // announce change in version
+            setAlertMessage({
+                severity: "info", // success, info, warning, error
+                title: "Redirected",
+                msg: `ID: '${urlId}' not found - redirected to: '${newUrlId}'!`
+            })
+            // change url
+            handleGoto(`/${lang}/studio/${theItem.type.toLowerCase()}/${urlizeString(theItem.title[lang])}/${newUrlId}`)
+
+            console.log("NEW URL", `/${lang}/studio/${theItem.type.toLowerCase()}/${urlizeString(theItem.title[lang])}/${newUrlId}`)
+        }
+
         let theItem
-        if ( area === "studio" && (action === "need" || action === "protocol" || action === "promote") && db ) {
+        if ( area === "studio" && isValidAction && db ) {
             let urlId
             if ( value2 ) urlId = value2
             if ( value1 && !value2 ) urlId = value1
 
-            const idParts = urlId.split(".").length
+            const urlArr = urlId.split(".")
+            const idParts = urlArr.length
+            let idType = (idParts === 3) ? 'majId' : 'minId'
+            if (idParts === 2) idType = 'iId'
 
-// console.log("idParts", idParts)
+            // initial get
+            theItem = getItem(idType, urlId)
 
-
-            const idType = (idParts === 3) ? 'majId' : 'minId'
-
-            theItem = db.find(item => item[idType] === urlId)
-
-            // console.log("THEItem from URL", theItem)
-
+            // second get
+            if (theItem === undefined && idParts === 4) {
+                // WAS minId (4 part) try majId (3 part)
+                const newUrlId = `${urlArr[0]}.${urlArr[1]}.${urlArr[2]}`
+                theItem = getItem("majId", newUrlId)
+                if (theItem !== undefined) dealWithRedirect(urlId, theItem.minId)
+            }
+            if (theItem === undefined && idParts === 3) {
+                // WAS majId (3 part) try minId (4 part)
+                const newUrlId = `${urlArr[0]}.${urlArr[1]}.${urlArr[2]}.${urlArr[2]}`
+                theItem = getItem("minId", newUrlId)
+                if (theItem !== undefined) dealWithRedirect(urlId, theItem.minId)
+            }
+            if (theItem === undefined) {
+                // last resort try iId (2 part)
+                const newUrlId = `${urlArr[0]}.${urlArr[1]}`
+                theItem = getItem("iId", newUrlId)
+                if (theItem !== undefined) dealWithRedirect(urlId, theItem.minId)
+            }
+            
             if (theItem !== undefined) {
                 // ***************** TEMPORARY PATCHES NEED TO FIX API *********************
                 // add year
@@ -216,21 +258,27 @@ export default function Studio() {
                         delete theItem.needMinId
                     }
                 } 
-                
 
                 // ***************** TEMPORARY PATCHES *********************
 
                 setItem( theItem )
-            } else {
+            } 
+            
+            if (theItem === undefined) {
 
-                if (area === "studio" && (action === "need"  || action === "protocol" )) {
-                    setAlertMessage(`Oops! It seems item ID: ${urlId} wandered off somewhere... or maybe it never existed?`)
+
+                if (area === "studio" && isValidAction ) {
+                    setAlertMessage({
+                        severity: "error", // success, info, warning, error
+                        title: "Missing Item",
+                        msg: `Oops! It seems item ID: ${urlId} wandered off somewhere... or maybe it never existed?`
+                    })
                     // Clear the location state
                     navigate(location.pathname, { replace: true, state: null });
                 }
             }
         }
-    }, [ action, area, value2, db ])  
+    }, [ location.pathname, action, navigate, area, value1, value2, db, isValidAction, lang ])
 
 
     // NAVIGATE TO URL
@@ -348,18 +396,18 @@ export default function Studio() {
     }
 
 
-    const snackbarState = ( alertMessage !== '' ) ? true : false
+    const snackbarState = ( alertMessage?.msg !== undefined ) ? true : false
 
 
 // console.log("Search Results", searchResults)
 
 
 
-console.log("ADD setInfo", setInfo)
+// console.log("ADD setInfo", setInfo)
 
-console.log("DB @ STUDIO", db)
+// console.log("DB @ STUDIO", db)
 
-    console.log("ITEM", item)
+    // console.log("ITEM", item)
     
 
 
@@ -368,24 +416,12 @@ console.log("DB @ STUDIO", db)
     return (
         <Box className='myceliumBackground' id="Studio-Page-Container">
 
-            {/* ********  ERROR MESSAGES ********* */}
+            {/* ********  ALERT MESSAGES ********* */}
 
-            <Snackbar anchorOrigin={{ vertical: 'top', horizontal:'center' }}
-                open={ snackbarState } onClose={ () => { setAlertMessage('') }}
-                key={ 'top-center' } >
-                <Alert severity="error" sx={{ width:'100%' }}
-                    action={ <IconButton color="inherit"
-                        size="small" onClick={() => { setAlertMessage('') }} >
-                            <CloseRounded fontSize="inherit" />
-                            </IconButton>
-                        }>
-                    <AlertTitle>Error</AlertTitle>
-                    { alertMessage }
-                </Alert>
-            </Snackbar>
+            <AlertBar snackbarState={ snackbarState }  alertMessage={ alertMessage } 
+                setAlertMessage={ setAlertMessage } />
 
-            {/* ********  ERROR MESSAGES ********* */}
-
+            {/* ********  ALERT MESSAGES ********* */}
 
             { area === "home" &&
                 <Home lang={ lang }/>
@@ -402,11 +438,6 @@ console.log("DB @ STUDIO", db)
             </Box>
             
             <Box className='studioContainer' >
-                {/* <Box alignContent='center'> */}
-                {/* <Box position="relative" top='0' backgroundColor='rgba(34, 127, 175, 0.4)' 
-                    margin='-8px' marginTop='-50px' width='100%' height='5vw'>
-                </Box> */}
-
                 <img src={ rProtocolStudio } style={{ width:'clamp(300px, 60vw, 450px)', marginTop:'46px' }} alt="rProtocol Studio" />
                 <h3 className='calloutHeader' style={{ marginTop:'30px' }}>The Power of &quot;HOW TO&quot; in Our Hands!</h3>
                 {/* <span className='calloutText'>{ `Find the Protocols and Guides You Need ${inView}`}</span> */}
@@ -418,22 +449,27 @@ console.log("DB @ STUDIO", db)
                             placeholder="Find needs and protocols..."
                             InputProps={{startAdornment: (
                                 <InputAdornment position="start">
-                                  <SearchRounded />
+                                    <SearchRounded />
                                 </InputAdornment>
                             )}}
                             onChange={ (e) => { handleSearchTerm(e.target.value) } }
                             onFocus={ (e) => { handleSearchTerm(e.target.value) }} />
                     </Box>
 
-                    {area === "studio" && action === "promote" && (
+                    {area === "studio" && action === "promote" && item && (
                         <PromoteItem item={ item } lang={ lang } handleGoto={ handleGoto } 
+                            addRemoveItemInMemory={ addRemoveItemInMemory } handleNewItemChange={ handleNewItemChange }/>
+                    )}
+
+                    {area === "studio" && action === "fork" && item && db &&(
+                        <ForkItem item={ item } lang={ lang } handleGoto={ handleGoto } db={ db }
                             addRemoveItemInMemory={ addRemoveItemInMemory } handleNewItemChange={ handleNewItemChange }/>
                     )}
             
                     { area !== "studio" &&
                         <Box mb='4em' mx={10} alignSelf={"center"} style={{ cursor:'pointer' }}>
                             <Card style={{ marginTop:'30px', paddingTop:'1.1em', paddingBottom:'0.8em', paddingLeft:'2em', paddingRight:'2em', backgroundColor:'#FFC400' }}
-                                onClick={ () => { handleSearchTerm("Life's Needs"); handleGoto(`/${lang}/studio/need/life-s-needs/N.20240716T165825706-1513.0`) }}>
+                                onClick={ () => { handleSearchTerm("Life's Needs"); handleGoto(`/${lang}/studio/need/life-s-needs/N.20240716T165825706-1513.1`) }}>
                                 <h4 style={{ color:'black', marginTop:'0px'}}><b>Browse</b></h4>
                             </Card>
                         </Box>
@@ -445,7 +481,7 @@ console.log("DB @ STUDIO", db)
                             : <SearchResults searchResults={searchResults} handleGoto={handleGoto} />
                     )}
 
-                    { (area === "studio" && (action === "need" || action === "protocol" || action === "promote") && item !== null ) &&
+                    { (area === "studio" && isValidAction && item !== null ) &&
                         <Box alignSelf='center' marginTop='30px' ref={ itemCardRef } >
                             <ViewItemPage item={ item } getLinkedItems={ getLinkedItems } 
                                 handleBuildNewItem={ handleBuildNewItem } action={ action } 
@@ -511,7 +547,6 @@ console.log("DB @ STUDIO", db)
             { (area === "privacy-protocols" || area === "home") && 
                 <PrivacyPage lang={ lang } db={ db } handleGoto={ handleGoto } />
             }
-
         </Box>
     )
 }

@@ -8,7 +8,7 @@ import { nowDates } from '../GlobalFunctions';
 
 export default function PrivacyPage({ lang, db, handleGoto }) {
     const [protocol, setProtocol] = useState(null);
-    const privacyPolicyMajId = "P.20240816T151315000-4430.0"
+    const privacyPolicyMajId = "P.20240816T151315000-4430.2"
 
     
     useEffect(() => {
