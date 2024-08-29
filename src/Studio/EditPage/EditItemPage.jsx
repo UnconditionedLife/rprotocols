@@ -209,7 +209,14 @@ console.log("newList @ Set FormState", newArr)
     function handleEditUpdateParents( newParents ){
         // console.log('NEEDS CHANGE', newParents)
         const parentIdsList = []
-        newParents.forEach(parent => parentIdsList.push( parent.majId ))
+
+// console.log("NEW PARENTS", newParents)
+
+        newParents.forEach(parent => {
+            if (parent?.majId !== null && parent?.majId !== undefined )
+            parentIdsList.push( parent.majId )
+        })
+        
         logChanges("Parent Needs", "", false)
         setFormState((prevState) => ({ ...prevState, parentNeeds: parentIdsList }));
     }
