@@ -13,6 +13,7 @@ import SessionsPage from './Collab/SessionsPage.jsx';
 import SessionsFormPage from './Collab/SessionsFormPage.jsx';
 import LangSwitcher from './LangSwitcher.jsx';
 import HomeSwitcher from './HomeSwitcher.jsx';
+import './i18n';
 
 
 const theSite = import.meta.env.VITE_SITE;
@@ -82,7 +83,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('main')).render(
-  <React.StrictMode>
-     <RouterProvider router={router} />
-  </React.StrictMode>
+    
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
+  
 )

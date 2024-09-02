@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
+import { useTranslation} from 'react-i18next';
 import { useParams, useLocation } from 'react-router-dom';
 import { Box, CircularProgress, TextField, InputAdornment, Card} from '@mui/material'
 import { SearchRounded } from '@mui/icons-material';
@@ -48,7 +49,21 @@ export default function Studio() {
     const navigate = useNavigate()
     const validItemLoadActions = [ "need", "protocol", "promote", "fork" ]
     const isValidAction = validItemLoadActions.includes(action)
+    const { t, i18n } = useTranslation();
+    // const lang = i18n.language.split("-")[0]
+    
+    
+    // SET THE SITE LANGUAGE
+    useEffect(() => {
+        if (lang && ['en', 'es', 'pt'].includes(lang)) {
+            i18n.changeLanguage(lang);
+        } else {
+            i18n.changeLanguage('en'); // Fallback language
+        }
+    }, [ i18n, lang ])
 
+
+    // console.log("i18n LANG", i18n.language )
 
 
     useEffect(() => {
@@ -424,13 +439,13 @@ export default function Studio() {
             {/* ********  ALERT MESSAGES ********* */}
 
             { area === "home" &&
-                <Home lang={ lang }/>
+                <Home />
             }
             
-            <Box style={{ width:'95%', height:'60px', backgroundColor:'rgba(34, 127, 175, 0.4)',
+            <Box style={{ width:'95%', height:'80px', backgroundColor:'rgba(34, 127, 175, 0.4)',
                 clipPath: 'polygon(0 100%, 50% 0, 100% 100%' }}>
                 { area !== "home" &&
-                    <span style={{ color:'white', lineHeight:'60px', cursor:'pointer', fontSize:'1.1rem' }} 
+                    <span style={{ color:'white', lineHeight:'80px', cursor:'pointer', fontSize:'1.1rem' }} 
                         onClick={ () => { handleGoto(`/${lang}/home`) }}>
                         Home
                     </span>
@@ -527,8 +542,6 @@ export default function Studio() {
                         </Box>
                     } */}
 
-                {/* </Box> */}
-
                 { (db === null) && <Box width='200px' height='200px' margin='50px' alignSelf='center' ><CircularProgress/></Box> }
                 
             </Box>
@@ -540,7 +553,7 @@ export default function Studio() {
 
             <SectionDiamond section="about-us" handleGoto={ handleGoto } />
             { (area === "about-us" || area === "home") && 
-                <AboutUs lang={ lang } area={ area } />
+                <AboutUs />
             }    
 
             <SectionDiamond section="privacy-protocols" handleGoto={ handleGoto } />
