@@ -26,7 +26,7 @@ export default function Footer() {
                 <span className='footerText'>©2024 rCollabs (a Radical World Collaborative)</span>
                 {/* <a href='/protocols#usage'><span className='footerText'>Usage Protocols</span></a> */}
                 <a href='/en/about-us'><span className='footerText'>About Us</span></a>
-                <a href='/en/privacy_protocols'><span className='footerText' >Privacy Protocols</span></a>
+                <a href='/en/privacy-protocols'><span className='footerText' >Privacy Protocols</span></a>
             </Box>
             <Box display='flex' flexWrap='wrap' flexDirection='row' justifyContent='flex-end' marginTop='.7em'>
                 <a href='https://www.linkedin.com/company/radical-world/' target='_blank'><LinkedInIcon className='socialIcon' /></a>

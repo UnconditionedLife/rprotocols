@@ -5,10 +5,12 @@ import Quote from '../Library/Quote';
 import { urlizeString } from '../GlobalFunctions';
 import ReactMarkdown from 'react-markdown';
 import { nowDates } from '../GlobalFunctions';
+import { useTranslation } from 'react-i18next';
 
 export default function PrivacyPage({ lang, db, handleGoto }) {
     const [protocol, setProtocol] = useState(null);
     const privacyPolicyMajId = "P.20240816T151315000-4430.2"
+    const { t } = useTranslation();
 
     
     useEffect(() => {
@@ -92,10 +94,10 @@ export default function PrivacyPage({ lang, db, handleGoto }) {
 
     return (
         <Box display="flex" flexDirection="column" width="100%">
-            <h1 className='headline'>Privacy Protocols</h1>
-            <span className='headline' style={{ marginTop:'-1.1em'}}><img className='headlineLogo' src="/rCollabsLogo-BlackBg.svg" alt='rCollaboratives Logo'></img></span>
+            <h1 className='headline'>{ t('privacy.sectionHead') }</h1>
+            <span className='headline' style={{ marginTop:'-1rem'}}><img className='headlineLogo' src="/rCollabsLogo-BlackBg.svg" alt='rCollaboratives Logo'></img></span>
 
-            <Quote quote="Mutual respect is so important because as soon as it disappears in relations between you and the next person, there's trouble." author="Dizzy Gillespie" />
+            <Quote quote={ t('privacy.gillespieQuote') } author={ t('privacy.gillespieAuthor') } />
 
             <Box style={{ marginTop:"-100px", alignSelf:"center", maxWidth:"700px", textAlign:"left" }}>
                 
@@ -108,7 +110,7 @@ export default function PrivacyPage({ lang, db, handleGoto }) {
                 
             </Box>
 
-            <Quote quote="We must learn to live together as brothers|or perish together as fools." author="Martin Luther King Jr." />
+            <Quote quote={ t('privacy.mlkQuote') } author={ t('privacy.mlkAuthor') } />
         </Box>
     )
 }

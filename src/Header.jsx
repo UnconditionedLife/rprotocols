@@ -129,7 +129,7 @@ export default function Header(props) {
                 <a href='/en/home'><img src="/rManIcon.svg" height="30px" style={{ margin:'10px'}}></img></a>
                 <Box display='flex' pl='10px' flexDirection='row' 
                     style={{ fontSize:'1rem', fontWeight:600, color:'white', marginTop:'6px', marginLeft:'-10px'}}>
-                    BETA <Box style={{ fontSize:'0.7em', fontWeight:400, color:'white', marginTop:'2px', marginLeft:'5px' }}>({ appVerNum })</Box>
+                    BETA <Box style={{ fontSize:'0.8em', fontWeight:400, color:'white', marginTop:'2px', marginLeft:'5px' }}>({ appVerNum })</Box>
                 </Box>
             </Box>
             {/* <Box alignSelf='center' width="94%" maxWidth='340px' marginTop='-4px' backgroundColor="black">
@@ -161,8 +161,10 @@ export default function Header(props) {
                     { (siteProp == 'rCollabs') &&
                         <MenuItem onClick={() => { handleClose('rprotocols.org') }}>rProtocols.org</MenuItem>
                     }
+                    <MenuItem onClick={() => { handleClose('/en/explore-protocols') }} value>Explore Protocols</MenuItem>
                     {/* <MenuItem onClick={() => { handleClose('/rcollabs') }}>rCollabs</MenuItem> */}
                     <MenuItem onClick={() => { handleClose('/en/about-us') }} value>About Us</MenuItem>
+                    <MenuItem onClick={() => { handleClose('/en/privacy-protocols') }} value>Privacy Protocols</MenuItem>
                     <hr/>
                     { (siteProp == 'rProtocols') &&
                         <MenuItem onClick={() => { handleClose('/' + loginLabel ) }} value>{ loginLabel }</MenuItem>
