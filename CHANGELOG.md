@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.17](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.16...v0.1.17) (2024-09-03)
+
+
+### Bug Fixes
+
+* code clean up ([3af4dd6](https://github.com/UnconditionedLife/rprotocols/commit/3af4dd6254e47120ffa8d09458b6f23cc0c4f51a))
+* icons and logos ([fb89b8c](https://github.com/UnconditionedLife/rprotocols/commit/fb89b8cd9702cfd07772fb9f1ed3536f540074b8))
+* login/logout issues ([1ac858b](https://github.com/UnconditionedLife/rprotocols/commit/1ac858b7b7522562f760ee9111b7aae85307a499))
+* navigation ([e90e81e](https://github.com/UnconditionedLife/rprotocols/commit/e90e81e6077281617646cbd6498327e692db1bf0))
+
 ## [0.1.16](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.15...v0.1.16) (2024-09-02)
 
 ## [0.1.15](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.14...v0.1.15) (2024-08-29)
