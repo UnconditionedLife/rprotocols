@@ -42,7 +42,7 @@ h1 {
 }
 
 h2 {
-    font-size: 2.8em;
+    font-size: clamp(1.3rem, 3vw, 2.3rem);
     font-weight: 700;
     margin-bottom: 4px;
     color: #377AB8;
@@ -216,7 +216,7 @@ button:focus-visible {
 
 .sectionDiamondText {
     color: white;
-    line-height: 60px;
+    line-height: 80px;
     cursor: pointer;
     font-size: 1.1rem;
 }
@@ -1202,6 +1202,7 @@ padding: 5px;
     vertical-align: start;
     background-color: rgba(5, 5, 5, 0.5);
     margin-top: 0px;
+    margin-bottom: 0px;
     /* border-radius: 20px; */
     /* clip-path: polygon(0 5vw, 50% 0, 100% 5vw, 100% calc(100% - 5vw), 50% 100%, 0 calc(100% - 5vw)); */
 }

@@ -3,39 +3,33 @@ import { Box, InputAdornment, Menu, MenuItem, TextField } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
 import netlifyIdentity from 'netlify-identity-widget'
-import { handleUser, getUserName } from './GlobalFunctions';
+import { handleUser, getUserName, getUserObject } from './GlobalFunctions';
 import { APP_VERSION } from './config';
 import { SearchRounded } from '@mui/icons-material';
 
 
-export default function Header(props) {
-    // const { user, handleUser } = props;
+export default function Header() {
     const [ path, setPath ] = useState(null)
     const [ anchorEl, setAnchorEl ] = useState(null);
     const open = Boolean(anchorEl);
-    const [ showLogin, setShowLogin ] = useState( false )
+    const [ loginLabel, setLoginLabel ] = useState( false )
     const [ userName, setUserName ] = useState( "" )
-    const [ user, setUser ] = useState( "" )
+    const [ user, setUser ] = useState( null )
     const [ widgetOpen, setWidgetOpen ] = useState( 'signup' )
 
     const theSite = import.meta.env.VITE_SITE;
     const appVerNum = APP_VERSION
-    
-
-    // const user = globalVars.user
-    // const handleUser = handleUser
 
     const siteProp = (theSite == 'rCollabs') ? 'rCollabs' : 'rProtocols'
 
     useEffect(() => {
-        if (user !== undefined ){
+        if (getUserObject !== undefined ){
             netlifyIdentity.init({
                 //container: '#netlify-modal', // defaults to document.body
                 locale: 'en' // defaults to 'en'
             });
             
             netlifyIdentity.on('init', newUser => {
-                
                 handleUser(newUser)
             });
             const netUser = netlifyIdentity.currentUser()
@@ -44,6 +38,7 @@ export default function Header(props) {
 
             if (netUser) {
                 handleUser(netUser)
+                setUser(netUser)
                 setUserName(getUserName())
             }
         }
@@ -63,6 +58,11 @@ export default function Header(props) {
     //     // }
     // }, [ user ])
 
+    useEffect(() => {
+        console.log("EFFECT USER", user)
+        setLoginLabel((user === null) ? "Login" : "Logout")
+    }, [ user ])
+
 
     const navigate = useNavigate()
     // const user = netlifyIdentity.currentUser();
@@ -70,7 +70,7 @@ export default function Header(props) {
 
     useEffect(() => {
         if (path) navigate(path, {replace: false })
-    }, [ path ])
+    }, [ path, navigate ])
 
     // open menu
     const handleClick = (event) => {
@@ -79,11 +79,13 @@ export default function Header(props) {
 
     async function handleClose(url){
         if (url === '/Login') {
-            console.log('SIGNUP')
+            console.log('LOGIN/SIGNUP')
             netlifyIdentity.open(widgetOpen);
-            netlifyIdentity.on('login', user => {
-                // console.log('login', user)
-                handleUser(user)
+            netlifyIdentity.on('login', netUser => {
+                console.log('login', netUser)
+                handleUser(netUser)
+                setUser(netUser)
+                setUserName(netUser.user_metadata.full_name)
                 setWidgetOpen('login')
             });
 
@@ -91,17 +93,18 @@ export default function Header(props) {
             netlifyIdentity.on('error', err => console.error('Error', err));
             netlifyIdentity.on('open', () => console.log('Widget opened'));
             netlifyIdentity.on('close', () => {
-                // console.log('Widget closed')
-                if (user) {
-                    handleUser(user)
-                }
+                console.log('Widget closed')
+                // if (user === null) {
+                //     handleUser(netUser)
+                // }
             });
             
         } else if (url === '/Logout') {
             netlifyIdentity.logout();
             netlifyIdentity.on('logout', () => {
-                // console.log('Logged out')
+                console.log('Logged out')
                 setUserName("")
+                setUser( null )
                 handleUser( null )
             });
             // setUserLoggedIn("")
@@ -118,7 +121,9 @@ export default function Header(props) {
         setAnchorEl(null);
     }
 
-    const loginLabel = (user) ? "Logout" : "Login"
+    console.log("USER", user)
+
+    
 
     // console.log("USER NAME", userName)
     const searchTerm = 'Life Needs'
@@ -152,9 +157,8 @@ export default function Header(props) {
             <Box style={{ marginRight:'20px'}}>
                 <Menu id="hamburger" anchorEl={anchorEl} open={open} onClose={ handleClose }>
                     <MenuItem onClick={() => { handleClose('/') }}>Home</MenuItem>
-                    { (siteProp == 'rProtocols') &&
-                       <MenuItem onClick={() => { handleClose('/en/studio') }}>Studio</MenuItem>
-                    }
+                    
+                    {/* <MenuItem onClick={() => { handleClose(`/${lang}/studio`) }}>Studio</MenuItem> */}
                     {/* { (siteProp == 'rProtocols') &&
                        <MenuItem onClick={() => { handleClose('/en/coop2') }}>COOP² Specs</MenuItem>
                     } */}
