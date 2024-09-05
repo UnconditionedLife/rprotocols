@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/material'
+import { useNavigate, useParams } from 'react-router-dom';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -16,6 +17,14 @@ const TikTokIcon = ({ color = "#acacac" }) => {
 }
 
 export default function Footer() {
+    const { lang } = useParams();
+    const [ path, setPath ] = useState(null)
+
+    // NAVIGATE TO OTHER PAGES
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (path) navigate(path, {replace: false })
+    }, [ path ])
     
     return (
         <Box className='footer'>
@@ -25,8 +34,10 @@ export default function Footer() {
             <Box display='flex' flexWrap='wrap' flexDirection='row' marginTop='.8em'>
                 <span className='footerText'>©2024 rCollabs (a Radical World Collaborative)</span>
                 {/* <a href='/protocols#usage'><span className='footerText'>Usage Protocols</span></a> */}
-                <a href='/en/about-us'><span className='footerText'>About Us</span></a>
-                <a href='/en/privacy-protocols'><span className='footerText' >Privacy Protocols</span></a>
+                <p>
+                <span className='footerText' onClick={ () => { setPath(`/${lang}/about-us`) }}>About Us</span>
+                <span className='footerText' onClick={ () => { setPath(`/${lang}/privacy-protocols`) }}>Privacy Protocols</span>
+                </p>
             </Box>
             <Box display='flex' flexWrap='wrap' flexDirection='row' justifyContent='flex-end' marginTop='.7em'>
                 <a href='https://www.linkedin.com/company/radical-world/' target='_blank'><LinkedInIcon className='socialIcon' /></a>

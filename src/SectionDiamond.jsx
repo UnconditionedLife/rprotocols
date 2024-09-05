@@ -8,7 +8,7 @@ export default function SectionDiamond({ section, handleGoto }) {
     const label = wordCase(section.replaceAll("-", " "))
 
     return (
-        <Box style={{ width:'95%', height:'80px', backgroundColor:'rgba(34, 127, 175, 0.4)',
+        <Box id={ section } style={{ width:'95%', height:'80px', backgroundColor:'rgba(34, 127, 175, 0.4)',
             marginBottom:"50px", clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}>
             { area !== section && area !== "home" &&
                 <Box className="sectionDiamondText" onClick={ () => { handleGoto(`/${ lang }/${ section }`) }}>

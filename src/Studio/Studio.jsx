@@ -65,6 +65,21 @@ export default function Studio() {
 
     // console.log("i18n LANG", i18n.language )
 
+      
+    useEffect(() => {
+        if (area == "home") {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',  // optional, for smooth scrolling
+            });
+        } else {
+            const sectionElement = document.getElementById(area);
+            if (sectionElement) {
+                sectionElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [area]);
+
 
     useEffect(() => {
         if (area === "home" && location.state && location.state.from404) {
