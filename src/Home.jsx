@@ -111,7 +111,7 @@ export default function Home() {
             <img className='howTheyWork' src="/how-collaboratives-work.svg"></img>
             <br/>
 
-            <Quote quote={ t('home.fordQuote') } author={ t('home.fordAuthor')}/>
+            <Quote quote={ t('home.haleQuote') } author={ t('home.haleAuthor')}/>
             
             {/* <h2>Featured Protocols & Practices</h2>
             <Box display='grid' style={{ placeItems: 'center', alignSelf:'center', marginBottom:'80px'}}>

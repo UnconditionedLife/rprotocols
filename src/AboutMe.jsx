@@ -11,6 +11,7 @@ import { BuildNewItem } from './StudioFunctions.jsx';
 import HomeSwitcher from '../HomeSwitcher.jsx';
 import AlertBar from '../Library/AlertBar.jsx';
 
+// **************** THE ABILITY TO CREATE A PAGE FOR PEOPLE THAT INCLUDES THEIR NEEDS AND PROTOCOLS *****************
 
 export default function AboutMe() {
     const itemCardRef = useRef(null)

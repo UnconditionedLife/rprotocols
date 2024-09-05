@@ -55,18 +55,13 @@ export default function StudioExplore({ db, handleGoto, lang }) {
         // console.log("key", sec.sec, i)
     })
 
-    
     // console.log("Samples", samples)
-
     // console.log("Explore Return")
 
     return (
         <Fragment>
-        {/* // <Box id="Explore Container" display="flex" flexDirection='column' alignItems='center' > */}
-            <br/>
-            <Box display="flex" flexDirection="column" width="100%" style={{ placeItems: 'center', marginTop:'50px', marginBottom:'50px' }}>
-                {/* <img src="/RadicalPerson.svg" height="40px"></img> */}
-                <h3><b>{ t('explore.sectionHead') }</b></h3>
+            <Box display="flex" flexDirection="column" width="100%" style={{ placeItems: 'center', marginTop:'10px', marginBottom:'50px' }}>
+                <h1 className='headline'>{ t('explore.sectionHead') }</h1>
                 <img style={{ marginTop:"30px" }} src="/rManIcon.svg" height='90em'></img><br/>
                 <span className='sectionTitle'>{ t('explore.howWorkHead') }</span>
                 <Box display='flex' flexDirection='row' flexWrap='wrap' maxWidth='95vw' alignItems='center' justifyContent='center'>
