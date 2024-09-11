@@ -3,6 +3,7 @@
         "language": "[en] ENGLISH"
     },
     "home":{
+        "diamondTitle": "Home",
         "sectionHead": "Let's Collaborate",
         "sectionSubhead":"The World's Open Protocols & Practices Community",
         "introH1":"What Are Protocols?",

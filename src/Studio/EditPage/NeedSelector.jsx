@@ -9,7 +9,7 @@ export default function NeedSelector(props) {
     const sortedNeeds = useMemo(() => {
         const reducedList = needsList.map(need => ({
             majId: need.majId,
-            title: need.title[ lang ]
+            title: need.title[ lang ] || need.title.en
         })).filter((i) => formState.majId !== i.majId)
         reducedList.push( { majId: "EMPTY", title: " Add New Parent Need" } ) // DEFAULT EMPTY ITEM
         return reducedList.sort(function(a, b) {

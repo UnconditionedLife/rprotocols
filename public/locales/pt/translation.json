@@ -3,6 +3,7 @@
         "language": "[pt] PORTUGUESE"
     },
     "home":{
+        "diamondTitle": "Início",
         "sectionHead": "Vamos Colaborar",
         "sectionSubhead": "A Comunidade Mundial de Protocolos e Práticas Abertas",
         "introH1": "O que são Protocolos?",

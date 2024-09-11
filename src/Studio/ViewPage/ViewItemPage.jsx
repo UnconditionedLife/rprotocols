@@ -22,11 +22,14 @@ import ProtocolsArea from './ProtocolsArea';
 import AddItemPopup from './AddItemPopup';
 import RegionsArea from './RegionsArea';
 import BreadcrumbTabs from '../BreadcrumbTabs';
+import { useParams } from 'react-router';
 
 export default function ViewItemPage(props) {
     const { item, getLinkedItems, handleGoto, action, handleBuildNewItem,
         db, relDb, handleSetAddSet, needsList } = props
-    const [ lang, setLang ] = useState('en')
+    // const [ lang, setLang ] = useState('en')
+    const { lang } = useParams();
+    const [ editLang, setEditLang ] = useState( lang )
     const [ showAll, setShowAll ] = useState( true )
     const [ linkedItems, setLinkedItems ] = useState([])
     const [ addPopup, setAddPopup ] = useState(false)
@@ -50,7 +53,7 @@ export default function ViewItemPage(props) {
 
     function handleLanguage(newLang){
         // console.log("CHANGE LANG:", newLang)
-        setLang(newLang)
+        setEditLang(newLang)
     }
     
     const user = getUserObject()
@@ -142,7 +145,7 @@ export default function ViewItemPage(props) {
             { item.type === 'Protocol' && version !== "0" &&
                 <Tooltip title={`Copy ${wordCase(item.type)} to New Version`} placement="top">
                     <Button size="small" variant="outlined" style={{ margin:'4px' }} 
-                        onClick={() => { handleGoto( `/${lang}/studio/fork/${ urlizeString( item.title[lang] )}/${item.minId}`) }}
+                        onClick={() => { handleGoto( `/${lang}/studio/fork/${ urlizeString( item.title[lang] || item.title.en )}/${item.minId}`) }}
                         endIcon={ <ForkIcon /> }>FORK</Button>
                 </Tooltip>
             }
@@ -171,7 +174,7 @@ export default function ViewItemPage(props) {
         
             <Card key={item.id} className="itemCard" >
 
-                <HeaderArea item={ item } lang={ lang } handleLanguage={ handleLanguage } 
+                <HeaderArea item={ item } lang={ editLang } handleLanguage={ handleLanguage } 
                     handleGoto={ handleGoto } action={ action } 
                     parentNeeds={ parentNeeds } relDb={ relDb } db={ db } />
 
@@ -187,36 +190,36 @@ export default function ViewItemPage(props) {
                 </Box>
 
                 { item.type !== "Need" &&
-                    <RegionsArea regions={ item.regions } lang={ lang } show={ showAll } /> 
+                    <RegionsArea regions={ item.regions } lang={ editLang } show={ showAll } /> 
                 }
 
                 { item.type !== "Need" &&
-                    <IntroArea intro={ item.intro } lang={ lang } show={ showAll } /> 
+                    <IntroArea intro={ item.intro } lang={ editLang } show={ showAll } /> 
                 }
 
                 { (item.type === "Protocol") &&
-                    <ElementsArea elements={ item.elements } lang={ lang } show={ showAll } />
+                    <ElementsArea elements={ item.elements } lang={ editLang } show={ showAll } />
                 }
 
                 { (item.type === "Protocol") &&
-                    <ProtocolsArea protocols={ item.protocols } lang={ lang } show={ showAll }
+                    <ProtocolsArea protocols={ item.protocols } lang={ editLang } show={ showAll }
                         handleGoto={ handleGoto } db={ db } />
                 }
 
                 { item?.type === 'Need' &&
-                    <LinkedItemsArea linkedItems={ linkedItems } lang={ lang } show={ showAll } 
+                    <LinkedItemsArea linkedItems={ linkedItems } lang={ editLang } show={ showAll } 
                         handleGoto={ handleGoto } setAddPopup={ setAddPopup } />
                 }
 
                 { item.type !== "Need" &&
-                    <ClosingArea closing={ item.closing } lang={ lang } show={ showAll } /> 
+                    <ClosingArea closing={ item.closing } lang={ editLang } show={ showAll } /> 
                 }
 
                 { item.type !== "Need" &&
-                    <AttributionArea item={ item } lang={ lang } show={ showAll } />
+                    <AttributionArea item={ item } lang={ editLang } show={ showAll } />
                 }
 
-                <HistoryAreaView item={ item } history={ item.history } lang={ lang } show={ showAll } />
+                <HistoryAreaView item={ item } history={ item.history } lang={ editLang } show={ showAll } />
 
                 <img height="36px" style={{marginTop:"-8px"}} 
                     src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png"/>

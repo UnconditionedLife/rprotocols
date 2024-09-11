@@ -43,7 +43,7 @@ export default function AddItemPopup(props) {
                 <Box display='flex' flexDirection='row'>
                     <Button size="small" variant="contained" style={{ margin:'4px', width:'145px', 
                         backgroundColor:getItemColor('Need') }} endIcon={ <AddIcon /> }
-                        onClick={ () => { addNewItem('Need') }}>Sub-Need</Button>
+                        onClick={ () => { addNewItem('Need') }}>Need</Button>
 
                     <Button size="small" variant="contained" style={{ margin:'4px', width:'145px', 
                         backgroundColor:getItemColor('Protocol') }} endIcon={ <AddIcon /> }

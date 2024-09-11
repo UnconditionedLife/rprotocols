@@ -5,10 +5,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import netlifyIdentity from 'netlify-identity-widget'
 import { handleUser, getUserName, getUserObject } from './GlobalFunctions';
 import { APP_VERSION } from './config';
+import LanguageSelector from './LanguageSelector';
 
 
 export default function Header() {
-    const { lang } = useParams();
+    const { lang, area, action, value1, value2 } = useParams();
     const [ path, setPath ] = useState(null)
     const [ anchorEl, setAnchorEl ] = useState(null);
     const open = Boolean(anchorEl);
@@ -95,6 +96,14 @@ export default function Header() {
         setAnchorEl(null);
     }
 
+    function handleLang(newLang) {
+        // redirect url to new lang
+        const newPath = [ newLang, area || '', action || '', value1 || '', value2 || '' ]
+          .filter(Boolean) // Remove empty strings or undefined
+          .join('/');      // Join parts with "/"
+        handleClose(newPath)
+    }
+
     // NAVIGATE TO OTHER PAGES
     const navigate = useNavigate()
     useEffect(() => {
@@ -103,6 +112,8 @@ export default function Header() {
 
     // console.log("USER", user)
     // console.log("USER NAME", userName)
+
+    if (lang === undefined) return null
 
     return (
         <Box className='header'>
@@ -114,9 +125,10 @@ export default function Header() {
                 </Box>
             </Box>
 
-            <Box display='flex' onClick={handleClick} style={{ justifySelf: 'flex-end', cursor:'pointer' }} mt='12px' mr='20px' height='47px' alignContent='center'>
-                <Box style={{ fontSize:"0.9em" }} color={'white'} mr={1.5} mt='5px' >{ userName }</Box>
-                <MenuIcon style={{ color:"white" }}/>
+            <Box display='flex'  style={{ justifySelf: 'flex-end', cursor:'pointer' }} mt='12px' mr='20px' height='47px' alignContent='center'>
+                <Box style={{ fontSize:"0.9em" }} color={'white'} mr={1.5} mt='6px' >{ userName }</Box>
+                <LanguageSelector currentLang={ lang } handleLang={ handleLang } />
+                <MenuIcon onClick={ handleClick } style={{ marginTop:'3px', color:"white" }}/>
             </Box>
 
             <Box style={{ marginRight:'20px'}}>

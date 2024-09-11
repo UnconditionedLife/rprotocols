@@ -365,8 +365,10 @@ export function buildItemsForSelect(db, subjectItem, selectType) {
 
 export function sortArrByTitle(arr, lang){
     return arr.sort(function(a, b) {
-        let textA = a.title[ lang ].toUpperCase();
-        let textB = b.title[ lang ].toUpperCase();
+        let textA = a.title[ lang ] || a.title.en; // default to english if lang in empty
+        let textB = b.title[ lang ] || b.title.en; // default to english if lang in empty
+        textA = textA.toUpperCase()
+        textB = textB.toUpperCase()
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     })
 }

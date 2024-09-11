@@ -20,6 +20,9 @@ const theSite = import.meta.env.VITE_SITE;
 
 // const TheHomePage = (theSite == 'rCollabs') ? CollabHomePage : ProtocolsHome
 
+const langChoice = localStorage.getItem("i18nextLng")
+const defaultLang = langChoice ? langChoice : "en"
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -32,7 +35,7 @@ const router = createBrowserRouter([
             // COLLABS or PROTOCOLS
             {
                 path: "/",
-                element: <LangSwitcher lang="en" />
+                element: <LangSwitcher lang={ defaultLang } />
             },
             
             {

@@ -18,11 +18,14 @@ import AttributionAreaEdit from './AttributionAreaEdit.jsx';
 import RegionsAreaEdit from './RegionsAreaEdit.jsx';
 import ElementsAreaEdit from './ElementsAreaEdit.jsx';
 import ProtocolsAreaEdit from './ProtocolsAreaEdit.jsx';
+import { useParams } from 'react-router';
 
 
 export default function EditItemPage(props) {
-    const { item, newItem, lang, getNeedTitle, handleGoto, action, 
+    const { item, newItem, getNeedTitle, handleGoto, action, 
         addRemoveItemInMemory, needsList, handleNewItemChange, db } = props;
+    const { lang } = useParams();
+    const [ editLang, setEditLang ] = useState( lang )
     const [ originalState, setOriginalState ] = useState({});
     const [ formState, setFormState ] = useState(null)
     const [ regions, setRegions ] = useState([])
@@ -139,10 +142,10 @@ console.log('EDIT FORM STATEITEM', stateItem )
         if ([ "tags", "title", "description", "intro", "closing", 
             "attribComment" ].includes(name)) {
             let nestedValues = formState[name]
-            if (nestedValues?.[lang]) { 
-                nestedValues[lang] = value
+            if (nestedValues?.[editLang]) { 
+                nestedValues[editLang] = value
             } else { 
-                nestedValues = { ...formState[name], [lang]: value }
+                nestedValues = { ...formState[name], [editLang]: value }
             }
             setFormState((prevState) => ({
                 ...prevState,
@@ -277,7 +280,7 @@ console.log("newList @ Set FormState", newArr)
 
         const newHistoryRecord = deepCopy(historyRecord)
         const newHistoryArray = deepCopy(formState.history)
-        newHistoryRecord.description[lang] = value
+        newHistoryRecord.description[editLang] = value
         newHistoryArray[0]= newHistoryRecord
         
         setFormState((prevState) => ({ ...prevState, history: newHistoryArray }));
@@ -288,7 +291,7 @@ console.log("newList @ Set FormState", newArr)
 
     function handleSaveForm(){
         const objArr = { formState: formState, elements: elements, protocols: protocols, 
-            historyRecord: historyRecord, lang: lang }
+            historyRecord: historyRecord, lang: editLang }
         const newErrors = validateFields( objArr )
         setErrors(newErrors)
 
@@ -356,7 +359,7 @@ console.log("newList @ Set FormState", newArr)
 
     function handleLanguage(newLang){
         // console.log("CHANGE LANG:", newLang)
-        // setLang(newLang)
+        setEditLang(newLang)
     }
 
     // console.log('formstate', formState)
@@ -385,7 +388,7 @@ console.log("newList @ Set FormState", newArr)
         <form key={ formState.versionId }>
         <Card key={formState.id} className="itemCard" >
 
-            <HeaderArea item={ formState } lang={ lang } handleLanguage={ handleLanguage } action={ action }/>
+            <HeaderArea item={ formState } lang={ editLang } handleLanguage={ handleLanguage } action={ action }/>
 
             {/* **** SHOW THE EDITING RED FLAG **** */}
             <Box style={{ fontSize:'1.5em', width:'100%', height:'40px', fontWeight:700, color:'white', marginTop:'20px', 
@@ -399,7 +402,7 @@ console.log("newList @ Set FormState", newArr)
 
             <HeaderAreaEdit formState={ formState } parentNeeds={ parentNeeds } errors={ errors } 
                 handleFieldChange={ handleFieldChange } handleEditRemoveParent={ handleEditRemoveParent }
-                handleParentList={ handleParentList } lang={ lang } handleEditAddParent={ handleEditAddParent }
+                handleParentList={ handleParentList } lang={ editLang } handleEditAddParent={ handleEditAddParent }
                 show={ showAll } needsList={ needsList } />
 
             { formState.type !== "Need" &&
@@ -410,33 +413,33 @@ console.log("newList @ Set FormState", newArr)
             {/* ****** INTRO FOR PROTOCOLS & GUIDES ONLY ****** */}
             { formState.type !== "Need" &&
                 <IntroAreaEdit formState={ formState } errors={ errors } handleFieldChange={ handleFieldChange } 
-                    lang={ lang } show={ showAll } />
+                    lang={ editLang } show={ showAll } />
             }
 
             { formState.type === "Protocol" &&
                 <ElementsAreaEdit elements={ elements } setElements={ setElements }
                     errors={ errors } updateArrayItems={ updateArrayItems } addArrayItem={ addArrayItem } 
-                    removeArrayItem={ removeArrayItem } lang={ lang } show={ showAll } />
+                    removeArrayItem={ removeArrayItem } lang={ editLang } show={ showAll } />
             }
 
             { (formState.type === "Protocol") && db !== undefined &&
                 <ProtocolsAreaEdit protocols={ protocols } setProtocols={ setProtocols }
                     errors={ errors } updateArrayItems={ updateArrayItems } addArrayItem={ addArrayItem }
-                    removeArrayItem={ removeArrayItem } lang={ lang } show={ showAll } db={ db } formState={ formState } />
+                    removeArrayItem={ removeArrayItem } lang={ editLang } show={ showAll } db={ db } formState={ formState } />
             }
 
             { formState.type !== "Need" &&
                 <ClosingAreaEdit formState={ formState } errors={ errors } handleFieldChange={ handleFieldChange } 
-                    lang={ lang } show={ showAll } />
+                    lang={ editLang } show={ showAll } />
             }
 
             { formState.type !== "Need" &&
                 <AttributionAreaEdit formState={ formState } errors={ errors } handleFieldChange={ handleFieldChange } 
-                    lang={ lang } show={ showAll } />
+                    lang={ editLang } show={ showAll } />
             }
 
             <HistoryAreaEdit history={ formState.history } historyRecord={ historyRecord } errors={ errors } 
-                minId={ formState.minId } updateHistory={ updateHistory } lang={ lang } show={ showAll } />
+                minId={ formState.minId } updateHistory={ updateHistory } lang={ editLang } show={ showAll } />
 
             {/* // *********** FORM FOOTER *********** */}
             <Box color='#CC3300'>* Required</Box>

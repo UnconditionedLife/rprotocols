@@ -54,7 +54,7 @@ export default function HeaderArea(props) {
                 <Box>
                     {/* <hr width='60%' color={ itemColor } /> */}
                     <h5 style={{ fontSize:'1.4em', fontWeight:800, marginTop:'8px', color: itemColor }}>
-                        { item.title?.[lang] }
+                        { item.title?.[lang] || "(en) " + item.title.en }
                     </h5>
                     {/* <hr width='60%' color={ itemColor } /> */}
                 </Box>
@@ -74,10 +74,10 @@ export default function HeaderArea(props) {
                 <LanguageBar handleLanguage={ handleLanguage } lang={ lang }/>
             }
 
-            <span className='cardDescription'> { item.description?.[lang] || "" }</span>
+            <span className='cardDescription'> { item.description?.[lang] || "(en) " + item.description.en }</span>
 
             { action !== 'add-set' && 
-                <TagBar tags={ item.tags?.[lang] || "" } />
+                <TagBar tags={ item.tags?.[lang] || item.tags?.en } langCode={ item.tags?.[lang] ? "" : "(en)" } />
             }
         </Box>
     )

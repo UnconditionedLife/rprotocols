@@ -462,7 +462,7 @@ export default function Studio() {
                 { area !== "home" &&
                     <span style={{ color:'white', lineHeight:'80px', cursor:'pointer', fontSize:'1.1rem' }} 
                         onClick={ () => { handleGoto(`/${lang}/home`) }}>
-                        Home
+                        { t("home.diamondTitle") }
                     </span>
                 }
             </Box>

@@ -6,7 +6,7 @@ export default function LanguageBar(props) {
     const { handleLanguage, lang } = props
 
     const handleClick = (newLang) => {
-        console.info('You clicked the Language.');
+        // console.info('You clicked the Language.');
         handleLanguage(newLang)
     };
 
