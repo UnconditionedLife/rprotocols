@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.19](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.18...v0.1.19) (2024-09-11)
+
+
+### Bug Fixes
+
+* changed Ford Quote to Hale ([4194b4a](https://github.com/UnconditionedLife/rprotocols/commit/4194b4aacc6d44c91615221d90ac4950cd155ae8))
+* fixed the header and footer menu/links ([14ddd12](https://github.com/UnconditionedLife/rprotocols/commit/14ddd1290c2d8f584ed771d7385e84781383711d))
+
 ## [0.1.18](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.17...v0.1.18) (2024-09-05)
 
 ## [0.1.17](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.16...v0.1.17) (2024-09-03)
