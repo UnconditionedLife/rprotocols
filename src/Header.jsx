@@ -47,7 +47,7 @@ export default function Header() {
 
     useEffect(() => {
         // console.log("EFFECT USER", user)
-        setLoginLabel((user === null) ? t('header.login') : t('header.logout'))
+        setLoginLabel((user === null) ? 'header.login' : 'header.logout')
     }, [ user ])
 
     // open menu
@@ -147,7 +147,7 @@ export default function Header() {
                     
                     <hr/>
                     
-                    <MenuItem onClick={() => { handleClose('/' + loginLabel ) }} value>{ loginLabel }</MenuItem>
+                    <MenuItem onClick={() => { handleClose('/' + t(loginLabel) ) }} value>{ t(loginLabel) }</MenuItem>
                 </Menu>
             </Box>
         </Box>
