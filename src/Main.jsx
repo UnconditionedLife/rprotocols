@@ -2,9 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import Home from './Home.jsx';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import StudioExplore from './Studio/StudioExplore.jsx';
 import Studio from './Studio/Studio.jsx';
 import Root from './Root.jsx';
 import COOP2 from './COOP2.jsx';
@@ -15,9 +13,7 @@ import LangSwitcher from './LangSwitcher.jsx';
 import HomeSwitcher from './HomeSwitcher.jsx';
 import './i18n';
 
-
-const theSite = import.meta.env.VITE_SITE;
-
+// const theSite = import.meta.env.VITE_SITE;
 // const TheHomePage = (theSite == 'rCollabs') ? CollabHomePage : ProtocolsHome
 
 const langChoice = localStorage.getItem("i18nextLng")
@@ -86,9 +82,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('main')).render(
-    
     <React.StrictMode>
         <RouterProvider router={router} />
     </React.StrictMode>
-  
 )

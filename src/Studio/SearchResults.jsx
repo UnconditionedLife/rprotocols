@@ -1,8 +1,7 @@
 import { Box } from "@mui/material";
 import ButtonView from "./ButtonView";
 
-export default function SearchResults(props) {
-    const { searchResults, handleGoto } = props;
+export default function SearchResults({ searchResults, handleGoto }) {
     
     if ( searchResults === null ) return null
 

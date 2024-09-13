@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Link from '@mui/icons-material/Link';
 import Quote from '../Library/Quote';
 import { urlizeString } from '../GlobalFunctions';
 import ReactMarkdown from 'react-markdown';
@@ -35,21 +35,52 @@ export default function PrivacyPage({ lang, db, handleGoto }) {
         return protocol
     }
 
-    const ProtocolItem = ({ protocol, prefix }) => {
+    const ImageWithErrorHandling = ({ src, height, alt }) => {
+        const [isImageLoaded, setIsImageLoaded] = useState(true);
+      
+        const handleError = () => {
+          setIsImageLoaded(false); // Set image visibility to false when loading fails
+        };
+      
         return (
-            <Box style={{ marginLeft:'clamp(4px, 1.8vw, 20px)', borderLeft: '1px dotted #777', borderBottom: '1px dotted #777', 
-                paddingLeft: '10px' }}>
-                <h4 style={{ fontSize:"1.8rem" }}>{ prefix } &nbsp;{ protocol.title[ lang ] }</h4>
-                <p style={{ fontSize:"0.9rem" }}>
-                    { `(v.${protocol.verNum}) ` } 
-                    <OpenInNewIcon fontSize="small" style={{ cursor:"pointer" }}
-                        onClick={ () => { handleGoto( `/${ lang }/studio/protocol/${ urlizeString(protocol.title[ lang ])}/${protocol.majId}` ) }}
+          isImageLoaded && (
+            <img src={ src } height={ height } alt={ alt } style={{ marginRight:"8px", marginBottom:"8px"}} onError={handleError} />
+          )
+        );
+      };
+
+    const ProtocolItem = ({ protocol, prefix }) => {
+        const colors = ( protocol.protocols.length > 0 ) 
+            ? '#bebebe, #5a5a5a' 
+            : '#36d1dc, #5b86e5'
+
+        return (
+            <Box style={{ marginLeft:'clamp(4px, 1.8vw, 20px)', border: '2px dotted #777', borderRight: 'none', 
+                borderRadius:"10px", paddingLeft: '10px', paddingRight: '0px', marginBottom:'8px', 
+                background: `linear-gradient(135deg, ${colors})` }}>
+                    
+                <span >
+                    <Box display="flex" 
+                        onClick={ () => { handleGoto( `/${ lang }/studio/protocol/${ urlizeString(protocol.title[ lang ])}/${protocol.majId}` ) }} >
+                        <Box marginRight='8px'><h4 style={{ fontSize:"1.8rem", lineHeight:'1.7rem', cursor:"pointer" }}>{ prefix }</h4></Box>
+                        <Box paddingRight='6px'><h4 style={{ fontSize:"1.8rem", lineHeight:'1.7rem', cursor:"pointer" }}>{ protocol.title[ lang ] || "(en) " + protocol.title.en }</h4></Box>
+                    </Box>
+                    <p style={{ fontSize:"0.9rem", cursor:"pointer" }} >
+                        { `(v.${protocol.verNum}) ` } 
+                        <Link fontSize="small" />
+                    </p>
+                </span>
+                <Box display="flex" paddingRight='8px'>
+                    <ImageWithErrorHandling
+                        src={ "/protocols/" + protocol.iId + ".webp" }
+                        height="200px"
+                        alt={ protocol.title[ lang ]}
                     />
-                </p>
-                <p>{ protocol.intro[ lang ] }</p>
+                    <p>{ protocol.intro[ lang ] || "(en) " + protocol.intro.en }</p>
+                </Box>
 
                 {protocol.elements && protocol.elements.length > 0 && (
-                    <Box>
+                    <Box paddingRight='8px'>
                         {/* <h4>Sub-Protocols:</h4> */}
                         {protocol.elements.map((subElement, index) => (
                             <ElementItem key={ index} element={subElement} prefix={ index + 1 } />
@@ -58,15 +89,15 @@ export default function PrivacyPage({ lang, db, handleGoto }) {
                 )}
     
                 { protocol.protocols && protocol.protocols.length > 0 && (
-                    <Box>
+                    <Box paddingRight='8px'>
                         {/* <h4>Sub-Protocols:</h4> */}
                         {protocol.protocols.map((subProtocol, index) => (
-                            <ProtocolItem key={ subProtocol.majId + "-" + index} protocol={subProtocol} prefix={ `${prefix}.${index + 1}` } />
+                            <ProtocolItem key={ subProtocol.majId + "-" + index} protocol={ subProtocol } prefix={ `${prefix}.${index + 1}` } />
                         ))}
                     </Box>
                 )}
 
-                <p style={{ marginTop:"16px", marginBottom:"20px" }}>{ protocol.closing[ lang ] }</p>
+                <p style={{ marginTop:"16px", marginBottom:"20px" }}>{ protocol.closing[lang] === "" ? protocol.closing.en ? "(en) " + protocol.closing.en : "" : protocol.closing[lang] }</p>
             </Box>
         )
     }
@@ -84,8 +115,8 @@ export default function PrivacyPage({ lang, db, handleGoto }) {
 
     const ElementItem = ({ element, prefix }) => {
         return (
-            <Box style={{ color:"white", marginLeft:'clamp(4px, 1.8vw, 20px)', borderLeft: '1px solid #777', paddingLeft: '10px' }}>
-                <ReactMarkdown style={{ color:"white !important", whiteSpace:'pre-wrap'}}>{ "**" + numberToLetter(prefix) + ")** " + element[ lang ] }</ReactMarkdown>
+            <Box style={{ color:"white", marginLeft:'clamp(4px, 1.8vw, 20px)', paddingLeft: '10px' }}>
+                <ReactMarkdown style={{ color:"white !important", whiteSpace:'pre-wrap'}}>{ "**" + numberToLetter(prefix) + ")** " + ( element[lang] || "(en) " + element.en ) }</ReactMarkdown>
             </Box>
         )
     }
@@ -99,12 +130,11 @@ export default function PrivacyPage({ lang, db, handleGoto }) {
 
             <Quote quote={ t('privacy.gillespieQuote') } author={ t('privacy.gillespieAuthor') } />
 
-            <Box style={{ marginTop:"-100px", alignSelf:"center", maxWidth:"700px", textAlign:"left" }}>
-                
+            <Box style={{ marginTop:"-30px", alignSelf:"center", maxWidth:"700px", textAlign:"left" }}>
                 <ProtocolItem protocol={ protocol } prefix="1"/>
                 <Box width='100%' textAlign='center' marginTop="30px" color="#fff" >
-                    PROTOCOL ID: ({privacyPolicyMajId})<br/>
-                    Output: { nowDates().ui } UTC<br/>
+                    { t("privacy.footerProtocolId") } ({privacyPolicyMajId})<br/>
+                    { t("privacy.footerOutput") } { nowDates().ui } UTC<br/>
                     <img height="40px" style={{marginTop:"10px"}} src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png"/>
                 </Box>
                 
