@@ -14,10 +14,10 @@ import { dbSaveItemAsync } from "../Database";
 
             const row = {}
             row.id = i.minId,  // id is the default field used by the indexer
-            row.title = i.title[ lang ] || 'Untitled',
-            row.description = i.description[ lang ],
+            row.title = i.title[ lang ] || i.title.en || 'Untitled',
+            row.description = i.description[ lang ] || i.description.en,
             row.author = i.history.map(h => h.author).join(", "),
-            row.tags = i.tags[ lang ]
+            row.tags = i.tags[ lang ] || i.tags.en
             // row.needTitle = i.needTitle[ lang ]
 
             // console.log('indexItem', row)

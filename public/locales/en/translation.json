@@ -36,6 +36,20 @@
         "haleQuote": "Coming together is a beginning;|keeping together is progress;|working together is success.",
         "haleAuthor": "Edward Everett Hale"
     },
+    "studio":{
+        "errorMissingItemT": "Missing Item",
+        "errorMissingItemMsg": "Oops! It seems this page wandered off ... or maybe it never existed?",
+        "infoUrlRedirectedT": "Redirected",
+        "infoUrlRedirectedMsg-1": "ID:",
+        "infoUrlRedirectedMsg-2": "not found - redirected to:",
+        "calloutHeader": "The Power of 'HOW TO' in Our Hands!",
+        "searchPlaceholder": "Find needs and protocols...",
+        "browseButton": "Browse",
+        "typeNeedUC": "NEED",
+        "typeProtocolUC": "PROTOCOL",
+        "statusFollow": "Follow",
+        "statusAdopt": "Adopt"
+    },
     "explore":{
         "sectionHead": "Explore Protocols",
         "howWorkHead": "HOW THEY WORK",
@@ -122,6 +136,11 @@
         "gillespieQuote": "Mutual respect is so important because as soon|as it disappears in relations between you|and the next person, there's trouble.",
         "gillespieAuthor": "Dizzy Gillespie",
         "mlkQuote": "We must learn to live together as brothers|or perish together as fools.",
-        "mlkAuthor": "Martin Luther King Jr."
+        "mlkAuthor": "Martin Luther King Jr.",
+        "footerProtocolId": "PROTOCOL ID:",
+        "footerOutput": "Output:"
+    },
+    "footer": {
+        "copyright": "rCollabs (a Radical World Collaborative)"
     }
 }

@@ -50,8 +50,6 @@ export default function Studio() {
     const validItemLoadActions = [ "need", "protocol", "promote", "fork" ]
     const isValidAction = validItemLoadActions.includes(action)
     const { t, i18n } = useTranslation();
-    // const lang = i18n.language.split("-")[0]
-    
     
     // SET THE SITE LANGUAGE
     useEffect(() => {
@@ -62,10 +60,8 @@ export default function Studio() {
         }
     }, [ i18n, lang ])
 
-
     // console.log("i18n LANG", i18n.language )
 
-      
     useEffect(() => {
         if (area == "home") {
             window.scrollTo({
@@ -85,12 +81,13 @@ export default function Studio() {
         if (area === "home" && location.state && location.state.from404) {
             setAlertMessage({
                 severity: "error", // success, info, warning, error
-                title: "Missing Item",
-                msg: "Oops! It seems this page wandered off somewhere... or maybe it never existed?"
+                title: t("studio.errorMissingItemT"),
+                msg: t("studio.errorMissingItemMsg")
             })
 
             // Clear the location state
             navigate(location.pathname, { replace: true, state: null });
+            handleGoto(null)
         }
     }, [ area, location, navigate ]);
 
@@ -186,8 +183,8 @@ export default function Studio() {
         // TODO Need at siteLang and an editLang to distinguish the site 
         //      interface language and the content languages
 
-        if (db !== null) LoadIndex(db, index, 'en')
-    }, [ db, index ])
+        if (db !== null) LoadIndex(db, index, lang)
+    }, [ db, index, lang ])
 
     // RUN SEARCH WITH EACH ENTRY INTO SEARCH
     useEffect(() => {
@@ -233,8 +230,8 @@ export default function Studio() {
             // announce change in version
             setAlertMessage({
                 severity: "info", // success, info, warning, error
-                title: "Redirected",
-                msg: `ID: '${urlId}' not found - redirected to: '${newUrlId}'!`
+                title: t("studio.infoUrlRedirectedT"),
+                msg: `${ t("studio.infoUrlRedirectedMsg-1") } '${urlId}' ${ t("studio.infoUrlRedirectedMsg-2") } '${newUrlId}'!`
             })
             // change url
             handleGoto(`/${lang}/studio/${theItem.type.toLowerCase()}/${urlizeString(theItem.title[lang])}/${newUrlId}`)
@@ -300,11 +297,12 @@ export default function Studio() {
                 if (area === "studio" && isValidAction ) {
                     setAlertMessage({
                         severity: "error", // success, info, warning, error
-                        title: "Missing Item",
-                        msg: `Oops! It seems item ID: ${urlId} wandered off somewhere... or maybe it never existed?`
+                        title: t("studio.errorMissingItemT"),
+                        msg: t("studio.errorMissingItemMsg")
                     })
                     // Clear the location state
                     navigate(location.pathname, { replace: true, state: null });
+                    handleGoto(null)
                 }
             }
         }
@@ -314,6 +312,7 @@ export default function Studio() {
     // NAVIGATE TO URL
     useEffect(() => {
         if (goto) navigate( goto, { replace: false });
+        handleGoto(null)
     }, [goto, navigate]);
 
     // SCROLL TO THE VIEW OR EDIT CARD
@@ -425,22 +424,16 @@ export default function Studio() {
         setSetInfo(newObj)
     }
 
-
     const snackbarState = ( alertMessage?.msg !== undefined ) ? true : false
 
-
 // console.log("Search Results", searchResults)
-
-
 
 // console.log("ADD setInfo", setInfo)
 
 // console.log("DB @ STUDIO", db)
 
-    // console.log("ITEM", item)
+// console.log("ITEM", item)
     
-
-
     if (db === null ) return null
 
     return (
@@ -469,14 +462,18 @@ export default function Studio() {
             
             <Box className='studioContainer' >
                 <img src={ rProtocolStudio } style={{ width:'clamp(300px, 60vw, 450px)', marginTop:'46px' }} alt="rProtocol Studio" />
-                <h3 className='calloutHeader' style={{ marginTop:'30px' }}>The Power of &quot;HOW TO&quot; in Our Hands!</h3>
+                <h3 className='calloutHeader' style={{ marginTop:'30px' }}>{ t("studio.calloutHeader") }</h3>
+
+                {/* The Power of &quot;HOW TO&quot; in Our Hands! */}
+                {/* The Power of "HOW TO" in Our Hands! */}
+
                 {/* <span className='calloutText'>{ `Find the Protocols and Guides You Need ${inView}`}</span> */}
 
                     <Box alignSelf='center' backgroundColor='rgba(255, 255, 255, 0.9)' 
-                        padding='8px' borderRadius='10px' width="94%" maxWidth='340px' marginTop='8px'>
+                        padding='8px' borderRadius='10px' width="94%" maxWidth='360px' marginTop='8px'>
                         <TextField size='small' className='formField' width='90%'
                             name={ "search" } value={ searchTerm } autoComplete='off'
-                            placeholder="Find needs and protocols..."
+                            placeholder={ t("studio.searchPlaceholder") }
                             InputProps={{startAdornment: (
                                 <InputAdornment position="start">
                                     <SearchRounded />
@@ -500,7 +497,7 @@ export default function Studio() {
                         <Box mb='4em' mx={10} alignSelf={"center"} style={{ cursor:'pointer' }}>
                             <Card style={{ marginTop:'30px', paddingTop:'1.1em', paddingBottom:'0.8em', paddingLeft:'2em', paddingRight:'2em', backgroundColor:'#FFC400' }}
                                 onClick={ () => { handleSearchTerm("Life's Needs"); handleGoto(`/${lang}/studio/need/life-s-needs/N.20240716T165825706-1513.1`) }}>
-                                <h4 style={{ color:'black', marginTop:'0px'}}><b>Browse</b></h4>
+                                <h4 style={{ color:'black', marginTop:'0px'}}><b>{ t("studio.browseButton") }</b></h4>
                             </Card>
                         </Box>
                     }

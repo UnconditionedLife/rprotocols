@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-
+import { useTranslation } from 'react-i18next';
+import { nowDates } from './GlobalFunctions';
 
 const TikTokIcon = ({ color = "#acacac" }) => {
     return (
@@ -17,27 +18,30 @@ const TikTokIcon = ({ color = "#acacac" }) => {
 }
 
 export default function Footer() {
-    const { lang } = useParams();
-    const [ path, setPath ] = useState(null)
-
-    // NAVIGATE TO OTHER PAGES
+    const { lang } = useParams()
+    const [ secondYear, setSecondYear ] = useState("")
+    const { t } = useTranslation();
+    const currentYear = nowDates().year
     const navigate = useNavigate()
+
     useEffect(() => {
-        if (path) navigate(path, {replace: false })
-    }, [ path ])
-    
+        if (currentYear !== 2024) setSecondYear("-" + nowDates().year)
+    }, [ currentYear ])
+
+    function handelPath(section){
+        navigate(`/${lang}/${section}`, {replace: false })
+    }
+
     return (
         <Box className='footer'>
-            <Box pl='20px' width='60px' maxWidth='60px'>
+            <Box pl='20px' width='60px' maxWidth='60px' style={{ cursor:'pointer'}} onClick={ () => { handelPath("home") }}>
                 <img src="/rManIcon.svg" height="30px" style={{ margin:'10px'}}></img>
             </Box>
             <Box display='flex' flexWrap='wrap' flexDirection='row' marginTop='.8em'>
-                <span className='footerText'>©2024 rCollabs (a Radical World Collaborative)</span>
+                <Box className='footerText'>©2024{secondYear} { t("footer.copyright") }</Box>
                 {/* <a href='/protocols#usage'><span className='footerText'>Usage Protocols</span></a> */}
-                <p>
-                <span className='footerText' onClick={ () => { setPath(`/${lang}/about-us`) }}>About Us</span>
-                <span className='footerText' onClick={ () => { setPath(`/${lang}/privacy-protocols`) }}>Privacy Protocols</span>
-                </p>
+                <Box className='footerText' onClick={ () => { handelPath("about-us") }}>{ t("about.sectionHead") }</Box>
+                <Box className='footerText' onClick={ () => { handelPath("privacy-protocols") }}>{ t("privacy.sectionHead") }</Box>
             </Box>
             <Box display='flex' flexWrap='wrap' flexDirection='row' justifyContent='flex-end' marginTop='.7em'>
                 <a href='https://www.linkedin.com/company/radical-world/' target='_blank'><LinkedInIcon className='socialIcon' /></a>
@@ -48,5 +52,4 @@ export default function Footer() {
             </Box>
         </Box>
     )
-
 }

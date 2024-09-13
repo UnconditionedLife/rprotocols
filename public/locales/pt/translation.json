@@ -36,6 +36,20 @@
         "haleQuote": "Reunir-se é um começo;|manter-se juntos é progresso;|trabalhar juntos é sucesso.",
         "haleAuthor": "Edward Everett Hale"
     },
+    "studio":{
+        "errorMissingItemT": "Item Ausente",
+        "errorMissingItemMsg": "Opa! Parece que esta página se desviou … ou talvez nunca tenha existido.",
+        "infoUrlRedirectedT": "Redirecionado",
+        "infoUrlRedirectedMsg-1": "ID:",
+        "infoUrlRedirectedMsg-2": "não encontrado - redirecionado para:",
+        "calloutHeader": "O Poder do “COMO” em Nossas Mãos!",
+        "searchPlaceholder": "Encontre necessidades e protocolos…",
+        "browseButton": "Navegar",
+        "typeNeedUC": "NECESSIDADE",
+        "typeProtocolUC": "PROTOCOLO",
+        "statusFollow": "Seguir",
+        "statusAdopt": "Adotar"
+    },
     "explore": {
           "sectionHead": "Explorar Protocolos",
           "howWorkHead": "COMO FUNCIONAM",
@@ -121,6 +135,11 @@
         "gillespieQuote": "O respeito mútuo é tão importante porque assim que|ele desaparece nas relações entre você|e a outra pessoa, há problemas.",
         "gillespieAuthor": "Dizzy Gillespie",
         "mlkQuote": "Devemos aprender a viver juntos como irmãos|ou perecer juntos como tolos.",
-        "mlkAuthor": "Martin Luther King Jr."
+        "mlkAuthor": "Martin Luther King Jr.",
+        "footerProtocolId": "ID DE PROTOCOLO:",
+        "footerOutput": "Saída:"
+    },
+    "footer": {
+        "copyright": "rCollabs (uma Colaborativa da Radical World)"
     }
 }
