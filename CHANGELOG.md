@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.20](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.19...v0.1.20) (2024-09-13)
+
+
+### Features
+
+* added language selector ([1bf6de1](https://github.com/UnconditionedLife/rprotocols/commit/1bf6de18f7143dafec34081b8b1341ea6ac2b1ed))
+
 ## [0.1.19](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.18...v0.1.19) (2024-09-11)
 
 
