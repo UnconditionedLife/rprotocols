@@ -2,6 +2,10 @@
     "FILE":{
         "language": "[en] ENGLISH"
     },
+    "header":{
+        "login": "Login",
+        "logout": "Logout"
+    },
     "home":{
         "diamondTitle": "Home",
         "sectionHead": "Let's Collaborate",

@@ -2,6 +2,10 @@
     "FILE":{
         "language": "[es] SPANISH"
     },
+    "header":{
+        "login": "Iniciar Sesión",
+        "logout": "Cerrar Sesión"
+    },
     "home":{
         "diamondTitle": "Inicio",
         "sectionHead": "Colaboremos",

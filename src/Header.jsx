@@ -6,6 +6,7 @@ import netlifyIdentity from 'netlify-identity-widget'
 import { handleUser, getUserName, getUserObject } from './GlobalFunctions';
 import { APP_VERSION } from './config';
 import LanguageSelector from './LanguageSelector';
+import { useTranslation } from 'react-i18next';
 
 
 export default function Header() {
@@ -19,6 +20,7 @@ export default function Header() {
     const [ widgetOpen, setWidgetOpen ] = useState( 'signup' )
     const theSite = import.meta.env.VITE_SITE;
     const appVerNum = APP_VERSION
+    const { t } = useTranslation();
     const siteProp = (theSite == 'rCollabs') ? 'rCollabs' : 'rProtocols'
 
     useEffect(() => {
@@ -45,7 +47,7 @@ export default function Header() {
 
     useEffect(() => {
         // console.log("EFFECT USER", user)
-        setLoginLabel((user === null) ? "Login" : "Logout")
+        setLoginLabel((user === null) ? t('header.login') : t('header.logout'))
     }, [ user ])
 
     // open menu
@@ -133,15 +135,15 @@ export default function Header() {
 
             <Box style={{ marginRight:'20px'}}>
                 <Menu id="hamburger" anchorEl={anchorEl} open={open} onClose={ handleClose }>
-                    <MenuItem onClick={() => { handleClose(`/${lang}/home`) }}>Home</MenuItem>
+                    <MenuItem onClick={() => { handleClose(`/${lang}/home`) }}>{ t('home.diamondTitle') }</MenuItem>
                     
                     {/* <MenuItem onClick={() => { handleClose(`/${lang}/studio`) }}>Studio</MenuItem> */}
                     {/* <MenuItem onClick={() => { handleClose('/en/coop2') }}>COOP² Specs</MenuItem> */}
                     
-                    <MenuItem onClick={() => { handleClose(`/${lang}/explore-protocols`) }} value>Explore Protocols</MenuItem>
+                    <MenuItem onClick={() => { handleClose(`/${lang}/explore-protocols`) }} value>{ t('explore.sectionHead') }</MenuItem>
                     {/* <MenuItem onClick={() => { handleClose('/rcollabs') }}>rCollabs</MenuItem> */}
-                    <MenuItem onClick={() => { handleClose(`/${lang}/about-us`) }} value>About Us</MenuItem>
-                    <MenuItem onClick={() => { handleClose(`/${lang}/privacy-protocols`) }} value>Privacy Protocols</MenuItem>
+                    <MenuItem onClick={() => { handleClose(`/${lang}/about-us`) }} value>{ t('about.sectionHead') }</MenuItem>
+                    <MenuItem onClick={() => { handleClose(`/${lang}/privacy-protocols`) }} value>{ t('privacy.sectionHead') }</MenuItem>
                     
                     <hr/>
                     
