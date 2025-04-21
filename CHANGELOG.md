@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.21](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.20...v0.1.21) (2025-04-21)
+
+
+### Bug Fixes
+
+* improved privacy and language display ([5bc2fa3](https://github.com/UnconditionedLife/rprotocols/commit/5bc2fa32e017b5e59959b59e5c95eb7214c99968))
+* Improved Translations ([20dfc39](https://github.com/UnconditionedLife/rprotocols/commit/20dfc39d49d8154301d2f6c29daaea789db31c5c))
+* login/logout translation ([7c1f706](https://github.com/UnconditionedLife/rprotocols/commit/7c1f706337b1c115bf305ca77b474f1e8fb87b04))
+* translated the menu ([bd95fb9](https://github.com/UnconditionedLife/rprotocols/commit/bd95fb9fbe0dc80849436faba754f651f270b053))
+
 ## [0.1.20](https://github.com/UnconditionedLife/rprotocols/compare/v0.1.19...v0.1.20) (2024-09-13)
 
 
