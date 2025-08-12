@@ -1,0 +1,33 @@
+{
+  "$type": "org.rprotocols.record.protocol",
+  "title": "Using Social Protocols",
+  "body": "[NEED] Define Social Protocols — How to collectively establish, share, and evolve social protocols...\n[CONTEXT]\nApplies within the rProtocols ecosystem...\n[PURPOSE]\nTo ensure that all participants can create, adapt, and adopt protocols...\n[LIVING PATTERNS]\n- Patterns vary and must be explicit.\n- Protocols evolve through adaptation.\n- Trust grows via visibility and reuse.\n- Unused protocols fade.\n[PROTOCOL STATEMENT]\nWhen working together in rProtocols...\n[ADAPTATION NOTES]\n- Any participant may fork.\n- Need, Context, and Purpose must be preserved.\n[CLOSING]\nAdoption is recorded publicly; follow for updates.",
+  "needShort": "Define Social Protocols",
+  "needFull": "How to collectively establish, share, and evolve social protocols without resorting to hierarchy, force, or control.",
+  "context": "Applies within the rProtocols ecosystem...",
+  "purpose": "To ensure transparent, adaptable, widely adoptable social protocols.",
+  "livingPatterns": [
+    "Patterns vary and must be explicit.",
+    "Protocols evolve through adaptation.",
+    "Trust grows via visibility and reuse.",
+    "Unused protocols fade."
+  ],
+  "statement": "When working together in rProtocols...",
+  "adaptation": "Any participant may fork. Need, Context, and Purpose must be preserved.",
+  "closing": "Adoption is recorded publicly; participants can follow for updates and forks.",
+  "levels": ["https://ontology.radical.world/level/group", "https://ontology.radical.world/level/organization"],
+  "rlf": [
+    { "iri": "https://ontology.radical.world/rlf#Regulating", "role": "pattern", "weight": 0.7 },
+    { "iri": "https://ontology.radical.world/rlf#ProcessingInformation", "role": "statement", "weight": 0.5 }
+  ],
+  "operatesOn": ["Signal"],
+  "v": "1.0.0",
+  "prev": null,
+  "forkOf": null,
+  "checksum": "sha256:TO_BE_COMPUTED",
+  "adoptEnabled": true,
+  "followEnabled": true,
+  "tags": ["process", "collaboration"],
+  "lang": "en",
+  "createdAt": "2025-08-12T13:00:00Z"
+}
