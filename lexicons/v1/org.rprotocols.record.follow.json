@@ -4,12 +4,34 @@
   "type": "record",
   "record": {
     "type": "object",
-    "description": "Subscribe to protocol updates.",
-    "required": ["protocol"],
+    "description": "Subscribe to updates on a protocol or suite. One record per (account, subject). Delete to unfollow.",
+    "required": ["subject"],
     "properties": {
-      "protocol": { "type": "string", "description": "at:// URI of the protocol record" },
-      "notify": { "type": "boolean", "default": true },
-      "createdAt": { "type": "string", "format": "datetime" }
+      "subject": { "type": "string", "description": "at:// of the protocol or suite" },
+
+      "subjectType": {
+        "type": "string",
+        "enum": ["protocol", "suite"],
+        "description": "Optional; inferable from the at:// collection"
+      },
+
+      "notify": { "type": "boolean", "default": true, "description": "Whether to receive notifications" },
+
+      "direct": {
+        "type": "boolean",
+        "default": false,
+        "description": "True if the user followed this subject directly (not only via suites)"
+      },
+
+      "suiteSources": {
+        "type": "array",
+        "description": "Suites whose membership caused this follow (zero or more).",
+        "maxLength": 64,
+        "items": { "type": "string", "description": "at:// of a suite" }
+      },
+
+      "createdAt": { "type": "string", "format": "datetime" },
+      "updatedAt": { "type": "string", "format": "datetime" }
     }
   }
 }
