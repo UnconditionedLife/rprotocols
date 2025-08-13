@@ -1,0 +1,26 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.procedure.unfollowSuite",
+  "type": "procedure",
+  "input": {
+    "encoding": "application/json",
+    "schema": {
+      "type": "object",
+      "required": ["suite"],
+      "properties": {
+        "suite": { "type": "string", "description": "at:// of the suite to unfollow" }
+      }
+    }
+  },
+  "output": {
+    "encoding": "application/json",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "suiteFollowDeleted": { "type": "boolean" },
+        "protocolFollowDeletedUris": { "type": "array", "items": { "type": "string" },
+          "description": "Only those follows that existed solely via this suite (inherited)" }
+      }
+    }
+  }
+}
