@@ -1,0 +1,1940 @@
+{
+  "version": "v1",
+  "docs": [
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.procedure.addNeedParent",
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": [
+            "child",
+            "parent"
+          ],
+          "properties": {
+            "child": {
+              "type": "string"
+            },
+            "parent": {
+              "type": "string"
+            },
+            "order": {
+              "type": "integer"
+            },
+            "note": {
+              "type": "string",
+              "maxLength": 140
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json"
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.procedure.adoptSuite",
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": [
+            "suite"
+          ],
+          "properties": {
+            "suite": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string",
+              "maxLength": 300
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "suiteAdoptionUri": {
+              "type": "string"
+            },
+            "protocolAdoptionUris": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.procedure.followSuite",
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": [
+            "suite"
+          ],
+          "properties": {
+            "suite": {
+              "type": "string"
+            },
+            "notify": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "suiteFollowUri": {
+              "type": "string"
+            },
+            "protocolFollowUris": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.procedure.publishProtocol",
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": [
+            "body"
+          ],
+          "properties": {
+            "body": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "lang": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "protocolUri": {
+              "type": "string"
+            },
+            "cid": {
+              "type": "string"
+            },
+            "warnings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.procedure.removeNeedParent",
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": [
+            "child",
+            "parent"
+          ],
+          "properties": {
+            "child": {
+              "type": "string"
+            },
+            "parent": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json"
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.procedure.syncSuiteMembership",
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": [
+            "suite"
+          ],
+          "properties": {
+            "suite": {
+              "type": "string",
+              "description": "at:// of the suite to reconcile"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "followers",
+                "adopters",
+                "both"
+              ],
+              "default": "both",
+              "description": "Which audiences to reconcile against current suite.members"
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "addedProtocolSignals": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "removedProtocolSignals": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "processed": {
+              "type": "integer",
+              "description": "Number of accounts scanned"
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.procedure.unadoptSuite",
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": [
+            "suite"
+          ],
+          "properties": {
+            "suite": {
+              "type": "string",
+              "description": "at:// of the suite to unadopt"
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "suiteAdoptionDeleted": {
+              "type": "boolean"
+            },
+            "protocolAdoptionDeletedUris": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Only those adoptions that existed solely via this suite (inherited)"
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.procedure.unfollowSuite",
+      "type": "procedure",
+      "input": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": [
+            "suite"
+          ],
+          "properties": {
+            "suite": {
+              "type": "string",
+              "description": "at:// of the suite to unfollow"
+            }
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "suiteFollowDeleted": {
+              "type": "boolean"
+            },
+            "protocolFollowDeletedUris": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Only those follows that existed solely via this suite (inherited)"
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.list.needs",
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "parent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Return Needs that have any of these parents"
+          },
+          "level": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rlf": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lang": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "since": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "includeCounts": {
+            "type": "boolean",
+            "default": true
+          },
+          "limit": {
+            "type": "integer",
+            "default": 25,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "uri",
+                "cid",
+                "value"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "cid": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "object",
+                  "description": "Snapshot of org.rprotocols.record.need",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "needShort": {
+                      "type": "string"
+                    },
+                    "v": {
+                      "type": "string"
+                    },
+                    "levels": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "lang": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "datetime"
+                    }
+                  }
+                },
+                "counts": {
+                  "type": "object",
+                  "description": "Present only if includeCounts=true.",
+                  "properties": {
+                    "followers": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.list.protocols",
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Full-text over title, needShort, needFull, purpose, tags"
+          },
+          "level": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter by Levels IRIs (primary or any)"
+          },
+          "rlf": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter by Radical Life Functions IRIs"
+          },
+          "operatesOn": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Signal",
+                "MatterEnergy"
+              ]
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lang": {
+            "type": "string",
+            "description": "BCP-47 language code"
+          },
+          "author": {
+            "type": "string",
+            "description": "DID of protocol author/creator"
+          },
+          "since": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Only protocols created/updated since this time"
+          },
+          "need": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Return protocols that address any of these Need URIs"
+          },
+          "suite": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Return protocols that are members of any of these Suite URIs"
+          },
+          "adoptedBy": {
+            "type": "string",
+            "description": "Filter to protocols adopted by this DID"
+          },
+          "followedBy": {
+            "type": "string",
+            "description": "Filter to protocols followed by this DID"
+          },
+          "forkOf": {
+            "type": "string",
+            "description": "Return only protocols that are forks of the given ancestor at:// URI"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "recent",
+              "adoptions",
+              "follows"
+            ],
+            "default": "recent",
+            "description": "Sort order: recent = created/updated desc; adoptions/follows = count desc"
+          },
+          "includeCounts": {
+            "type": "boolean",
+            "default": true,
+            "description": "Include follower/adoption counts per item"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 25,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "uri",
+                "cid",
+                "value"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "cid": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "object",
+                  "description": "Snapshot of org.rprotocols.record.protocol",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "needShort": {
+                      "type": "string"
+                    },
+                    "v": {
+                      "type": "string"
+                    },
+                    "levels": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "operatesOn": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "Signal",
+                          "MatterEnergy"
+                        ]
+                      }
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "lang": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "datetime"
+                    }
+                  }
+                },
+                "counts": {
+                  "type": "object",
+                  "description": "Present only if includeCounts=true.",
+                  "properties": {
+                    "adoptions": {
+                      "type": "integer"
+                    },
+                    "followers": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.list.suites",
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Full-text search over title, summary, tags"
+          },
+          "level": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter by Levels IRIs in levelSpan"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lang": {
+            "type": "string",
+            "description": "BCP-47 language code"
+          },
+          "author": {
+            "type": "string",
+            "description": "DID of suite author/creator"
+          },
+          "since": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Only suites created/updated since this time"
+          },
+          "includeCounts": {
+            "type": "boolean",
+            "default": true,
+            "description": "Include follower/adoption counts in results"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 25,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "uri",
+                "cid",
+                "value"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "cid": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "object",
+                  "description": "Snapshot of org.rprotocols.record.suite",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "v": {
+                      "type": "string"
+                    },
+                    "levelSpan": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "datetime"
+                    }
+                  }
+                },
+                "counts": {
+                  "type": "object",
+                  "description": "Present only if includeCounts=true.",
+                  "properties": {
+                    "adoptions": {
+                      "type": "integer"
+                    },
+                    "followers": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.search.needs",
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Full-text query over title, needShort, needFull, tags"
+          },
+          "level": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter by Levels IRIs"
+          },
+          "rlf": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter by RLF IRIs"
+          },
+          "parent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Return Needs that have any of these parents"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lang": {
+            "type": "string",
+            "description": "BCP‑47 language code"
+          },
+          "author": {
+            "type": "string",
+            "description": "DID of creator"
+          },
+          "since": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Only return Needs created/updated since this time"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 25,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "uri",
+                "cid",
+                "value"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "cid": {
+                  "type": "string"
+                },
+                "score": {
+                  "type": "number",
+                  "description": "Search ranking score (optional)"
+                },
+                "value": {
+                  "type": "unknown",
+                  "description": "Need record value (may be partial snapshot)"
+                }
+              }
+            }
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.search.protocols",
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "full-text query"
+          },
+          "level": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rlf": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "operatesOn": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Signal",
+                "MatterEnergy"
+              ]
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lang": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "since": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "forkOf": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 25,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "uri",
+                "cid",
+                "value"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "cid": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "unknown"
+                }
+              }
+            }
+          },
+          "cursor": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.search.suites",
+      "type": "query",
+      "defs": {
+        "main": {
+          "type": "query",
+          "description": "Search for rProtocol Suites by keyword, tags, or attributes.",
+          "parameters": {
+            "q": {
+              "type": "string",
+              "description": "Search query string"
+            },
+            "tag": {
+              "type": "string",
+              "description": "Optional tag to filter suites"
+            },
+            "limit": {
+              "type": "integer",
+              "default": 25,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "cursor": {
+              "type": "string",
+              "description": "Optional pagination cursor"
+            }
+          },
+          "output": {
+            "encoding": "application/json",
+            "schema": {
+              "type": "object",
+              "required": [
+                "suites"
+              ],
+              "properties": {
+                "cursor": {
+                  "type": "string",
+                  "description": "Pagination cursor for next page of results"
+                },
+                "suites": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "uri",
+                      "cid",
+                      "title",
+                      "description"
+                    ],
+                    "properties": {
+                      "uri": {
+                        "type": "string",
+                        "description": "AT URI of the suite"
+                      },
+                      "cid": {
+                        "type": "string",
+                        "description": "Content ID of the suite record"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "Title of the suite"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Description of the suite"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "List of tags for the suite"
+                      },
+                      "creator": {
+                        "type": "string",
+                        "description": "DID of the suite creator"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Creation timestamp"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.view.need",
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "required": [
+          "uri"
+        ],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "at:// URI of the Need record"
+          },
+          "childrenLimit": {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 200
+          },
+          "childrenCursor": {
+            "type": "string"
+          },
+          "parentsLimit": {
+            "type": "integer",
+            "default": 20,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "includeRelatedProtocols": {
+            "type": "boolean",
+            "default": true
+          },
+          "includeAncestorUris": {
+            "type": "boolean",
+            "default": false
+          },
+          "includeDescendantCount": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "need"
+        ],
+        "properties": {
+          "need": {
+            "type": "unknown",
+            "description": "Full Need record value (org.rprotocols.record.need)"
+          },
+          "parents": {
+            "type": "array",
+            "description": "Direct parents (ordered by each edge's 'order', then title)",
+            "items": {
+              "type": "object",
+              "required": [
+                "uri",
+                "title"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "children": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "uri",
+                    "title"
+                  ],
+                  "properties": {
+                    "uri": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "order": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "cursor": {
+                "type": "string"
+              }
+            }
+          },
+          "ancestors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "URIs of all ancestors (optional; includeAncestorUris=true). Computed by indexer."
+          },
+          "descendantCount": {
+            "type": "integer",
+            "description": "Total count of descendants (optional; includeDescendantCount=true). Computed by indexer."
+          },
+          "relatedProtocols": {
+            "type": "array",
+            "description": "Snapshot of protocols that address this Need (if includeRelatedProtocols=true).",
+            "items": {
+              "type": "object",
+              "required": [
+                "uri",
+                "title"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "v": {
+                  "type": "string"
+                },
+                "adoptionCount": {
+                  "type": "integer"
+                },
+                "followCount": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "followers": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.view.protocol",
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "required": [
+          "uri"
+        ],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "at:// URI of the protocol"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "protocol"
+        ],
+        "properties": {
+          "protocol": {
+            "type": "unknown",
+            "description": "Hydrated record with lineage and counts"
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "adoptions": {
+                "type": "integer"
+              },
+              "followers": {
+                "type": "integer"
+              }
+            }
+          },
+          "lineage": {
+            "type": "object",
+            "properties": {
+              "prev": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "forks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "nextReviewAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.query.view.suite",
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "required": [
+          "uri"
+        ],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "at:// URI of the suite"
+          },
+          "includeMembers": {
+            "type": "boolean",
+            "default": true,
+            "description": "Include hydrated member snapshots"
+          },
+          "membersLimit": {
+            "type": "integer",
+            "default": 50,
+            "minimum": 1,
+            "maximum": 200
+          },
+          "membersCursor": {
+            "type": "string"
+          },
+          "includeMemberCounts": {
+            "type": "boolean",
+            "default": true,
+            "description": "Include adoption/follow counts for member protocols"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "suite"
+        ],
+        "properties": {
+          "suite": {
+            "type": "unknown",
+            "description": "Full Suite record value (org.rprotocols.record.suite)"
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "adoptions": {
+                "type": "integer"
+              },
+              "followers": {
+                "type": "integer"
+              }
+            }
+          },
+          "lineage": {
+            "type": "object",
+            "properties": {
+              "prev": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "forks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "members": {
+            "type": "object",
+            "description": "Optional hydrated member protocol snapshots (if includeMembers=true).",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "uri",
+                    "title"
+                  ],
+                  "properties": {
+                    "uri": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "v": {
+                      "type": "string"
+                    },
+                    "alias": {
+                      "type": "string"
+                    },
+                    "order": {
+                      "type": "integer"
+                    },
+                    "required": {
+                      "type": "boolean"
+                    },
+                    "minV": {
+                      "type": "string"
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "counts": {
+                      "type": "object",
+                      "description": "Present only if includeMemberCounts=true.",
+                      "properties": {
+                        "adoptions": {
+                          "type": "integer"
+                        },
+                        "followers": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "cursor": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.record.adopt",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "description": "Publicly adopt (use) a protocol or suite. One record per (account, subject). Delete to revoke.",
+        "required": [
+          "subject"
+        ],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "at:// of the protocol or suite"
+          },
+          "subjectType": {
+            "type": "string",
+            "enum": [
+              "protocol",
+              "suite"
+            ],
+            "description": "Optional; inferable from the at:// collection"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 300,
+            "description": "Short statement of use/intent"
+          },
+          "direct": {
+            "type": "boolean",
+            "default": false,
+            "description": "True if the user adopted this subject directly (not only via suites)"
+          },
+          "suiteSources": {
+            "type": "array",
+            "description": "Suites whose membership caused this adoption (zero or more).",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "description": "at:// of a suite"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.record.follow",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "description": "Subscribe to updates on a protocol or suite. One record per (account, subject). Delete to unfollow.",
+        "required": [
+          "subject"
+        ],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "at:// of the protocol or suite"
+          },
+          "subjectType": {
+            "type": "string",
+            "enum": [
+              "protocol",
+              "suite"
+            ],
+            "description": "Optional; inferable from the at:// collection"
+          },
+          "notify": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether to receive notifications"
+          },
+          "direct": {
+            "type": "boolean",
+            "default": false,
+            "description": "True if the user followed this subject directly (not only via suites)"
+          },
+          "suiteSources": {
+            "type": "array",
+            "description": "Suites whose membership caused this follow (zero or more).",
+            "maxLength": 64,
+            "items": {
+              "type": "string",
+              "description": "at:// of a suite"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.record.need",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "description": "A Need is a purpose/tension that protocols address. Needs form a DAG (multiple parents allowed).",
+        "required": [
+          "title",
+          "body",
+          "needShort",
+          "needFull",
+          "v"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "body": {
+            "type": "string",
+            "description": "Single‑post author text."
+          },
+          "needShort": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "≤4‑word handle"
+          },
+          "needFull": {
+            "type": "string",
+            "maxLength": 300,
+            "description": "Core statement (≤300 chars)"
+          },
+          "context": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "purpose": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "levels": {
+            "type": "array",
+            "maxLength": 5,
+            "description": "IRIs from Levels of Organization; first = primary.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rlf": {
+            "type": "array",
+            "description": "Radical Life Functions links.",
+            "items": {
+              "type": "object",
+              "required": [
+                "iri",
+                "role"
+              ],
+              "properties": {
+                "iri": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "need",
+                    "context",
+                    "purpose",
+                    "level"
+                  ]
+                },
+                "weight": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "relatedProtocols": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "at:// URIs of protocols addressing this need"
+          },
+          "relatedNeeds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Cross‑references to sibling/peer needs"
+          },
+          "parentLinks": {
+            "type": "array",
+            "description": "Zero or more parent edges; multiple parents allowed.",
+            "items": {
+              "type": "object",
+              "required": [
+                "parent"
+              ],
+              "properties": {
+                "parent": {
+                  "type": "string",
+                  "description": "at:// of parent Need"
+                },
+                "order": {
+                  "type": "integer",
+                  "description": "Sibling order within this parent (smaller = earlier)"
+                },
+                "note": {
+                  "type": "string",
+                  "maxLength": 140,
+                  "description": "Optional short label for this relationship"
+                }
+              }
+            }
+          },
+          "tags": {
+            "type": "array",
+            "maxLength": 16,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "lang": {
+            "type": "string",
+            "description": "BCP‑47, e.g., en"
+          },
+          "v": {
+            "type": "string",
+            "description": "semver"
+          },
+          "prev": {
+            "type": "string",
+            "description": "at:// of prior version (same lineage)"
+          },
+          "forkOf": {
+            "type": "string",
+            "description": "at:// of ancestor if forked"
+          },
+          "checksum": {
+            "type": "string",
+            "description": "sha256 of `body`"
+          },
+          "adoptEnabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "followEnabled": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.record.protocol",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "description": "rProtocols: a single-post protocol with required sections embedded in `body` and derived structured fields.",
+        "required": [
+          "title",
+          "body",
+          "needShort",
+          "needFull",
+          "context",
+          "purpose",
+          "v"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "body": {
+            "type": "string",
+            "description": "Author-facing single text field with [NEED]...[CLOSING] blocks."
+          },
+          "needShort": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "≤4 words label"
+          },
+          "needFull": {
+            "type": "string",
+            "maxLength": 800
+          },
+          "context": {
+            "type": "string",
+            "maxLength": 1200
+          },
+          "purpose": {
+            "type": "string",
+            "maxLength": 800
+          },
+          "livingPatterns": {
+            "type": "array",
+            "description": "3–6 short bullets derived from [LIVING PATTERNS]",
+            "maxLength": 6,
+            "items": {
+              "type": "string",
+              "maxLength": 180
+            }
+          },
+          "statement": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Derived from [PROTOCOL STATEMENT]"
+          },
+          "adaptation": {
+            "type": "string",
+            "maxLength": 800,
+            "description": "Derived from [ADAPTATION NOTES]"
+          },
+          "closing": {
+            "type": "string",
+            "maxLength": 600,
+            "description": "Derived from [CLOSING]"
+          },
+          "levels": {
+            "type": "array",
+            "description": "IRIs from Levels of Organization ontology. First item is primary.",
+            "maxLength": 5,
+            "items": {
+              "type": "string"
+            }
+          },
+          "rlf": {
+            "type": "array",
+            "description": "Radical Life Functions links.",
+            "items": {
+              "type": "object",
+              "required": [
+                "iri",
+                "role"
+              ],
+              "properties": {
+                "iri": {
+                  "type": "string",
+                  "description": "Life Function IRI/ID"
+                },
+                "role": {
+                  "type": "string",
+                  "description": "How the function relates to this record",
+                  "enum": [
+                    "need",
+                    "context",
+                    "purpose",
+                    "pattern",
+                    "statement",
+                    "level"
+                  ]
+                },
+                "weight": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "rlfFlow": {
+            "type": "array",
+            "description": "Optional function-to-function edges the protocol operationalizes.",
+            "items": {
+              "type": "object",
+              "required": [
+                "from",
+                "to"
+              ],
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "operatesOn": {
+            "type": "array",
+            "description": "Inferred modality from Life Functions.",
+            "maxLength": 2,
+            "items": {
+              "type": "string",
+              "enum": [
+                "Signal",
+                "MatterEnergy"
+              ]
+            }
+          },
+          "tags": {
+            "type": "array",
+            "maxLength": 16,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "lang": {
+            "type": "string",
+            "description": "BCP-47 language tag, e.g., en, es"
+          },
+          "v": {
+            "type": "string",
+            "description": "semver, e.g., 1.0.0"
+          },
+          "prev": {
+            "type": "string",
+            "description": "at:// of prior version (same lineage)"
+          },
+          "forkOf": {
+            "type": "string",
+            "description": "at:// of ancestor if this is a fork"
+          },
+          "checksum": {
+            "type": "string",
+            "description": "sha256 of `body`"
+          },
+          "adoptEnabled": {
+            "type": "boolean",
+            "default": true
+          },
+          "followEnabled": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    {
+      "lexicon": 1,
+      "id": "org.rprotocols.record.suite",
+      "type": "record",
+      "record": {
+        "type": "object",
+        "required": [
+          "title",
+          "summary",
+          "members",
+          "v"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "members": {
+            "type": "array",
+            "minLength": 1,
+            "maxLength": 24,
+            "items": {
+              "type": "object",
+              "required": [
+                "uri"
+              ],
+              "properties": {
+                "uri": {
+                  "type": "string"
+                },
+                "alias": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "required": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "minV": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string",
+                  "maxLength": 140
+                },
+                "order": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "levelSpan": {
+            "type": "array",
+            "maxLength": 4,
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "maxLength": 12,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "v": {
+            "type": "string"
+          },
+          "prev": {
+            "type": "string"
+          },
+          "forkOf": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  ]
+}
