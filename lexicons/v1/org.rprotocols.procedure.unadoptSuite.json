@@ -1,0 +1,26 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.procedure.unadoptSuite",
+  "type": "procedure",
+  "input": {
+    "encoding": "application/json",
+    "schema": {
+      "type": "object",
+      "required": ["suite"],
+      "properties": {
+        "suite": { "type": "string", "description": "at:// of the suite to unadopt" }
+      }
+    }
+  },
+  "output": {
+    "encoding": "application/json",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "suiteAdoptionDeleted": { "type": "boolean" },
+        "protocolAdoptionDeletedUris": { "type": "array", "items": { "type": "string" },
+          "description": "Only those adoptions that existed solely via this suite (inherited)" }
+      }
+    }
+  }
+}
