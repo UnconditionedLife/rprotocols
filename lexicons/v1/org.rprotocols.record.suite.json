@@ -1,0 +1,32 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.record.suite",
+  "type": "record",
+  "record": {
+    "type": "object",
+    "required": ["title","summary","members","v"],
+    "properties": {
+      "title": { "type": "string", "maxLength": 160 },
+      "summary": { "type": "string", "maxLength": 300 },
+      "members": {
+        "type": "array", "minLength": 1, "maxLength": 24,
+        "items": {
+          "type": "object",
+          "required": ["uri"],
+          "properties": {
+            "uri": { "type": "string" },
+            "alias": { "type": "string", "maxLength": 64 },
+            "required": { "type": "boolean", "default": false },
+            "minV": { "type": "string" },
+            "notes": { "type": "string", "maxLength": 140 },
+            "order": { "type": "integer" }
+          }
+        }
+      },
+      "levelSpan": { "type": "array", "maxLength": 4, "items": { "type": "string" } },
+      "tags": { "type": "array", "maxLength": 12, "items": { "type": "string", "maxLength": 32 } },
+      "v": { "type": "string" }, "prev": { "type": "string" }, "forkOf": { "type": "string" },
+      "createdAt": { "type": "string", "format": "datetime" }
+    }
+  }
+}
