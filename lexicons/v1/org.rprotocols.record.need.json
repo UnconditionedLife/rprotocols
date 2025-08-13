@@ -1,0 +1,68 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.record.need",
+  "type": "record",
+  "record": {
+    "type": "object",
+    "description": "rProtocols: a Need is a clearly defined purpose, problem, or opportunity that may have one or more protocols addressing it.",
+    "required": ["title", "body", "needShort", "needFull", "v"],
+    "properties": {
+      "title": { "type": "string", "maxLength": 160 },
+      "body": { "type": "string", "description": "Author-facing single text field containing the full description and optional sections." },
+
+      "needShort": { "type": "string", "maxLength": 64, "description": "≤4 words label for indexing" },
+      "needFull": { "type": "string", "maxLength": 800, "description": "Full statement of the need" },
+
+      "context": { "type": "string", "maxLength": 1200, "description": "Where this need typically arises" },
+      "purpose": { "type": "string", "maxLength": 800, "description": "Why addressing this need matters" },
+
+      "levels": {
+        "type": "array",
+        "description": "IRIs from Levels of Organization ontology. First item is primary.",
+        "maxLength": 5,
+        "items": { "type": "string" }
+      },
+      "rlf": {
+        "type": "array",
+        "description": "Radical Life Functions links.",
+        "items": {
+          "type": "object",
+          "required": ["iri", "role"],
+          "properties": {
+            "iri": { "type": "string", "description": "Life Function IRI/ID" },
+            "role": {
+              "type": "string",
+              "description": "How the function relates to this need",
+              "enum": ["need", "context", "purpose", "level"]
+            },
+            "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      },
+
+      "relatedProtocols": {
+        "type": "array",
+        "description": "List of at:// URIs for protocols that address this need",
+        "items": { "type": "string" }
+      },
+      "relatedNeeds": {
+        "type": "array",
+        "description": "Optional cross-references to related needs",
+        "items": { "type": "string" }
+      },
+
+      "tags": { "type": "array", "maxLength": 16, "items": { "type": "string", "maxLength": 32 } },
+      "lang": { "type": "string", "description": "BCP-47 language tag, e.g., en, es" },
+
+      "v": { "type": "string", "description": "semver, e.g., 1.0.0" },
+      "prev": { "type": "string", "description": "at:// of prior version (same lineage)" },
+      "forkOf": { "type": "string", "description": "at:// of ancestor if this is a fork" },
+      "checksum": { "type": "string", "description": "sha256 of `body`" },
+
+      "adoptEnabled": { "type": "boolean", "default": false, "description": "Needs cannot be adopted; this remains false" },
+      "followEnabled": { "type": "boolean", "default": true },
+
+      "createdAt": { "type": "string", "format": "datetime" }
+    }
+  }
+}
