@@ -1,0 +1,21 @@
+{
+  "$type": "org.rprotocols.record.need",
+  "title": "Collaborative Decisions",
+  "body": "Make decisions together without top‑down control.",
+  "needShort": "Collaborative Decisions",
+  "needFull": "Make decisions collectively without defaulting to hierarchy, force, or control.",
+  "context": "Group level; recurring sessions.",
+  "purpose": "Enable safe‑to‑try decisions while keeping momentum.",
+  "levels": ["https://ontology.radical.world/level/group"],
+  "rlf": [
+    { "iri": "https://ontology.radical.world/rlf#ProcessingInformation", "role": "need", "weight": 0.6 }
+  ],
+  "parentLinks": [],
+  "tags": ["decision","group"],
+  "lang": "en",
+  "v": "1.0.0",
+  "checksum": "sha256:needexample",
+  "adoptEnabled": false,
+  "followEnabled": true,
+  "createdAt": "2025-08-13T22:00:00Z"
+}
