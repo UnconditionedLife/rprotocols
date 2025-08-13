@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "id": "org.rprotocols.query.search.needs",
+  "id": "org.rprotocols.query.search.need",
   "type": "query",
   "parameters": {
     "type": "params",
