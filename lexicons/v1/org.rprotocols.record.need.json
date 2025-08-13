@@ -4,20 +4,23 @@
   "type": "record",
   "record": {
     "type": "object",
-    "description": "A Need is a purpose/tension that protocols address. Needs form a hierarchy.",
+    "description": "A Need is a purpose/tension that protocols address. Needs form a DAG (multiple parents allowed).",
     "required": ["title", "body", "needShort", "needFull", "v"],
     "properties": {
-      "title": { "type": "string", "maxLength": 160 },
-      "body":  { "type": "string", "description": "Single-post author text (freeform; may include sections)." },
+      "title":       { "type": "string", "maxLength": 160 },
+      "body":        { "type": "string", "description": "Single‑post author text." },
 
-      "needShort": { "type": "string", "maxLength": 64, "description": "≤4 words handle" },
-      "needFull":  { "type": "string", "maxLength": 300 },
+      "needShort":   { "type": "string", "maxLength": 64,  "description": "≤4‑word handle" },
+      "needFull":    { "type": "string", "maxLength": 300, "description": "Core statement (≤300 chars)" },
 
-      "context": { "type": "string", "maxLength": 300 },
-      "purpose": { "type": "string", "maxLength": 300 },
+      "context":     { "type": "string", "maxLength": 300 },
+      "purpose":     { "type": "string", "maxLength": 300 },
 
-      "levels": { "type": "array", "maxLength": 5, "items": { "type": "string" },
-        "description": "IRIs from Levels of Organization (first = primary)" },
+      "levels": {
+        "type": "array", "maxLength": 5,
+        "description": "IRIs from Levels of Organization; first = primary.",
+        "items": { "type": "string" }
+      },
 
       "rlf": {
         "type": "array",
@@ -26,23 +29,32 @@
           "type": "object",
           "required": ["iri", "role"],
           "properties": {
-            "iri": { "type": "string" },
-            "role": { "type": "string", "enum": ["need","context","purpose","level"] },
+            "iri":    { "type": "string" },
+            "role":   { "type": "string", "enum": ["need","context","purpose","level"] },
             "weight": { "type": "number", "minimum": 0, "maximum": 1 }
           }
         }
       },
 
-      "relatedProtocols": { "type": "array", "items": { "type": "string" } },
-      "relatedNeeds":     { "type": "array", "items": { "type": "string" } },
+      "relatedProtocols": { "type": "array", "items": { "type": "string" }, "description": "at:// URIs of protocols addressing this need" },
+      "relatedNeeds":     { "type": "array", "items": { "type": "string" }, "description": "Cross‑references to sibling/peer needs" },
 
-      "parent":   { "type": "string", "description": "at:// of parent Need (null/omitted = root)" },
-      "order":    { "type": "integer", "description": "Sibling order hint (smaller = earlier)" },
-      "ancestors":{ "type": "array", "items": { "type": "string" }, "description": "Root→…→parent path, maintained by server" },
-      "treeId":   { "type": "string", "description": "Stable id for the tree this Need belongs to" },
+      "parentLinks": {
+        "type": "array",
+        "description": "Zero or more parent edges; multiple parents allowed.",
+        "items": {
+          "type": "object",
+          "required": ["parent"],
+          "properties": {
+            "parent": { "type": "string", "description": "at:// of parent Need" },
+            "order":  { "type": "integer", "description": "Sibling order within this parent (smaller = earlier)" },
+            "note":   { "type": "string", "maxLength": 140, "description": "Optional short label for this relationship" }
+          }
+        }
+      },
 
-      "tags":  { "type": "array", "maxLength": 16, "items": { "type": "string", "maxLength": 32 } },
-      "lang":  { "type": "string", "description": "BCP‑47, e.g., en" },
+      "tags": { "type": "array", "maxLength": 16, "items": { "type": "string", "maxLength": 32 } },
+      "lang": { "type": "string", "description": "BCP‑47, e.g., en" },
 
       "v":        { "type": "string", "description": "semver" },
       "prev":     { "type": "string", "description": "at:// of prior version (same lineage)" },
