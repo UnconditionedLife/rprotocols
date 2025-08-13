@@ -1,0 +1,7 @@
+{
+  "suiteAdoptionUri": "at://did:user/app/org.rprotocols.record.adopt/b1",
+  "protocolAdoptionUris": [
+    "at://did:user/app/org.rprotocols.record.adopt/c1",
+    "at://did:user/app/org.rprotocols.record.adopt/c2"
+  ]
+}
