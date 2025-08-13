@@ -1,0 +1,82 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.query.search.suites",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Search for rProtocol Suites by keyword, tags, or attributes.",
+      "parameters": {
+        "q": {
+          "type": "string",
+          "description": "Search query string"
+        },
+        "tag": {
+          "type": "string",
+          "description": "Optional tag to filter suites"
+        },
+        "limit": {
+          "type": "integer",
+          "default": 25,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Optional pagination cursor"
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["suites"],
+          "properties": {
+            "cursor": {
+              "type": "string",
+              "description": "Pagination cursor for next page of results"
+            },
+            "suites": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["uri", "cid", "title", "description"],
+                "properties": {
+                  "uri": {
+                    "type": "string",
+                    "description": "AT URI of the suite"
+                  },
+                  "cid": {
+                    "type": "string",
+                    "description": "Content ID of the suite record"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Title of the suite"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of the suite"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "List of tags for the suite"
+                  },
+                  "creator": {
+                    "type": "string",
+                    "description": "DID of the suite creator"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Creation timestamp"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
