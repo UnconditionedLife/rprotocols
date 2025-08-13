@@ -1,0 +1,72 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.query.view.suite",
+  "type": "query",
+  "parameters": {
+    "type": "params",
+    "required": ["uri"],
+    "properties": {
+      "uri": { "type": "string", "description": "at:// URI of the suite" },
+      "includeMembers": { "type": "boolean", "default": true, "description": "Include hydrated member snapshots" },
+      "membersLimit": { "type": "integer", "default": 50, "minimum": 1, "maximum": 200 },
+      "membersCursor": { "type": "string" },
+      "includeMemberCounts": { "type": "boolean", "default": true, "description": "Include adoption/follow counts for member protocols" }
+    }
+  },
+  "output": {
+    "type": "object",
+    "required": ["suite"],
+    "properties": {
+      "suite": {
+        "type": "unknown",
+        "description": "Full Suite record value (org.rprotocols.record.suite)"
+      },
+      "counts": {
+        "type": "object",
+        "properties": {
+          "adoptions": { "type": "integer" },
+          "followers": { "type": "integer" }
+        }
+      },
+      "lineage": {
+        "type": "object",
+        "properties": {
+          "prev": { "type": "array", "items": { "type": "string" } },
+          "forks": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "members": {
+        "type": "object",
+        "description": "Optional hydrated member protocol snapshots (if includeMembers=true).",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["uri", "title"],
+              "properties": {
+                "uri": { "type": "string" },
+                "title": { "type": "string" },
+                "v": { "type": "string" },
+                "alias": { "type": "string" },
+                "order": { "type": "integer" },
+                "required": { "type": "boolean" },
+                "minV": { "type": "string" },
+                "notes": { "type": "string" },
+                "counts": {
+                  "type": "object",
+                  "description": "Present only if includeMemberCounts=true.",
+                  "properties": {
+                    "adoptions": { "type": "integer" },
+                    "followers": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          },
+          "cursor": { "type": "string" }
+        }
+      }
+    }
+  }
+}
