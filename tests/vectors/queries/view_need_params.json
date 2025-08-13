@@ -1,0 +1,5 @@
+{
+  "uri": "at://did:example/app/org.rprotocols.record.need/decision-checks",
+  "includeRelatedProtocols": true,
+  "includeDescendantCount": true
+}

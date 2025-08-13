@@ -1,0 +1,5 @@
+{
+  "q": "decision",
+  "parent": ["at://did:example/app/org.rprotocols.record.need/collaboration"],
+  "limit": 10
+}

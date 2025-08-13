@@ -1,0 +1,5 @@
+{
+  "uri": "at://did:example/app/org.rprotocols.record.suite/using-social-protocols",
+  "includeMembers": true,
+  "includeMemberCounts": true
+}
