@@ -1,0 +1,72 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.query.list.protocols",
+  "type": "query",
+  "parameters": {
+    "type": "params",
+    "properties": {
+      "q": { "type": "string", "description": "Full-text over title, needShort, needFull, purpose, tags" },
+      "level": { "type": "array", "items": { "type": "string" }, "description": "Filter by Levels IRIs (primary or any)" },
+      "rlf": { "type": "array", "items": { "type": "string" }, "description": "Filter by Radical Life Functions IRIs" },
+      "operatesOn": { "type": "array", "items": { "type": "string", "enum": ["Signal", "MatterEnergy"] } },
+      "tags": { "type": "array", "items": { "type": "string" } },
+      "lang": { "type": "string", "description": "BCP-47 language code" },
+      "author": { "type": "string", "description": "DID of protocol author/creator" },
+      "since": { "type": "string", "format": "datetime", "description": "Only protocols created/updated since this time" },
+      "need": { "type": "array", "items": { "type": "string" }, "description": "Return protocols that address any of these Need URIs" },
+      "suite": { "type": "array", "items": { "type": "string" }, "description": "Return protocols that are members of any of these Suite URIs" },
+      "adoptedBy": { "type": "string", "description": "Filter to protocols adopted by this DID" },
+      "followedBy": { "type": "string", "description": "Filter to protocols followed by this DID" },
+      "forkOf": { "type": "string", "description": "Return only protocols that are forks of the given ancestor at:// URI" },
+      "sortBy": {
+        "type": "string",
+        "enum": ["recent", "adoptions", "follows"],
+        "default": "recent",
+        "description": "Sort order: recent = created/updated desc; adoptions/follows = count desc"
+      },
+      "includeCounts": { "type": "boolean", "default": true, "description": "Include follower/adoption counts per item" },
+      "limit": { "type": "integer", "default": 25, "minimum": 1, "maximum": 100 },
+      "cursor": { "type": "string" }
+    }
+  },
+  "output": {
+    "type": "object",
+    "required": ["items"],
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["uri", "cid", "value"],
+          "properties": {
+            "uri": { "type": "string" },
+            "cid": { "type": "string" },
+            "value": {
+              "type": "object",
+              "description": "Snapshot of org.rprotocols.record.protocol",
+              "properties": {
+                "title": { "type": "string" },
+                "needShort": { "type": "string" },
+                "v": { "type": "string" },
+                "levels": { "type": "array", "items": { "type": "string" } },
+                "operatesOn": { "type": "array", "items": { "type": "string", "enum": ["Signal", "MatterEnergy"] } },
+                "tags": { "type": "array", "items": { "type": "string" } },
+                "lang": { "type": "string" },
+                "createdAt": { "type": "string", "format": "datetime" }
+              }
+            },
+            "counts": {
+              "type": "object",
+              "description": "Present only if includeCounts=true.",
+              "properties": {
+                "adoptions": { "type": "integer" },
+                "followers": { "type": "integer" }
+              }
+            }
+          }
+        }
+      },
+      "cursor": { "type": "string" }
+    }
+  }
+}
