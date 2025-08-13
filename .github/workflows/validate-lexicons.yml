@@ -1,15 +1,35 @@
 name: Validate Lexicons
 on: [push, pull_request]
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - run: npm i -g ajv-cli jsonlint
-      - run: |
+        with:
+          node-version: '20'
+
+      - name: Install tools
+        run: npm i -g jsonlint
+
+      - name: Lint lexicon JSON (syntax)
+        run: |
           jsonlint -q lexicons/v1/*.json
-          for f in lexicons/v1/*.json; do
-            echo "Validated $f"
-          done
+          echo "Lexicon JSON syntax OK."
+
+      - name: Lint test vectors (syntax)
+        run: |
+          if compgen -G "tests/vectors/**/*.json" > /dev/null; then
+            jsonlint -q tests/vectors/**/*.json
+            echo "Test vectors JSON syntax OK."
+          else
+            echo "No test vectors found (skip)."
+          fi
+
+      - name: Check lexicon filename ↔ id consistency
+        run: node scripts/check-lexicons.mjs
+
+      - name: Basic semantic checks for vectors
+        run: node scripts/check-test-vectors.mjs
