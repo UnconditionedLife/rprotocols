@@ -84,7 +84,7 @@ The next generation of rProtocols will be built as a **stand-alone AT Protocol w
 
 rProtocols is currently in active development.  
 You can explore the Radical Life Functions ontology here:  
-https://unconditionedlife.github.io/lexicons/v1/
+https://unconditionedlife.github.io/rprotocols/lexicons/v1/
 
 ---
 
