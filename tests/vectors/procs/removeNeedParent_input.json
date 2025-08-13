@@ -1,0 +1,4 @@
+{
+  "child": "at://did:example/app/org.rprotocols.record.need/decision-checks",
+  "parent": "at://did:example/app/org.rprotocols.record.need/collaboration"
+}
