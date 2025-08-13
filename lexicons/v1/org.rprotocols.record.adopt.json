@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "id": "org.rprotocols.record.adoption",
+  "id": "org.rprotocols.record.adopt",
   "type": "record",
   "record": {
     "type": "object",
