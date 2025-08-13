@@ -1,0 +1,7 @@
+{
+  "suiteFollowUri": "at://did:user/app/org.rprotocols.record.follow/xyz",
+  "protocolFollowUris": [
+    "at://did:user/app/org.rprotocols.record.follow/a1",
+    "at://did:user/app/org.rprotocols.record.follow/a2"
+  ]
+}
