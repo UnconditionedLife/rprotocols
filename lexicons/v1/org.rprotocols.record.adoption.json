@@ -4,12 +4,34 @@
   "type": "record",
   "record": {
     "type": "object",
-    "description": "Signals that an account adopts (uses) a protocol.",
-    "required": ["protocol"],
+    "description": "Publicly adopt (use) a protocol or suite. One record per (account, subject). Delete to revoke.",
+    "required": ["subject"],
     "properties": {
-      "protocol": { "type": "string", "description": "at:// URI of the protocol record" },
-      "note": { "type": "string", "maxLength": 280 },
-      "createdAt": { "type": "string", "format": "datetime" }
+      "subject": { "type": "string", "description": "at:// of the protocol or suite" },
+
+      "subjectType": {
+        "type": "string",
+        "enum": ["protocol", "suite"],
+        "description": "Optional; inferable from the at:// collection"
+      },
+
+      "note": { "type": "string", "maxLength": 300, "description": "Short statement of use/intent" },
+
+      "direct": {
+        "type": "boolean",
+        "default": false,
+        "description": "True if the user adopted this subject directly (not only via suites)"
+      },
+
+      "suiteSources": {
+        "type": "array",
+        "description": "Suites whose membership caused this adoption (zero or more).",
+        "maxLength": 64,
+        "items": { "type": "string", "description": "at:// of a suite" }
+      },
+
+      "createdAt": { "type": "string", "format": "datetime" },
+      "updatedAt": { "type": "string", "format": "datetime" }
     }
   }
 }
