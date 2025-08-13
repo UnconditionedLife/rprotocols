@@ -1,0 +1,37 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.record.adopt",
+  "type": "record",
+  "record": {
+    "type": "object",
+    "description": "Publicly adopt (use) a protocol or suite. One record per (account, subject). Delete to revoke.",
+    "required": ["subject"],
+    "properties": {
+      "subject": { "type": "string", "description": "at:// of the protocol or suite" },
+
+      "subjectType": {
+        "type": "string",
+        "enum": ["protocol", "suite"],
+        "description": "Optional; inferable from the at:// collection"
+      },
+
+      "note": { "type": "string", "maxLength": 300, "description": "Short statement of use/intent" },
+
+      "direct": {
+        "type": "boolean",
+        "default": false,
+        "description": "True if the user adopted this subject directly (not only via suites)"
+      },
+
+      "suiteSources": {
+        "type": "array",
+        "description": "Suites whose membership caused this adoption (zero or more).",
+        "maxLength": 64,
+        "items": { "type": "string", "description": "at:// of a suite" }
+      },
+
+      "createdAt": { "type": "string", "format": "datetime" },
+      "updatedAt": { "type": "string", "format": "datetime" }
+    }
+  }
+}

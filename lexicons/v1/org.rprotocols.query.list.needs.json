@@ -1,0 +1,58 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.query.list.needs",
+  "type": "query",
+  "parameters": {
+    "type": "params",
+    "properties": {
+      "parent": { "type": "array", "items": { "type": "string" }, "description": "Return Needs that have any of these parents" },
+      "level": { "type": "array", "items": { "type": "string" } },
+      "rlf": { "type": "array", "items": { "type": "string" } },
+      "tags": { "type": "array", "items": { "type": "string" } },
+      "lang": { "type": "string" },
+      "author": { "type": "string" },
+      "since": { "type": "string", "format": "datetime" },
+      "includeCounts": { "type": "boolean", "default": true },
+      "limit": { "type": "integer", "default": 25, "minimum": 1, "maximum": 100 },
+      "cursor": { "type": "string" }
+    }
+  },
+  "output": {
+    "type": "object",
+    "required": ["items"],
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["uri", "cid", "value"],
+          "properties": {
+            "uri": { "type": "string" },
+            "cid": { "type": "string" },
+            "value": {
+              "type": "object",
+              "description": "Snapshot of org.rprotocols.record.need",
+              "properties": {
+                "title": { "type": "string" },
+                "needShort": { "type": "string" },
+                "v": { "type": "string" },
+                "levels": { "type": "array", "items": { "type": "string" } },
+                "tags": { "type": "array", "items": { "type": "string" } },
+                "lang": { "type": "string" },
+                "createdAt": { "type": "string", "format": "datetime" }
+              }
+            },
+            "counts": {
+              "type": "object",
+              "description": "Present only if includeCounts=true.",
+              "properties": {
+                "followers": { "type": "integer" }
+              }
+            }
+          }
+        }
+      },
+      "cursor": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.procedure.adoptSuite",
+  "type": "procedure",
+  "input": { "encoding": "application/json",
+    "schema": { "type": "object", "required": ["suite"],
+      "properties": { "suite": { "type": "string" }, "note": { "type": "string", "maxLength": 300 } } } },
+  "output": { "encoding": "application/json",
+    "schema": { "type": "object", "properties": {
+      "suiteAdoptionUri": { "type": "string" },
+      "protocolAdoptionUris": { "type": "array", "items": { "type": "string" } } } } }
+}

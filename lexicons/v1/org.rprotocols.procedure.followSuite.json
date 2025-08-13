@@ -1,0 +1,12 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.procedure.followSuite",
+  "type": "procedure",
+  "input": { "encoding": "application/json",
+    "schema": { "type": "object", "required": ["suite"],
+      "properties": { "suite": { "type": "string" }, "notify": { "type": "boolean", "default": true } } } },
+  "output": { "encoding": "application/json",
+    "schema": { "type": "object", "properties": {
+      "suiteFollowUri": { "type": "string" },
+      "protocolFollowUris": { "type": "array", "items": { "type": "string" } } } } }
+}

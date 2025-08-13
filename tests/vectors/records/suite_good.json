@@ -1,0 +1,16 @@
+{
+  "$type": "org.rprotocols.record.suite",
+  "title": "Using Social Protocols Suite",
+  "summary": "Five small protocols for author, adopt, follow, fork, and review.",
+  "members": [
+    { "uri": "at://did:example/algo/author-protocol", "alias": "Author", "order": 1, "notes": "Create & publish" },
+    { "uri": "at://did:example/algo/adopt-protocol",  "alias": "Adopt",  "order": 2, "required": true, "notes": "Signal use" },
+    { "uri": "at://did:example/algo/follow-protocol", "alias": "Follow", "order": 3, "notes": "Stay updated" },
+    { "uri": "at://did:example/algo/fork-protocol",   "alias": "Fork",   "order": 4, "notes": "Adapt context" },
+    { "uri": "at://did:example/algo/review-protocol", "alias": "Review", "order": 5, "notes": "Reaffirm/retire" }
+  ],
+  "levelSpan": ["https://ontology.radical.world/level/group"],
+  "tags": ["protocols","suite","lifecycle"],
+  "v": "1.0.0",
+  "createdAt": "2025-08-13T22:05:00Z"
+}

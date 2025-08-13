@@ -1,0 +1,10 @@
+{
+  "$type": "org.rprotocols.record.adopt",
+  "subject": "at://did:example/app/org.rprotocols.record.protocol/consent-check",
+  "subjectType": "protocol",
+  "note": "Using for weekly ops.",
+  "direct": true,
+  "suiteSources": [],
+  "createdAt": "2025-08-13T22:17:00Z",
+  "updatedAt": "2025-08-13T22:17:00Z"
+}

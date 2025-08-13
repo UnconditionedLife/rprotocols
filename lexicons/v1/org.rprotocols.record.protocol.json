@@ -1,0 +1,84 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.record.protocol",
+  "type": "record",
+  "record": {
+    "type": "object",
+    "description": "rProtocols: a single-post protocol with required sections embedded in `body` and derived structured fields.",
+    "required": ["title", "body", "needShort", "needFull", "context", "purpose", "v"],
+    "properties": {
+      "title": { "type": "string", "maxLength": 160 },
+      "body": { "type": "string", "description": "Author-facing single text field with [NEED]...[CLOSING] blocks." },
+
+      "needShort": { "type": "string", "maxLength": 64, "description": "≤4 words label" },
+      "needFull": { "type": "string", "maxLength": 800 },
+      "context": { "type": "string", "maxLength": 1200 },
+      "purpose": { "type": "string", "maxLength": 800 },
+
+      "livingPatterns": {
+        "type": "array",
+        "description": "3–6 short bullets derived from [LIVING PATTERNS]",
+        "maxLength": 6,
+        "items": { "type": "string", "maxLength": 180 }
+      },
+      "statement": { "type": "string", "maxLength": 2000, "description": "Derived from [PROTOCOL STATEMENT]" },
+      "adaptation": { "type": "string", "maxLength": 800, "description": "Derived from [ADAPTATION NOTES]" },
+      "closing": { "type": "string", "maxLength": 600, "description": "Derived from [CLOSING]" },
+
+      "levels": {
+        "type": "array",
+        "description": "IRIs from Levels of Organization ontology. First item is primary.",
+        "maxLength": 5,
+        "items": { "type": "string" }
+      },
+      "rlf": {
+        "type": "array",
+        "description": "Radical Life Functions links.",
+        "items": {
+          "type": "object",
+          "required": ["iri", "role"],
+          "properties": {
+            "iri": { "type": "string", "description": "Life Function IRI/ID" },
+            "role": {
+              "type": "string",
+              "description": "How the function relates to this record",
+              "enum": ["need", "context", "purpose", "pattern", "statement", "level"]
+            },
+            "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      },
+      "rlfFlow": {
+        "type": "array",
+        "description": "Optional function-to-function edges the protocol operationalizes.",
+        "items": {
+          "type": "object",
+          "required": ["from", "to"],
+          "properties": {
+            "from": { "type": "string" },
+            "to": { "type": "string" }
+          }
+        }
+      },
+      "operatesOn": {
+        "type": "array",
+        "description": "Inferred modality from Life Functions.",
+        "maxLength": 2,
+        "items": { "type": "string", "enum": ["Signal", "MatterEnergy"] }
+      },
+
+      "tags": { "type": "array", "maxLength": 16, "items": { "type": "string", "maxLength": 32 } },
+      "lang": { "type": "string", "description": "BCP-47 language tag, e.g., en, es" },
+
+      "v": { "type": "string", "description": "semver, e.g., 1.0.0" },
+      "prev": { "type": "string", "description": "at:// of prior version (same lineage)" },
+      "forkOf": { "type": "string", "description": "at:// of ancestor if this is a fork" },
+      "checksum": { "type": "string", "description": "sha256 of `body`" },
+
+      "adoptEnabled": { "type": "boolean", "default": true },
+      "followEnabled": { "type": "boolean", "default": true },
+
+      "createdAt": { "type": "string", "format": "datetime" }
+    }
+  }
+}

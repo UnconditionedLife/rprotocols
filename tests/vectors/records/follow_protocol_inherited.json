@@ -1,0 +1,10 @@
+{
+  "$type": "org.rprotocols.record.follow",
+  "subject": "at://did:example/app/org.rprotocols.record.protocol/consent-check",
+  "subjectType": "protocol",
+  "notify": true,
+  "direct": false,
+  "suiteSources": ["at://did:example/app/org.rprotocols.record.suite/using-social-protocols"],
+  "createdAt": "2025-08-13T22:12:00Z",
+  "updatedAt": "2025-08-13T22:12:05Z"
+}

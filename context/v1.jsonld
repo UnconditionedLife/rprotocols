@@ -1,0 +1,9 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "rad": "https://ontology.radical.world/",
+    "level": "https://ontology.radical.world/level/",
+    "rlf": "https://ontology.radical.world/rlf#"
+  }
+}

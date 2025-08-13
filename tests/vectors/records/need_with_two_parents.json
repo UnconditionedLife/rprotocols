@@ -1,0 +1,21 @@
+{
+  "$type": "org.rprotocols.record.need",
+  "title": "Lightweight Decision Checks",
+  "body": "A minimal decision process when a proposal is ready.",
+  "needShort": "Decision Checks",
+  "needFull": "Provide a quick, low‑friction decision check.",
+  "context": "Groups needing fast alignment.",
+  "purpose": "Reduce delay while surfacing material objections.",
+  "levels": ["https://ontology.radical.world/level/group"],
+  "parentLinks": [
+    { "parent": "at://did:example/app/org.rprotocols.record.need/collaboration", "order": 2, "note": "Collab subtree" },
+    { "parent": "at://did:example/app/org.rprotocols.record.need/governance",    "order": 1, "note": "Gov subtree" }
+  ],
+  "tags": ["decision","lightweight"],
+  "lang": "en",
+  "v": "1.0.0",
+  "checksum": "sha256:need2parents",
+  "adoptEnabled": false,
+  "followEnabled": true,
+  "createdAt": "2025-08-13T22:02:00Z"
+}

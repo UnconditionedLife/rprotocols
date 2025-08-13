@@ -1,0 +1,30 @@
+{
+  "$type": "org.rprotocols.record.protocol",
+  "title": "Consent Check",
+  "body": "[NEED]\nCollaborative Decision — decide together without top‑down control.\n\n[CONTEXT]\nGroup level; 3–12 participants; used when a proposal is ready.\n\n[PURPOSE]\nEnable safe‑to‑try decisions quickly and visibly.\n\n[LIVING PATTERNS]\n- Early concerns improve outcomes.\n- Small, reversible steps reduce risk.\n- Time‑bound review keeps decisions alive.\n\n[PROTOCOL STATEMENT]\nRun a consent check: invite reasoned objections; improve or adopt. If no objections, adopt and set a review date; otherwise integrate concerns and iterate.\n\n[ADAPTATION NOTES]\nPreserve consent step and review requirement.\n\n[CLOSING]\nRecord adoption publicly; set review_date.\n",
+  "needShort": "Collaborative Decision",
+  "needFull": "Decide together without defaulting to hierarchy, force, or control.",
+  "context": "Group level; 3–12 participants; proposal is ready; time‑boxed.",
+  "purpose": "Enable safe‑to‑try decisions with a clear review.",
+  "livingPatterns": [
+    "Early concerns improve outcomes.",
+    "Small, reversible steps reduce risk.",
+    "Time‑bound review keeps decisions alive."
+  ],
+  "statement": "Run a consent check: invite reasoned objections; improve or adopt. If no objections, adopt and set a review date; otherwise integrate concerns and iterate.",
+  "adaptation": "Preserve consent step and review requirement; adjust timing windows locally.",
+  "closing": "Record adoption publicly; set review_date.",
+  "levels": ["https://ontology.radical.world/level/group"],
+  "rlf": [
+    { "iri": "https://ontology.radical.world/rlf#ProcessingInformation", "role": "need", "weight": 0.5 },
+    { "iri": "https://ontology.radical.world/rlf#Deciding", "role": "purpose", "weight": 0.8 }
+  ],
+  "operatesOn": ["Signal"],
+  "tags": ["decision","consent","group"],
+  "lang": "en",
+  "v": "1.0.0",
+  "checksum": "sha256:example",
+  "adoptEnabled": true,
+  "followEnabled": true,
+  "createdAt": "2025-08-13T21:59:00Z"
+}

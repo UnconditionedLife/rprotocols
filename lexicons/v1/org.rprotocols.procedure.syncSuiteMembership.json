@@ -1,0 +1,32 @@
+{
+  "lexicon": 1,
+  "id": "org.rprotocols.procedure.syncSuiteMembership",
+  "type": "procedure",
+  "input": {
+    "encoding": "application/json",
+    "schema": {
+      "type": "object",
+      "required": ["suite"],
+      "properties": {
+        "suite": { "type": "string", "description": "at:// of the suite to reconcile" },
+        "mode": {
+          "type": "string",
+          "enum": ["followers","adopters","both"],
+          "default": "both",
+          "description": "Which audiences to reconcile against current suite.members"
+        }
+      }
+    }
+  },
+  "output": {
+    "encoding": "application/json",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "addedProtocolSignals": { "type": "array", "items": { "type": "string" } },
+        "removedProtocolSignals": { "type": "array", "items": { "type": "string" } },
+        "processed": { "type": "integer", "description": "Number of accounts scanned" }
+      }
+    }
+  }
+}
