@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const dir = 'lexicons/v1';
-const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+const files = fs.readdirSync(dir)
+    .filter(f => f.endsWith('.json') && !/^bundle\./.test(f));
 
 let failed = false;
 
